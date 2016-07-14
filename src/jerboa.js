@@ -1,4 +1,11 @@
 window.jerboa = (function () {
+
+    var feedbackBoxOpen = false;
+    var listeners = {};
+    var currentStrategy;
+    var additionalData;
+    var openSpot;
+
     function getSelector(e, child) {
         if (e.tagName === 'BODY') {
             return 'body' + (child ? " > " + child : "");
@@ -12,10 +19,6 @@ window.jerboa = (function () {
         }
     }
 
-    var feedbackBoxOpen = false;
-    var listeners = {};
-    var additionalData;
-    var openSpot;
 
     function emit(event, payload) {
         if (listeners[event]) {
@@ -23,9 +26,38 @@ window.jerboa = (function () {
         }
     }
 
-    function placeMarker(pos) {
-        var left = pos.rect.left + pos.offsetX;
-        var top = pos.rect.top + pos.offsetY;
+
+    function getRelativeOffset(target, container) {
+        if (target === container) {
+            return [0,0];
+        } else {
+            var o = getRelativeOffset(target.parentElement, container);
+            return [target.offsetLeft + o[0], target.offsetTop + o[1]];
+        }
+    }
+
+
+    function getGlobalOffset(element) {
+        return getRelativeOffset(element, document.body);
+    }
+
+
+    function resolveContainer(elem, strategy) {
+        if (strategy(elem)) {
+            return elem;
+        } else if (elem.tagName === 'HTML') {
+            return null;
+        } else {
+            return resolveContainer(elem.parentElement, strategy);
+        }
+    }
+
+
+    function placeMarker(payload) {
+        var container = document.querySelector(payload.container);
+        var offset = getGlobalOffset(container);
+        var left = offset[0] + payload.offset[0];
+        var top = offset[1] + payload.offset[1];
 
         var spot = document.createElement('div');
         spot.classList.add('feedback-spot');
@@ -62,7 +94,7 @@ window.jerboa = (function () {
         }
     }
 
-    function preAnnotate(payload) {
+    function addAnnotateDialog(payload) {
         var spot = placeMarker(payload.position);
 
         feedbackBoxOpen = true;
@@ -108,19 +140,21 @@ window.jerboa = (function () {
         if (feedbackBoxOpen) {
             return;
         }
-        var rect = event.target.getBoundingClientRect();
+
+        var container = resolveContainer(event.target, currentStrategy);
+        if (!container) {
+            return;
+        }
+        var selector = getSelector(event.target);
+        var containerSelector = getSelector(container);
+        var offset = getRelativeOffset(event.target, container);
+        offset[0] += event.offsetX;
+        offset[1] += event.offsetY;
+
         var positionObject = {
-            selector: getSelector(event.target),
-            offsetX: event.offsetX,
-            offsetY: event.offsetY,
-            rect: { // Copy over the rect so we're dealing with a vanilla object, not a ClientRect
-                top: rect.top,
-                left: rect.left,
-                bottom: rect.bottom,
-                right: rect.right,
-                width: rect.width,
-                height: rect.height
-            },
+            target: selector,
+            container: containerSelector,
+            offset: offset,
             windowSize: {
                 width: window.innerWidth,
                 height: window.innerHeight
@@ -133,8 +167,22 @@ window.jerboa = (function () {
             data: additionalData
         };
         emit('preAnnotate', payload);
-        preAnnotate(payload);
+        addAnnotateDialog(payload);
     }
+
+    var strategies = {
+        global: function (e) {
+            this.name = 'global';
+            return e.tagName === 'BODY';
+        },
+        byClass: function (className) {
+            return function (e) {
+                this.name = 'byClass:' + className;
+                return e.classList.contains(className);
+            }
+        }
+    };
+
 
     return {
         init: function (options) {
@@ -148,6 +196,11 @@ window.jerboa = (function () {
                     placeInfoBox(spot, point);
                 });
             }
+            if (options.strategy) {
+                currentStrategy = options.strategy;
+            } else {
+                currentStrategy = strategies.global;
+            }
             document.addEventListener('click', clickListener);
         },
         cleanup: function () {
@@ -158,6 +211,7 @@ window.jerboa = (function () {
                 listeners[event] = [];
             }
             listeners[event].push(handler);
-        }
+        },
+        strategies: strategies
     };
 })();

@@ -10,10 +10,24 @@
         body {
             height: 100vh;
             width: 100%;
+            margin: 0;
+        }
+
+        .thingy {
+            display: block;
+            width: 300px;
+            height: 300px;
+            border: 1px solid black;
+            margin: 30px;
         }
     </style>
 </head>
 <body>
+
+<div class="thingy"></div>
+<div class="thingy"></div>
+<div class="thingy"></div>
+
 
 <script src="./jerboa.js"></script>
 <script>
@@ -24,32 +38,19 @@
         },
         points: [
             {
-                "datetime": "2016-07-14T17:50:19.741Z",
+                "datetime": "2016-07-14T22:02:37.998Z",
                 "position": {
-                    "selector": "body",
-                    "offsetX": 505,
-                    "offsetY": 239,
-                    "rect": {"top": 8, "left": 8, "bottom": 1309, "right": 1918, "width": 1910, "height": 1301},
-                    "windowSize": {"width": 1925, "height": 1301}
+                    "target": "body > div:nth-child(2)",
+                    "container": "body > div:nth-child(2)",
+                    "offset": [241, 83],
+                    "windowSize": {"width": 1344, "height": 698}
                 },
                 "url": "http://localhost:63342/feedback-snippet/src/index.html?foo=bar#asdf",
                 "data": {"userId": 1234, "module": "abc"},
-                "text": "This is a test"
-            },
-            {
-                "datetime": "2016-07-14T18:34:17.200Z",
-                "position": {
-                    "selector": "body",
-                    "offsetX": 801,
-                    "offsetY": 209,
-                    "rect": {"top": 8, "left": 8, "bottom": 1309, "right": 1918, "width": 1910, "height": 1301},
-                    "windowSize": {"width": 1925, "height": 1301}
-                },
-                "url": "http://localhost:63342/feedback-snippet/src/index.html?foo=bar#asdf",
-                "data": {"userId": 1234, "module": "abc"},
-                "text": "This is another annotation"
+                "text": "test"
             }
-        ]
+        ],
+        strategy: jerboa.strategies.byClass('thingy')
     });
     jerboa.addEventListener('save', function (payload) {
         console.log(JSON.stringify(payload));
