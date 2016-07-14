@@ -2,7 +2,7 @@
 
 Annotate and provide feedback on any web page.
 
-![Jerboa.js]()
+<img alt="jerboa.js" src="https://github.com/camman3d/jerboa.js/raw/master/img/jerboa.jpg" height="400" />
 
 
 -----
