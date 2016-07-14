@@ -20,12 +20,13 @@
 }
 
 .feedback-box {
+    box-sizing: border-box;
     background: white;
     border: 1px solid #aaa;
     position: relative;
     top: 100%;
     width: 300px;
-    margin-left: -143px;
+    margin-left: -133px;
     margin-top: 40px;
     border-radius: 3px;
     box-shadow: 1px 2px 3px rgba(0,0,0,0.2);
