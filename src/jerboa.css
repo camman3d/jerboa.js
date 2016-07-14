@@ -4,17 +4,10 @@
     border: 13px solid #0ead9a;
     box-sizing: border-box;
     border-radius: 25px;
-
-
-
-    /*background: url("http://www.iconsdb.com/icons/preview/orange/map-marker-2-xxl.png") top center no-repeat;*/
-    /*width: 50px;*/
-    /*height: 50px;*/
-    /*background-size: contain;*/
     position: absolute;
     margin-left: -25px;
     margin-top: -70px;
-    /*top: 610px;*/
+    cursor: pointer;
 }
 
 .feedback-spot:before {
@@ -37,7 +30,14 @@
     border-radius: 3px;
     box-shadow: 1px 2px 3px rgba(0,0,0,0.2);
     padding: 10px;
-    text-align: right;
+    z-index: 100;
+}
+
+.feedback-spot .feedback-box.toggled {
+    display: none;
+}
+.feedback-spot.active .feedback-box.toggled {
+    display: block;
 }
 
 .feedback-box:before {
@@ -73,6 +73,10 @@
     box-sizing: border-box;
     margin-bottom: 10px;
     box-shadow: inset 1px 1px 2px rgba(0,0,0,0.1);
+}
+
+.feedback-box .button-holder {
+    text-align: right;
 }
 
 .feedback-box button {
