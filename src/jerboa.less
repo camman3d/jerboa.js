@@ -1,0 +1,136 @@
+@feedback-color-primary: #0ead9a;
+
+.feedback-spot {
+  width: 50px;
+  height: 50px;
+  border: 13px solid @feedback-color-primary;
+  background: white;
+  box-sizing: border-box;
+  border-radius: 25px;
+  position: absolute;
+  margin-left: -25px;
+  margin-top: -70px;
+  cursor: pointer;
+
+  &:before {
+    content: '';
+    border: 22px solid transparent;
+    position: absolute;
+    top: 100%;
+    left: -10px;
+    border-top: 30px solid @feedback-color-primary;
+  }
+
+  // Feedback box styling
+
+  .feedback-box {
+    box-sizing: border-box;
+    background: white;
+    border: 1px solid #aaa;
+    position: relative;
+    top: 100%;
+    width: 300px;
+    margin-left: -133px;
+    margin-top: 40px;
+    border-radius: 3px;
+    box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.2);
+    z-index: 100;
+    cursor: default;
+
+    &:before {
+      content: '';
+      display: block;
+      position: absolute;
+      top: -20px;
+      left: 50%;
+      border: 10px solid transparent;
+      border-bottom: 10px solid #aaa;
+      margin-left: -15px;
+    }
+
+    &:after {
+      content: '';
+      display: block;
+      position: absolute;
+      top: -19px;
+      left: 50%;
+      border: 10px solid transparent;
+      border-bottom: 10px solid white;
+      margin-left: -15px;
+    }
+
+    &.toggled {
+      display: none;
+    }
+  }
+  &.active .feedback-box.toggled {
+    display: block;
+  }
+
+
+
+
+
+
+  .feedback-container {
+    max-height: 350px;
+    overflow-y: auto;
+    padding: 10px;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  textarea {
+    display: block;
+    min-height: 75px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    padding: 10px;
+    font-size: 14px;
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+    box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.1);
+  }
+
+  .button-holder {
+    text-align: right;
+  }
+
+  button {
+    height: 35px;
+    font-size: 14px;
+    padding: 0 15px;
+    margin-left: 10px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+
+  button.cancel-button {
+    border: 1px solid #ccc;
+    color: #666;
+    background: white;
+  }
+
+  button.save-button {
+    color: white;
+    background: @feedback-color-primary;
+  }
+
+  .feedback-text:not(:last-child) {
+    margin-bottom: 15px;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 15px;
+  }
+
+  .feedback-info {
+    color: #aaa;
+    font-size: 12px;
+    font-style: italic;
+  }
+
+}

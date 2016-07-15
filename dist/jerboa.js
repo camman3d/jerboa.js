@@ -1,13 +1,14 @@
-window.jerboa = (function () {
+'use strict';
 
-    let feedbackBoxOpen = false;
-    let listeners = {};
-    let currentStrategy;
-    let currentPositioning;
-    let currentUser;
-    let additionalData;
-    let openSpot;
+window.jerboa = function () {
 
+    var feedbackBoxOpen = false;
+    var listeners = {};
+    var currentStrategy = void 0;
+    var currentPositioning = void 0;
+    var currentUser = void 0;
+    var additionalData = void 0;
+    var openSpot = void 0;
 
     /*
         Positioning Related Methods
@@ -29,7 +30,9 @@ window.jerboa = (function () {
 
     function emit(event, payload) {
         if (listeners[event]) {
-            listeners[event].forEach(l => l(payload));
+            listeners[event].forEach(function (l) {
+                return l(payload);
+            });
         }
     }
 
@@ -52,8 +55,6 @@ window.jerboa = (function () {
             return resolveContainer(elem.parentElement, strategy);
         }
     }
-
-
 
     /*
         HTML Manipulation Methods
@@ -86,7 +87,7 @@ window.jerboa = (function () {
     }
 
     function addBox(spot, toggled) {
-        spot.addEventListener('click', event => {
+        spot.addEventListener('click', function (event) {
             event.stopPropagation();
 
             if (toggled) {
@@ -105,7 +106,7 @@ window.jerboa = (function () {
         if (toggled) {
             box.classList.add('toggled');
         }
-        box.addEventListener('click', event => {
+        box.addEventListener('click', function (event) {
             event.stopPropagation();
         });
         spot.appendChild(box);
@@ -114,7 +115,7 @@ window.jerboa = (function () {
         container.classList.add('feedback-container');
         box.appendChild(container);
 
-        return {box, container};
+        return { box: box, container: container };
     }
 
     function addText(container, payload) {
@@ -155,18 +156,18 @@ window.jerboa = (function () {
         save.innerText = 'Save';
         buttonHolder.appendChild(save);
 
-        return {cancel, save, textarea, container};
+        return { cancel: cancel, save: save, textarea: textarea, container: container };
     }
 
     function createInfoBox(spot, payload) {
         var boxParts = addBox(spot, true);
         addText(boxParts.container, payload);
-        payload.replies.forEach(reply => {
+        payload.replies.forEach(function (reply) {
             addText(boxParts.container, reply);
         });
 
         var parts = addTextField(boxParts.container, 'Reply:');
-        parts.cancel.addEventListener('click', () => {
+        parts.cancel.addEventListener('click', function () {
             var reply = {
                 datetime: new Date().toISOString(),
                 user: currentUser,
@@ -177,7 +178,7 @@ window.jerboa = (function () {
             closeInfoBox();
         });
 
-        parts.save.addEventListener('click', () => {
+        parts.save.addEventListener('click', function () {
             var reply = {
                 datetime: new Date().toISOString(),
                 user: currentUser,
@@ -192,7 +193,6 @@ window.jerboa = (function () {
             boxParts.container.appendChild(parts.container);
         });
     }
-
 
     /*
         Annotating Functionality Methods
@@ -230,7 +230,7 @@ window.jerboa = (function () {
                 width: window.innerWidth,
                 height: window.innerHeight
             },
-            offset
+            offset: offset
         };
         return {
             datetime: new Date().toISOString(),
@@ -259,13 +259,13 @@ window.jerboa = (function () {
         var boxParts = addBox(spot, false);
         var parts = addTextField(boxParts.container, 'Enter message:');
 
-        parts.cancel.addEventListener('click', () => {
+        parts.cancel.addEventListener('click', function () {
             emit('cancel', payload);
             feedbackBoxOpen = false;
             document.body.removeChild(spot);
         });
 
-        parts.save.addEventListener('click', () => {
+        parts.save.addEventListener('click', function () {
             payload.text = parts.textarea.value;
             emit('save', payload);
             feedbackBoxOpen = false;
@@ -275,14 +275,15 @@ window.jerboa = (function () {
     }
 
     var strategies = {
-        global: e => {
+        global: function global(e) {
             return e.tagName === 'BODY';
         },
-        byClass: className => e => {
-            return e.classList.contains(className);
+        byClass: function byClass(className) {
+            return function (e) {
+                return e.classList.contains(className);
+            };
         }
     };
-
 
     /*
         Return object
@@ -290,13 +291,13 @@ window.jerboa = (function () {
      */
 
     return {
-        init(options) {
+        init: function init(options) {
             options = options || {};
             if (options.data) {
                 additionalData = options.data;
             }
             if (options.points) {
-                options.points.forEach(point => {
+                options.points.forEach(function (point) {
                     var spot = createMarker(point);
                     createInfoBox(spot, point);
                 });
@@ -307,18 +308,17 @@ window.jerboa = (function () {
 
             document.addEventListener('click', clickListener);
         },
-
-        close() {
+        close: function close() {
             document.removeEventListener('click', clickListener);
         },
-
-        addEventListener(event, handler) {
+        addEventListener: function addEventListener(event, handler) {
             if (!listeners[event]) {
                 listeners[event] = [];
             }
             listeners[event].push(handler);
         },
 
+
         strategies: strategies
     };
-})();
+}();

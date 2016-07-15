@@ -1,0 +1,42 @@
+{
+  "name": "jerboa",
+  "version": "1.0.0",
+  "description": "Annotate and provide feedback on any web page.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "babel": "babel src --out-dir dist",
+    "uglify": "uglifyjs dist/jerboa.js -c -m -o dist/jerboa.min.js",
+    "less": "lessc src/jerboa.less > dist/jerboa.css",
+    "autoprefix": "postcss -u autoprefixer -c .postcss.json -o dist/jerboa.css dist/jerboa.css",
+    "cssmin": "cssnano dist/jerboa.css dist/jerboa.min.css",
+    "build": "npm run babel; npm run uglify; npm run less; npm run autoprefix; npm run cssmin"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/camman3d/jerboa.js.git"
+  },
+  "keywords": [
+    "annotate",
+    "annotation",
+    "feedback",
+    "markup",
+    "comment"
+  ],
+  "author": "Josh Monson",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/camman3d/jerboa.js/issues"
+  },
+  "homepage": "https://github.com/camman3d/jerboa.js",
+  "devDependencies": {
+    "autoprefixer": "^6.3.7",
+    "babel-cli": "^6.10.1",
+    "babel-preset-es2015": "^6.9.0",
+    "cssnano": "^3.7.3",
+    "cssnano-cli": "^1.0.4",
+    "less": "^2.7.1",
+    "postcss-cli": "^2.5.2",
+    "uglify-js": "^2.7.0"
+  }
+}
