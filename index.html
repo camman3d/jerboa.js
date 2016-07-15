@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Feedback Snippet</title>
+
+    <link rel="stylesheet" href="./src/jerboa.css" />
+
+    <style>
+        body {
+            height: 100vh;
+            width: 100%;
+            margin: 0;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+        
+        .thingy {
+            display: block;
+            width: 300px;
+            height: 300px;
+            border: 1px solid #aaa;
+            margin: 30px;
+            background: white;
+            border-radius: 3px;
+            overflow: hidden;
+            padding: 4px;
+        }
+
+        .thingy:nth-child(3) {
+            text-align: center;
+        }
+
+        .thingy:nth-child(4) {
+            background-image: url('./img/map.png');
+            background-size: cover;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Jerboa.js Example</h1>
+
+<p>Code available on <a href="https://github.com/camman3d/jerboa.js">GitHub</a></p>
+
+<div class="thingy">
+    <h1>Welcome to the Gobi Desert</h1>
+    <img src="./img/jerboa.jpg" alt="A Jerboa" height="150">
+</div>
+<div class="thingy"></div>
+<div class="thingy">
+    Find empty spot in cupboard and sleep all day gnaw the corn cob chew iPad power cord. Sit on human eat and than sleep on your face make meme, make cute face but scratch leg; meow for can opener to feed me for pelt around the house and up and down stairs chasing phantoms and asdflkjaertvlkjasntvkjn (sits on keyboard). Flee in terror at cucumber discovered on floor. Cats go for world domination if it fits, i sits sit in box run outside as soon as door open. Make meme, make cute face climb leg, but refuse to leave cardboard box sniff other cat's butt and hang jaw half open thereafter eat the fat cats food. Hunt by meowing loudly at 5am next to human slave food dispenser chew foot, yet find something else more interesting, and thinking longingly about tuna brine.
+</div>
+
+
+<script src="./src/jerboa.js"></script>
+<script>
+    jerboa.init({
+        strategy: jerboa.strategies.byClass('thingy'),
+        positioning: 'percent',
+        points: [
+            {
+                "datetime": "2016-07-14T22:55:50.792Z",
+                "position": {
+                    "positioning": "percent",
+                    "target": "body > div:nth-child(3) > img:nth-child(2)",
+                    "container": "body > div:nth-child(3)",
+                    "containerSize": {"width": 302, "height": 302},
+                    "offset": [160, 165],
+                    "windowSize": {"width": 1344, "height": 698}
+                },
+                "url": "http://localhost:63342/feedback-snippet/src/index.html?foo=bar#asdf",
+                "text": "Cool icon!",
+                "user": "Josh",
+                "replies": [
+                    {
+                        "text": "Thanks!",
+                        "user": "Joe",
+                        "datetime": "2016-07-14T23:55:50.792Z"
+                    },
+                    {
+                        "text": "You're Welcome!",
+                        "user": "Josh",
+                        "datetime": "2016-07-15T23:55:50.792Z"
+                    }
+                ]
+            },
+            {
+                "datetime": "2016-07-15T16:23:01.195Z",
+                "position": {
+                    "positioning": "percent",
+                    "target": "body > div:nth-child(4)",
+                    "container": "body > div:nth-child(4)",
+                    "containerSize": {"width": 302, "height": 302},
+                    "offset": [251, 99],
+                    "windowSize": {"width": 1925, "height": 1301}
+                },
+                "url": "http://localhost:63342/feedback-snippet/src/index.html",
+                "replies": [],
+                "text": "I've been here. Who else has?",
+                "user": "Jim"
+            },
+            {
+                "datetime": "2016-07-15T16:25:31.689Z",
+                "position": {
+                    "positioning": "percent",
+                    "target": "body > div:nth-child(4)",
+                    "container": "body > div:nth-child(4)",
+                    "containerSize": {"width": 302, "height": 302},
+                    "offset": [122, 280],
+                    "windowSize": {"width": 1925, "height": 1301}
+                },
+                "url": "http://localhost:63342/feedback-snippet/src/index.html",
+                "replies": [],
+                "text": "This is an intersection"
+            },
+            {
+                "datetime": "2016-07-15T16:28:24.169Z",
+                "position": {
+                    "positioning": "percent",
+                    "target": "body > div:nth-child(5)",
+                    "container": "body > div:nth-child(5)",
+                    "containerSize": {"width": 310, "height": 310},
+                    "offset": [141, 264],
+                    "windowSize": {"width": 1925, "height": 1301}
+                },
+                "url": "http://localhost:63342/feedback-snippet/src/index.html",
+                "replies": [],
+                "text": "Totally my cat too!"
+            }
+        ]
+    });
+    jerboa.addEventListener('save', function (payload) {
+        console.log(JSON.stringify(payload));
+    });
+</script>
+</body>
+</html>
