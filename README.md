@@ -9,8 +9,8 @@ Annotate and provide feedback on any web page. [View it in action.](https://camm
 Include it:
 
 ```html
-<link rel="stylesheet" href="https://cdn.rawgit.com/camman3d/jerboa.js/master/src/jerboa.css" />
-<script src="https://cdn.rawgit.com/camman3d/jerboa.js/master/src/jerboa.js"></script>
+<link rel="stylesheet" href="https://cdn.rawgit.com/camman3d/jerboa.js/master/dist/jerboa.min.css" />
+<script src="https://cdn.rawgit.com/camman3d/jerboa.js/master/dist/jerboa.min.js"></script>
 ```
 
 Initialize it:
