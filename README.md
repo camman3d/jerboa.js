@@ -1,5 +1,7 @@
 # Jerboa.js
 
+[![Build Status](https://travis-ci.org/camman3d/jerboa.js.svg?branch=master)](https://travis-ci.org/camman3d/jerboa.js)
+
 <img alt="jerboa.js" src="https://github.com/camman3d/jerboa.js/raw/master/img/jerboa.jpg" height="400" />
 
 Annotate and provide feedback on any web page. [View it in action.](https://camman3d.github.io/jerboa.js/)
