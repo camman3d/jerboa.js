@@ -36,9 +36,13 @@
     "css-loader": "^0.23.1",
     "cssnano": "^3.7.3",
     "cssnano-cli": "^1.0.4",
+    "extract-text-webpack-plugin": "^1.0.1",
+    "less-loader": "^2.2.3",
+    "node-sass": "^3.8.0",
     "postcss-cli": "^2.5.2",
     "postcss-loader": "^0.9.1",
     "precss": "^1.4.0",
+    "sass-loader": "^4.0.0",
     "style-loader": "^0.13.1",
     "uglify-js": "^2.7.0",
     "webpack": "^1.13.1"

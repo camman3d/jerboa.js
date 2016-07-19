@@ -52,6 +52,8 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	__webpack_require__(6);
+
 	window.jerboa = _jerboa2.default;
 
 /***/ },
@@ -466,6 +468,12 @@
 	    additionalData: undefined,
 	    feedbackBoxOpen: false
 	};
+
+/***/ },
+/* 6 */
+/***/ function(module, exports) {
+
+	// removed by extract-text-webpack-plugin
 
 /***/ }
 /******/ ]);
