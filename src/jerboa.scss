@@ -1,9 +1,9 @@
-@feedback-color-primary: #0ead9a;
+$feedback-color-primary: #0ead9a;
 
 .feedback-spot {
   width: 50px;
   height: 50px;
-  border: 13px solid @feedback-color-primary;
+  border: 13px solid $feedback-color-primary;
   background: white;
   box-sizing: border-box;
   border-radius: 25px;
@@ -18,7 +18,7 @@
     position: absolute;
     top: 100%;
     left: -10px;
-    border-top: 30px solid @feedback-color-primary;
+    border-top: 30px solid $feedback-color-primary;
   }
 
   // Feedback box styling
@@ -118,7 +118,7 @@
 
   button.save-button {
     color: white;
-    background: @feedback-color-primary;
+    background: $feedback-color-primary;
   }
 
   .feedback-text:not(:last-child) {
