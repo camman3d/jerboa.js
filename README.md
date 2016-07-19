@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.org/camman3d/jerboa.js.svg?branch=master)](https://travis-ci.org/camman3d/jerboa.js)
 [![Code Climate](https://codeclimate.com/github/camman3d/jerboa.js/badges/gpa.svg)](https://codeclimate.com/github/camman3d/jerboa.js)
+[![Test Coverage](https://codeclimate.com/github/camman3d/jerboa.js/badges/coverage.svg)](https://codeclimate.com/github/camman3d/jerboa.js/coverage)
 
 <img alt="jerboa.js" src="https://github.com/camman3d/jerboa.js/raw/master/img/jerboa.jpg" height="400" />
 
