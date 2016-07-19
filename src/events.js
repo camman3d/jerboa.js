@@ -17,3 +17,7 @@ export function addEventListener(event, handler) {
     }
     listeners[event].push(handler);
 }
+
+export {
+    listeners as __listeners
+}
