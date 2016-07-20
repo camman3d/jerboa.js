@@ -6,7 +6,7 @@
 
 <img alt="jerboa.js" src="https://github.com/camman3d/jerboa.js/raw/master/img/jerboa.jpg" height="400" />
 
-Annotate and provide feedback on any web page. [View it in action.](https://camman3d.github.io/jerboa.js/). Jerboa.js is
+Annotate and provide feedback on any web page. [View it in action](https://camman3d.github.io/jerboa.js/). Jerboa.js is
 small (`jerboa.min.js` is ~6kb and `jerboa.min.css` is ~2kb) and has absolutely no dependencies so it's easy to use
 anywhere! 
 
