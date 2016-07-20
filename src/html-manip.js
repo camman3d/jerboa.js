@@ -9,6 +9,16 @@ import state from './state';
 
 let openSpot;
 
+
+// Methods for testing
+export function __getOpenSpot() {
+    return openSpot;
+}
+
+export function __setOpenSpot(spot) {
+    openSpot = spot;
+}
+
 export function createMarker(payload) {
     const pos = payload.position;
     const container = document.querySelector(pos.container);
@@ -84,6 +94,8 @@ export function addText(container, payload) {
     const time = new Date(payload.datetime);
     info.textContent = 'By ' + (payload.user || 'unknown user') + ' at ' + time.toLocaleString();
     text.appendChild(info);
+
+    return text;
 }
 
 export function addTextField(boxContainer, label) {
@@ -114,6 +126,12 @@ export function addTextField(boxContainer, label) {
     return {cancel, save, textarea, container};
 }
 
+const generateReply = text => ({
+    datetime: new Date().toISOString(),
+    user: state.currentUser,
+    text
+});
+
 export function createInfoBox(spot, payload) {
     const boxParts = addBox(spot, true);
     addText(boxParts.container, payload);
@@ -123,22 +141,14 @@ export function createInfoBox(spot, payload) {
 
     let parts = addTextField(boxParts.container, 'Reply:');
     parts.cancel.addEventListener('click', () => {
-        const reply = {
-            datetime: new Date().toISOString(),
-            user: state.currentUser,
-            text: parts.textarea.value
-        };
+        const reply = generateReply(parts.textarea.value);
         parts.textarea.value = '';
         emit('cancelReply', reply);
         closeInfoBox();
     });
 
     parts.save.addEventListener('click', () => {
-        const reply = {
-            datetime: new Date().toISOString(),
-            user: state.currentUser,
-            text: parts.textarea.value
-        };
+        const reply = generateReply(parts.textarea.value);
         parts.textarea.value = '';
         payload.replies.push(reply);
         emit('saveReply', payload);
@@ -147,4 +157,6 @@ export function createInfoBox(spot, payload) {
         addText(boxParts.container, reply);
         boxParts.container.appendChild(parts.container);
     });
+
+    return Object.assign({}, parts, boxParts);
 }
