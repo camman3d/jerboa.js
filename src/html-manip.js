@@ -83,7 +83,10 @@ export function closeInfoBox() {
     }
 }
 
+// addText functiona renders a single comment and all of it's replies
 export function addText(container, payload) {
+    let repliesContainer;
+
     let text = document.createElement('div');
     text.classList.add('feedback-text');
     text.textContent = payload.text;
@@ -95,7 +98,66 @@ export function addText(container, payload) {
     info.textContent = 'By ' + (payload.user || 'unknown user') + ' at ' + time.toLocaleString();
     text.appendChild(info);
 
+    let replyBtn = document.createElement('a');
+    replyBtn.classList.add('reply-button');
+    replyBtn.innerText = 'Reply';
+    replyBtn.setAttribute('role', 'button');
+    replyBtn.setAttribute('href', '#');
+    text.appendChild(replyBtn);
+
+    // if there are replies, render them
+    if (payload.replies) {
+        repliesContainer = document.createElement('div');
+        repliesContainer.classList.add('replies-container');
+        text.appendChild(repliesContainer);
+
+        payload.replies.forEach(reply => {
+            addReply(repliesContainer, reply);
+        });
+    };
+
+    replyBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        let parts = addTextField(repliesContainer, 'Reply:');
+
+        parts.cancel.addEventListener('click', () => {
+            const reply = generateReply(parts.textarea.value);
+            parts.textarea.value = '';
+            emit('cancelReply', reply);
+            closeInfoBox();
+        });
+
+        parts.save.addEventListener('click', () => {
+            const reply = generateReply(parts.textarea.value);
+            parts.textarea.value = '';
+            payload.replies.push(reply);
+            emit('saveReply', payload);
+
+            repliesContainer.removeChild(parts.container);
+            addReply(repliesContainer, reply);
+        });
+    });
+
     return text;
+}
+
+export function addReply(container, payload) {
+    let replyContainer = document.createElement('div');
+    replyContainer.classList.add('reply-container');
+    container.appendChild(replyContainer);
+
+    let reply = document.createElement('div');
+    reply.classList.add('feedback-reply');
+    reply.textContent = payload.text;
+    replyContainer.appendChild(reply);
+
+    let info = document.createElement('div');
+    info.classList.add('feedback-info');
+    const time = new Date(payload.datetime);
+    info.textContent = 'By ' + (payload.user || 'unknown user') + ' at ' + time.toLocaleString();
+    replyContainer.appendChild(info);
+
+    return replyContainer;
 }
 
 export function addTextField(boxContainer, label) {
@@ -132,29 +194,35 @@ const generateReply = text => ({
     text
 });
 
+const generateComment = text => ({
+    datetime: new Date().toISOString(),
+    user: state.currentUser,
+    text,
+    replies: []
+});
+
 export function createInfoBox(spot, payload) {
     const boxParts = addBox(spot, true);
-    addText(boxParts.container, payload);
-    payload.replies.forEach(reply => {
-        addText(boxParts.container, reply);
+    payload.comments.forEach(comment => {
+        addText(boxParts.container, comment);
     });
 
-    let parts = addTextField(boxParts.container, 'Reply:');
+    let parts = addTextField(boxParts.container, 'Comment:');
     parts.cancel.addEventListener('click', () => {
-        const reply = generateReply(parts.textarea.value);
+        const comment = generateComment(parts.textarea.value);
         parts.textarea.value = '';
-        emit('cancelReply', reply);
+        emit('cancelComment', comment);
         closeInfoBox();
     });
 
     parts.save.addEventListener('click', () => {
-        const reply = generateReply(parts.textarea.value);
+        const comment = generateComment(parts.textarea.value);
         parts.textarea.value = '';
-        payload.replies.push(reply);
-        emit('saveReply', payload);
+        payload.comments.push(comment);
+        emit('saveComment', payload);
 
         boxParts.container.removeChild(parts.container);
-        addText(boxParts.container, reply);
+        addText(boxParts.container, comment);
         boxParts.container.appendChild(parts.container);
     });
 

@@ -40,8 +40,7 @@ function generatePayload(event) {
         position: positionObject,
         url: window.location.href,
         data: state.additionalData,
-        user: state.currentUser,
-        replies: []
+        user: state.currentUser
     };
 }
 
@@ -60,7 +59,7 @@ function clickListener(event) {
     state.feedbackBoxOpen = true;
     const spot = createMarker(payload);
     const boxParts = addBox(spot, false);
-    const parts = addTextField(boxParts.container, 'Enter message:');
+    const parts = addTextField(boxParts.container, 'Enter comment:');
 
     parts.cancel.addEventListener('click', () => {
         emit('cancel', payload);
@@ -69,7 +68,14 @@ function clickListener(event) {
     });
 
     parts.save.addEventListener('click', () => {
-        payload.text = parts.textarea.value;
+        payload.comments = [
+            {
+                text: parts.textarea.value,
+                user: state.currentUser,
+                datetime: new Date().toISOString(),
+                replies: []
+            }
+        ];
         emit('save', payload);
         state.feedbackBoxOpen = false;
         spot.removeChild(boxParts.box);
@@ -100,7 +106,7 @@ export default {
         }
         if (options.points) {
             options.points.forEach(point => {
-                let spot = createMarker(point);
+                let spot = createMarker(point); //loads existing points
                 createInfoBox(spot, point);
             });
         }

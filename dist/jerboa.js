@@ -112,8 +112,7 @@
 	        position: positionObject,
 	        url: window.location.href,
 	        data: _state2.default.additionalData,
-	        user: _state2.default.currentUser,
-	        replies: []
+	        user: _state2.default.currentUser
 	    };
 	}
 
@@ -132,7 +131,7 @@
 	    _state2.default.feedbackBoxOpen = true;
 	    var spot = (0, _htmlManip.createMarker)(payload);
 	    var boxParts = (0, _htmlManip.addBox)(spot, false);
-	    var parts = (0, _htmlManip.addTextField)(boxParts.container, 'Enter message:');
+	    var parts = (0, _htmlManip.addTextField)(boxParts.container, 'Enter comment:');
 
 	    parts.cancel.addEventListener('click', function () {
 	        (0, _events.emit)('cancel', payload);
@@ -141,7 +140,12 @@
 	    });
 
 	    parts.save.addEventListener('click', function () {
-	        payload.text = parts.textarea.value;
+	        payload.comments = [{
+	            text: parts.textarea.value,
+	            user: _state2.default.currentUser,
+	            datetime: new Date().toISOString(),
+	            replies: []
+	        }];
 	        (0, _events.emit)('save', payload);
 	        _state2.default.feedbackBoxOpen = false;
 	        spot.removeChild(boxParts.box);
@@ -173,7 +177,7 @@
 	        }
 	        if (options.points) {
 	            options.points.forEach(function (point) {
-	                var spot = (0, _htmlManip.createMarker)(point);
+	                var spot = (0, _htmlManip.createMarker)(point); //loads existing points
 	                (0, _htmlManip.createInfoBox)(spot, point);
 	            });
 	        }
@@ -276,6 +280,8 @@
 	    listeners[event].push(handler);
 	}
 
+	exports.__listeners = listeners;
+
 /***/ },
 /* 4 */
 /***/ function(module, exports, __webpack_require__) {
@@ -285,10 +291,13 @@
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
+	exports.__getOpenSpot = __getOpenSpot;
+	exports.__setOpenSpot = __setOpenSpot;
 	exports.createMarker = createMarker;
 	exports.addBox = addBox;
 	exports.closeInfoBox = closeInfoBox;
 	exports.addText = addText;
+	exports.addReply = addReply;
 	exports.addTextField = addTextField;
 	exports.createInfoBox = createInfoBox;
 
@@ -308,6 +317,15 @@
 	 */
 
 	var openSpot = void 0;
+
+	// Methods for testing
+	function __getOpenSpot() {
+	    return openSpot;
+	}
+
+	function __setOpenSpot(spot) {
+	    openSpot = spot;
+	}
 
 	function createMarker(payload) {
 	    var pos = payload.position;
@@ -374,7 +392,10 @@
 	    }
 	}
 
+	// addText functiona renders a single comment and all of it's replies
 	function addText(container, payload) {
+	    var repliesContainer = void 0;
+
 	    var text = document.createElement('div');
 	    text.classList.add('feedback-text');
 	    text.textContent = payload.text;
@@ -385,6 +406,67 @@
 	    var time = new Date(payload.datetime);
 	    info.textContent = 'By ' + (payload.user || 'unknown user') + ' at ' + time.toLocaleString();
 	    text.appendChild(info);
+
+	    var replyBtn = document.createElement('a');
+	    replyBtn.classList.add('reply-button');
+	    replyBtn.innerText = 'Reply';
+	    replyBtn.setAttribute('role', 'button');
+	    replyBtn.setAttribute('href', '#');
+	    text.appendChild(replyBtn);
+
+	    // if there are replies, render them
+	    if (payload.replies) {
+	        repliesContainer = document.createElement('div');
+	        repliesContainer.classList.add('replies-container');
+	        text.appendChild(repliesContainer);
+
+	        payload.replies.forEach(function (reply) {
+	            addReply(repliesContainer, reply);
+	        });
+	    };
+
+	    replyBtn.addEventListener('click', function (e) {
+	        e.preventDefault();
+	        var parts = addTextField(repliesContainer, 'Reply:');
+
+	        parts.cancel.addEventListener('click', function () {
+	            var reply = generateReply(parts.textarea.value);
+	            parts.textarea.value = '';
+	            (0, _events.emit)('cancelReply', reply);
+	            closeInfoBox();
+	        });
+
+	        parts.save.addEventListener('click', function () {
+	            var reply = generateReply(parts.textarea.value);
+	            parts.textarea.value = '';
+	            payload.replies.push(reply);
+	            (0, _events.emit)('saveReply', payload);
+
+	            repliesContainer.removeChild(parts.container);
+	            addReply(repliesContainer, reply);
+	        });
+	    });
+
+	    return text;
+	}
+
+	function addReply(container, payload) {
+	    var replyContainer = document.createElement('div');
+	    replyContainer.classList.add('reply-container');
+	    container.appendChild(replyContainer);
+
+	    var reply = document.createElement('div');
+	    reply.classList.add('feedback-reply');
+	    reply.textContent = payload.text;
+	    replyContainer.appendChild(reply);
+
+	    var info = document.createElement('div');
+	    info.classList.add('feedback-info');
+	    var time = new Date(payload.datetime);
+	    info.textContent = 'By ' + (payload.user || 'unknown user') + ' at ' + time.toLocaleString();
+	    replyContainer.appendChild(info);
+
+	    return replyContainer;
 	}
 
 	function addTextField(boxContainer, label) {
@@ -415,39 +497,49 @@
 	    return { cancel: cancel, save: save, textarea: textarea, container: container };
 	}
 
+	var generateReply = function generateReply(text) {
+	    return {
+	        datetime: new Date().toISOString(),
+	        user: _state2.default.currentUser,
+	        text: text
+	    };
+	};
+
+	var generateComment = function generateComment(text) {
+	    return {
+	        datetime: new Date().toISOString(),
+	        user: _state2.default.currentUser,
+	        text: text,
+	        replies: []
+	    };
+	};
+
 	function createInfoBox(spot, payload) {
 	    var boxParts = addBox(spot, true);
-	    addText(boxParts.container, payload);
-	    payload.replies.forEach(function (reply) {
-	        addText(boxParts.container, reply);
+	    payload.comments.forEach(function (comment) {
+	        addText(boxParts.container, comment);
 	    });
 
-	    var parts = addTextField(boxParts.container, 'Reply:');
+	    var parts = addTextField(boxParts.container, 'Comment:');
 	    parts.cancel.addEventListener('click', function () {
-	        var reply = {
-	            datetime: new Date().toISOString(),
-	            user: _state2.default.currentUser,
-	            text: parts.textarea.value
-	        };
+	        var comment = generateComment(parts.textarea.value);
 	        parts.textarea.value = '';
-	        (0, _events.emit)('cancelReply', reply);
+	        (0, _events.emit)('cancelComment', comment);
 	        closeInfoBox();
 	    });
 
 	    parts.save.addEventListener('click', function () {
-	        var reply = {
-	            datetime: new Date().toISOString(),
-	            user: _state2.default.currentUser,
-	            text: parts.textarea.value
-	        };
+	        var comment = generateComment(parts.textarea.value);
 	        parts.textarea.value = '';
-	        payload.replies.push(reply);
-	        (0, _events.emit)('saveReply', payload);
+	        payload.comments.push(comment);
+	        (0, _events.emit)('saveComment', payload);
 
 	        boxParts.container.removeChild(parts.container);
-	        addText(boxParts.container, reply);
+	        addText(boxParts.container, comment);
 	        boxParts.container.appendChild(parts.container);
 	    });
+
+	    return Object.assign({}, parts, boxParts);
 	}
 
 /***/ },
