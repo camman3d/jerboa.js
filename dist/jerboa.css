@@ -71,6 +71,9 @@
 .feedback-spot .reply-container {
   margin-top: 10px;
 }
+.feedback-spot .reply-textfield {
+  margin-top: 10px;
+}
 .feedback-spot label {
   display: block;
   margin-bottom: 8px;
@@ -107,6 +110,12 @@
 .feedback-spot button.save-button {
   color: white;
   background: #0ead9a;
+}
+.feedback-spot .edit-button,
+.feedback-spot .delete-button {
+  float: right;
+  margin-left: 5px;
+  text-decoration: none;
 }
 .feedback-spot .feedback-text:not(:last-child) {
   margin-bottom: 15px;

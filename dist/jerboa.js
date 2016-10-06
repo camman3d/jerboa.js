@@ -392,10 +392,8 @@
 	    }
 	}
 
-	// addText functiona renders a single comment and all of it's replies
+	// addText function renders a single comment and all of it's replies
 	function addText(container, payload) {
-	    var repliesContainer = void 0;
-
 	    var text = document.createElement('div');
 	    text.classList.add('feedback-text');
 	    text.textContent = payload.text;
@@ -407,6 +405,33 @@
 	    info.textContent = 'By ' + (payload.user || 'unknown user') + ' at ' + time.toLocaleString();
 	    text.appendChild(info);
 
+	    if (payload.user === _state2.default.currentUser) {
+	        var deleteBtn = document.createElement('a');
+	        deleteBtn.classList.add('delete-button');
+	        deleteBtn.innerText = 'X';
+	        deleteBtn.setAttribute('role', 'button');
+	        deleteBtn.setAttribute('href', '#');
+	        info.appendChild(deleteBtn);
+
+	        var editBtn = document.createElement('a');
+	        editBtn.classList.add('edit-button');
+	        editBtn.innerText = 'Edit';
+	        editBtn.setAttribute('role', 'button');
+	        editBtn.setAttribute('href', '#');
+	        info.appendChild(editBtn);
+
+	        deleteBtn.addEventListener('click', function (e) {
+	            e.preventDefault();
+	            container.removeChild(text);
+	            (0, _events.emit)('deleteComment');
+	        });
+
+	        editBtn.addEventListener('click', function (e) {
+	            e.preventDefault();
+	            (0, _events.emit)('editComment');
+	        });
+	    }
+
 	    var replyBtn = document.createElement('a');
 	    replyBtn.classList.add('reply-button');
 	    replyBtn.innerText = 'Reply';
@@ -415,11 +440,11 @@
 	    text.appendChild(replyBtn);
 
 	    // if there are replies, render them
-	    if (payload.replies) {
-	        repliesContainer = document.createElement('div');
-	        repliesContainer.classList.add('replies-container');
-	        text.appendChild(repliesContainer);
+	    var repliesContainer = document.createElement('div');
+	    repliesContainer.classList.add('replies-container');
+	    text.appendChild(repliesContainer);
 
+	    if (payload.replies) {
 	        payload.replies.forEach(function (reply) {
 	            addReply(repliesContainer, reply);
 	        });
@@ -427,24 +452,29 @@
 
 	    replyBtn.addEventListener('click', function (e) {
 	        e.preventDefault();
-	        var parts = addTextField(repliesContainer, 'Reply:');
+	        var parts = void 0;
 
-	        parts.cancel.addEventListener('click', function () {
-	            var reply = generateReply(parts.textarea.value);
-	            parts.textarea.value = '';
-	            (0, _events.emit)('cancelReply', reply);
-	            closeInfoBox();
-	        });
+	        // if the repliesContainer is empty or if the last element in the replies container contains the class 'reply-textfield'
+	        if (repliesContainer && (!repliesContainer.lastElementChild || !repliesContainer.lastElementChild.classList.contains('reply-textfield'))) {
+	            parts = addTextField(repliesContainer, 'Reply:', 'reply-textfield');
 
-	        parts.save.addEventListener('click', function () {
-	            var reply = generateReply(parts.textarea.value);
-	            parts.textarea.value = '';
-	            payload.replies.push(reply);
-	            (0, _events.emit)('saveReply', payload);
+	            parts.cancel.addEventListener('click', function () {
+	                var reply = generateReply(parts.textarea.value);
+	                parts.textarea.value = '';
+	                (0, _events.emit)('cancelReply', reply);
+	                closeInfoBox();
+	            });
 
-	            repliesContainer.removeChild(parts.container);
-	            addReply(repliesContainer, reply);
-	        });
+	            parts.save.addEventListener('click', function () {
+	                var reply = generateReply(parts.textarea.value);
+	                parts.textarea.value = '';
+	                payload.replies.push(reply);
+	                (0, _events.emit)('saveReply', payload);
+
+	                repliesContainer.removeChild(parts.container);
+	                addReply(repliesContainer, reply);
+	            });
+	        }
 	    });
 
 	    return text;
@@ -464,13 +494,44 @@
 	    info.classList.add('feedback-info');
 	    var time = new Date(payload.datetime);
 	    info.textContent = 'By ' + (payload.user || 'unknown user') + ' at ' + time.toLocaleString();
+	    // if the user is the creator of the comment, show the delete and edit
+	    if (payload.user === _state2.default.currentUser) {
+	        var deleteBtn = document.createElement('a');
+	        deleteBtn.classList.add('delete-button');
+	        deleteBtn.innerText = 'X';
+	        deleteBtn.setAttribute('role', 'button');
+	        deleteBtn.setAttribute('href', '#');
+	        info.appendChild(deleteBtn);
+
+	        var editBtn = document.createElement('a');
+	        editBtn.classList.add('edit-button');
+	        editBtn.innerText = 'Edit';
+	        editBtn.setAttribute('role', 'button');
+	        editBtn.setAttribute('href', '#');
+	        info.appendChild(editBtn);
+
+	        deleteBtn.addEventListener('click', function (e) {
+	            e.preventDefault();
+	            container.removeChild(replyContainer);
+	            (0, _events.emit)('deleteReply');
+	        });
+
+	        editBtn.addEventListener('click', function (e) {
+	            e.preventDefault();
+	            (0, _events.emit)('editReply');
+	        });
+	    }
+
 	    replyContainer.appendChild(info);
 
 	    return replyContainer;
 	}
 
-	function addTextField(boxContainer, label) {
+	function addTextField(boxContainer, label, containerClass) {
 	    var container = document.createElement('div');
+	    if (containerClass) {
+	        container.classList.add(containerClass);
+	    };
 	    boxContainer.appendChild(container);
 
 	    var fieldLabel = document.createElement('label');

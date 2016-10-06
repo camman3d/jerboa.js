@@ -83,10 +83,8 @@ export function closeInfoBox() {
     }
 }
 
-// addText functiona renders a single comment and all of it's replies
+// addText function renders a single comment and all of it's replies
 export function addText(container, payload) {
-    let repliesContainer;
-
     let text = document.createElement('div');
     text.classList.add('feedback-text');
     text.textContent = payload.text;
@@ -98,6 +96,33 @@ export function addText(container, payload) {
     info.textContent = 'By ' + (payload.user || 'unknown user') + ' at ' + time.toLocaleString();
     text.appendChild(info);
 
+    if (payload.user === state.currentUser) {
+        let deleteBtn = document.createElement('a');
+        deleteBtn.classList.add('delete-button');
+        deleteBtn.innerText = 'X';
+        deleteBtn.setAttribute('role', 'button');
+        deleteBtn.setAttribute('href', '#');
+        info.appendChild(deleteBtn);
+
+        let editBtn = document.createElement('a');
+        editBtn.classList.add('edit-button');
+        editBtn.innerText = 'Edit';
+        editBtn.setAttribute('role', 'button');
+        editBtn.setAttribute('href', '#');
+        info.appendChild(editBtn);
+
+        deleteBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            container.removeChild(text);
+            emit('deleteComment');
+        });
+
+        editBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            emit('editComment');
+        });
+    }
+
     let replyBtn = document.createElement('a');
     replyBtn.classList.add('reply-button');
     replyBtn.innerText = 'Reply';
@@ -106,11 +131,11 @@ export function addText(container, payload) {
     text.appendChild(replyBtn);
 
     // if there are replies, render them
-    if (payload.replies) {
-        repliesContainer = document.createElement('div');
-        repliesContainer.classList.add('replies-container');
-        text.appendChild(repliesContainer);
+    let repliesContainer = document.createElement('div');
+    repliesContainer.classList.add('replies-container');
+    text.appendChild(repliesContainer);
 
+    if (payload.replies) {
         payload.replies.forEach(reply => {
             addReply(repliesContainer, reply);
         });
@@ -118,24 +143,30 @@ export function addText(container, payload) {
 
     replyBtn.addEventListener('click', (e) => {
         e.preventDefault();
-        let parts = addTextField(repliesContainer, 'Reply:');
+        let parts;
 
-        parts.cancel.addEventListener('click', () => {
-            const reply = generateReply(parts.textarea.value);
-            parts.textarea.value = '';
-            emit('cancelReply', reply);
-            closeInfoBox();
-        });
+        // if the repliesContainer is empty or if the last element in the replies container contains the class 'reply-textfield'
+        if (repliesContainer && (!repliesContainer.lastElementChild || !repliesContainer.lastElementChild.classList.contains('reply-textfield'))) {
+            parts = addTextField(repliesContainer, 'Reply:', 'reply-textfield');
 
-        parts.save.addEventListener('click', () => {
-            const reply = generateReply(parts.textarea.value);
-            parts.textarea.value = '';
-            payload.replies.push(reply);
-            emit('saveReply', payload);
+            parts.cancel.addEventListener('click', () => {
+                const reply = generateReply(parts.textarea.value);
+                parts.textarea.value = '';
+                emit('cancelReply', reply);
+                closeInfoBox();
+            });
 
-            repliesContainer.removeChild(parts.container);
-            addReply(repliesContainer, reply);
-        });
+            parts.save.addEventListener('click', () => {
+                const reply = generateReply(parts.textarea.value);
+                parts.textarea.value = '';
+                payload.replies.push(reply);
+                emit('saveReply', payload);
+
+                repliesContainer.removeChild(parts.container);
+                addReply(repliesContainer, reply);
+            });
+        }
+
     });
 
     return text;
@@ -155,13 +186,44 @@ export function addReply(container, payload) {
     info.classList.add('feedback-info');
     const time = new Date(payload.datetime);
     info.textContent = 'By ' + (payload.user || 'unknown user') + ' at ' + time.toLocaleString();
+    // if the user is the creator of the comment, show the delete and edit
+    if (payload.user === state.currentUser) {
+        let deleteBtn = document.createElement('a');
+        deleteBtn.classList.add('delete-button');
+        deleteBtn.innerText = 'X';
+        deleteBtn.setAttribute('role', 'button');
+        deleteBtn.setAttribute('href', '#');
+        info.appendChild(deleteBtn);
+
+        let editBtn = document.createElement('a');
+        editBtn.classList.add('edit-button');
+        editBtn.innerText = 'Edit';
+        editBtn.setAttribute('role', 'button');
+        editBtn.setAttribute('href', '#');
+        info.appendChild(editBtn);
+
+        deleteBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            container.removeChild(replyContainer);
+            emit('deleteReply');
+        });
+
+        editBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            emit('editReply');
+        });
+    }
+
     replyContainer.appendChild(info);
 
     return replyContainer;
 }
 
-export function addTextField(boxContainer, label) {
+export function addTextField(boxContainer, label, containerClass) {
     let container = document.createElement('div');
+    if (containerClass) {
+        container.classList.add(containerClass)
+    };
     boxContainer.appendChild(container);
 
     let fieldLabel = document.createElement('label');
