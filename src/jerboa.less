@@ -1,4 +1,13 @@
 @feedback-color-primary: #0ead9a;
+@owner-pm-color: green;
+@owner-client-color: red;
+@owner-id-color: orange;
+@owner-ixd-color: blue;
+@owner-video-color: purple;
+@status-open-color: green;
+@status-closed-color: red;
+@status-no-action-color: yellow;
+
 
 .feedback-spot {
   width: 50px;
@@ -20,6 +29,48 @@
     left: -10px;
     border-top: 30px solid @feedback-color-primary;
   }
+
+  &.owner-pm {
+    border-color: @owner-pm-color;
+    &:before {
+      border-top-color: @owner-pm-color;
+    }
+  }
+  &.owner-client {
+    border-color: @owner-client-color;
+    &:before {
+      border-top-color: @owner-client-color;
+    }
+  }
+  &.owner-id {
+    border-color: @owner-id-color;
+    &:before {
+      border-top-color: @owner-id-color;
+    }
+  }
+  &.owner-ixd {
+    border-color: @owner-ixd-color;
+    &:before {
+      border-top-color: @owner-ixd-color;
+    }
+  }
+  &.owner-video {
+    border-color: @owner-video-color;
+    &:before {
+      border-top-color: @owner-video-color;
+    }
+  }
+
+  &.status-open {
+    background: @status-open-color;
+  }
+  &.status-closed {
+    background: @status-closed-color;
+  }
+  &.status-no-action {
+    background: @status-no-action-color;
+  }
+
 
   // Feedback box styling
 

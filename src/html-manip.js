@@ -263,8 +263,71 @@ const generateComment = text => ({
     replies: []
 });
 
+
+
 export function createInfoBox(spot, payload) {
+
+    function changeOuterColor(classList, className) {
+        classList.forEach((value, index) => {
+            if (value.includes('owner-')) {
+                classList.remove(value);
+            }
+        });
+        classList.add(className);
+    }
+    function changeInnerColor(classList, className) {
+        classList.forEach((value, index) => {
+            if (value.includes('status-')) {
+                classList.remove(value);
+            }
+        });
+        classList.add(className);
+    }
+
     const boxParts = addBox(spot, true);
+    const ownerOptions = {
+        'PM': 'pm',
+        'Client': 'client',
+        'ID': 'id',
+        'IxD': 'ixd',
+        'Video': 'video'
+    };
+    const statusOptions = {
+        'Open': 'open',
+        'Closed': 'closed',
+        'No Action': 'no-action'
+    };
+
+    // add owner and status
+    let ownerSelect = document.createElement('select');
+    boxParts.container.appendChild(ownerSelect);
+    let ownerOptionsArr = Object.keys(ownerOptions);
+    for (let i = 0; i < ownerOptionsArr.length; i++) {
+        let option = document.createElement('option');
+        option.value = ownerOptionsArr[i];
+        option.text = ownerOptionsArr[i];
+        ownerSelect.appendChild(option);
+    }
+    ownerSelect.addEventListener('change', (e) => {
+        let ownerValue = e.target.value;
+        changeOuterColor(spot.classList, `owner-${ownerOptions[ownerValue]}`)
+    });
+
+    let statusSelect = document.createElement('select');
+    boxParts.container.appendChild(statusSelect);
+    let statusOptionsArr = Object.keys(statusOptions);
+    for (let i = 0; i < statusOptionsArr.length; i++) {
+        let option = document.createElement('option');
+        option.value = statusOptionsArr[i];
+        option.text = statusOptionsArr[i];
+        statusSelect.appendChild(option);
+    }
+    statusSelect.addEventListener('change', (e) => {
+        let statusValue = e.target.value;
+        changeInnerColor(spot.classList, `status-${statusOptions[statusValue]}`)
+    });
+
+    // add each comment to container
     payload.comments.forEach(comment => {
         addText(boxParts.container, comment);
     });

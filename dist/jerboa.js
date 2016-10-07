@@ -576,7 +576,68 @@
 	};
 
 	function createInfoBox(spot, payload) {
+
+	    function changeOuterColor(classList, className) {
+	        classList.forEach(function (value, index) {
+	            if (value.includes('owner-')) {
+	                classList.remove(value);
+	            }
+	        });
+	        classList.add(className);
+	    }
+	    function changeInnerColor(classList, className) {
+	        classList.forEach(function (value, index) {
+	            if (value.includes('status-')) {
+	                classList.remove(value);
+	            }
+	        });
+	        classList.add(className);
+	    }
+
 	    var boxParts = addBox(spot, true);
+	    var ownerOptions = {
+	        'PM': 'pm',
+	        'Client': 'client',
+	        'ID': 'id',
+	        'IxD': 'ixd',
+	        'Video': 'video'
+	    };
+	    var statusOptions = {
+	        'Open': 'open',
+	        'Closed': 'closed',
+	        'No Action': 'no-action'
+	    };
+
+	    // add owner and status
+	    var ownerSelect = document.createElement('select');
+	    boxParts.container.appendChild(ownerSelect);
+	    var ownerOptionsArr = Object.keys(ownerOptions);
+	    for (var i = 0; i < ownerOptionsArr.length; i++) {
+	        var option = document.createElement('option');
+	        option.value = ownerOptionsArr[i];
+	        option.text = ownerOptionsArr[i];
+	        ownerSelect.appendChild(option);
+	    }
+	    ownerSelect.addEventListener('change', function (e) {
+	        var ownerValue = e.target.value;
+	        changeOuterColor(spot.classList, 'owner-' + ownerOptions[ownerValue]);
+	    });
+
+	    var statusSelect = document.createElement('select');
+	    boxParts.container.appendChild(statusSelect);
+	    var statusOptionsArr = Object.keys(statusOptions);
+	    for (var _i = 0; _i < statusOptionsArr.length; _i++) {
+	        var _option = document.createElement('option');
+	        _option.value = statusOptionsArr[_i];
+	        _option.text = statusOptionsArr[_i];
+	        statusSelect.appendChild(_option);
+	    }
+	    statusSelect.addEventListener('change', function (e) {
+	        var statusValue = e.target.value;
+	        changeInnerColor(spot.classList, 'status-' + statusOptions[statusValue]);
+	    });
+
+	    // add each comment to container
 	    payload.comments.forEach(function (comment) {
 	        addText(boxParts.container, comment);
 	    });

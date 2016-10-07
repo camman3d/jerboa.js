@@ -18,6 +18,45 @@
   left: -10px;
   border-top: 30px solid #0ead9a;
 }
+.feedback-spot.owner-pm {
+  border-color: green;
+}
+.feedback-spot.owner-pm:before {
+  border-top-color: green;
+}
+.feedback-spot.owner-client {
+  border-color: red;
+}
+.feedback-spot.owner-client:before {
+  border-top-color: red;
+}
+.feedback-spot.owner-id {
+  border-color: orange;
+}
+.feedback-spot.owner-id:before {
+  border-top-color: orange;
+}
+.feedback-spot.owner-ixd {
+  border-color: blue;
+}
+.feedback-spot.owner-ixd:before {
+  border-top-color: blue;
+}
+.feedback-spot.owner-video {
+  border-color: purple;
+}
+.feedback-spot.owner-video:before {
+  border-top-color: purple;
+}
+.feedback-spot.status-open {
+  background: green;
+}
+.feedback-spot.status-closed {
+  background: red;
+}
+.feedback-spot.status-no-action {
+  background: yellow;
+}
 .feedback-spot .feedback-box {
   box-sizing: border-box;
   background: white;
