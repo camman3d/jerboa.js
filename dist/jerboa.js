@@ -621,6 +621,7 @@
 	    ownerSelect.addEventListener('change', function (e) {
 	        var ownerValue = e.target.value;
 	        changeOuterColor(spot.classList, 'owner-' + ownerOptions[ownerValue]);
+	        (0, _events.emit)('changeOwner', ownerValue);
 	    });
 
 	    var statusSelect = document.createElement('select');
@@ -635,6 +636,7 @@
 	    statusSelect.addEventListener('change', function (e) {
 	        var statusValue = e.target.value;
 	        changeInnerColor(spot.classList, 'status-' + statusOptions[statusValue]);
+	        (0, _events.emit)('changeStatus', statusValue);
 	    });
 
 	    // add each comment to container

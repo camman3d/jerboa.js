@@ -265,6 +265,43 @@
     jerboa.addEventListener('save', function (payload) {
         console.log(JSON.stringify(payload));
     });
+
+    jerboa.addEventListener('saveComment', function (payload) {
+        console.log(JSON.stringify(payload));
+    });
+    jerboa.addEventListener('editComment', function (payload) {
+        console.log(JSON.stringify(payload));
+    });
+    jerboa.addEventListener('cancelComment', function (payload) {
+        console.log(JSON.stringify(payload));
+    });
+    jerboa.addEventListener('deleteComment', function (payload) {
+        console.log(JSON.stringify(payload));
+    });
+
+    jerboa.addEventListener('saveReply', function (payload) {
+        console.log(JSON.stringify(payload));
+    });
+    jerboa.addEventListener('editReply', function (payload) {
+        console.log(JSON.stringify(payload));
+    });
+    jerboa.addEventListener('cancelReply', function (payload) {
+        console.log(JSON.stringify(payload));
+    });
+    jerboa.addEventListener('deleteReply', function (payload) {
+        console.log(JSON.stringify(payload));
+    });
+
+    jerboa.addEventListener('changeOwner', function (payload) {
+        console.log(JSON.stringify(payload));
+    });
+    jerboa.addEventListener('changeStatus', function (payload) {
+        console.log(JSON.stringify(payload));
+    });
+
+    jerboa.addEventListener('preAnnotate', function (payload) {
+        console.log(JSON.stringify(payload));
+    });
 </script>
 </body>
 </html>

@@ -311,6 +311,7 @@ export function createInfoBox(spot, payload) {
     ownerSelect.addEventListener('change', (e) => {
         let ownerValue = e.target.value;
         changeOuterColor(spot.classList, `owner-${ownerOptions[ownerValue]}`)
+        emit('changeOwner', ownerValue);
     });
 
     let statusSelect = document.createElement('select');
@@ -325,6 +326,7 @@ export function createInfoBox(spot, payload) {
     statusSelect.addEventListener('change', (e) => {
         let statusValue = e.target.value;
         changeInnerColor(spot.classList, `status-${statusOptions[statusValue]}`)
+        emit('changeStatus', statusValue);
     });
 
     // add each comment to container
