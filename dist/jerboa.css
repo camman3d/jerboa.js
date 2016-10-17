@@ -63,7 +63,7 @@
   border: 1px solid #aaa;
   position: relative;
   top: 100%;
-  width: 300px;
+  width: 320px;
   margin-left: -133px;
   margin-top: 40px;
   border-radius: 3px;
@@ -101,6 +101,9 @@
   max-height: 350px;
   overflow-y: auto;
   padding: 10px;
+}
+.feedback-spot .feedback-reply {
+  overflow-wrap: break-word;
 }
 .feedback-spot .replies-container {
   margin-left: 15px;

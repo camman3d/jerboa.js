@@ -119,6 +119,36 @@ export function addText(container, payload) {
 
         editBtn.addEventListener('click', (e) => {
             e.preventDefault();
+            let editCommentTextField = addTextField(null, null, 'comment-textfield');
+            editCommentTextField.textarea.value = payload.text;
+
+            editCommentTextField.cancel.addEventListener('click', () => {
+                console.log('edit comment text field cancel clicked');
+                container.replaceChild(text, editCommentTextField.container);
+                // const reply = generateReply(editReplyTextField.textarea.value);
+                // editReplyTextField.textarea.value = '';
+                // emit('cancelReply', reply);
+            });
+
+            editCommentTextField.save.addEventListener('click', () => {
+                console.log('edit comment text field save clicked');
+                // if content didn't change, just put back old comment (don't change)
+                console.log(text.textContent, '|||', editCommentTextField.textarea.value)
+                if (payload.text === editReplyTextField.textarea.value) {
+                    container.replaceChild(text, editCommentTextField.container);
+                } else {
+                    //change
+                }
+                // const reply = generateReply(editReplyTextField.textarea.value);
+                // editReplyTextField.textarea.value = '';
+                // payload.replies.push(reply);
+                // emit('saveReply', payload);
+
+                // repliesContainer.removeChild(editReplyTextField.container);
+                // addReply(repliesContainer, reply);
+            });
+
+            container.replaceChild(editCommentTextField.container, text);
             emit('editComment');
         });
     }
@@ -224,11 +254,15 @@ export function addTextField(boxContainer, label, containerClass) {
     if (containerClass) {
         container.classList.add(containerClass)
     };
-    boxContainer.appendChild(container);
+    if (boxContainer) {
+        boxContainer.appendChild(container)
+    };
 
-    let fieldLabel = document.createElement('label');
-    fieldLabel.textContent = label;
-    container.appendChild(fieldLabel);
+    if (label) {
+        let fieldLabel = document.createElement('label');
+        fieldLabel.textContent = label;
+        container.appendChild(fieldLabel);
+    };
 
     let textarea = document.createElement('textarea');
     container.appendChild(textarea);
@@ -334,7 +368,7 @@ export function createInfoBox(spot, payload) {
         addText(boxParts.container, comment);
     });
 
-    let parts = addTextField(boxParts.container, 'Comment:');
+    let parts = addTextField(boxParts.container, 'Comment:', 'comment-textfield');
     parts.cancel.addEventListener('click', () => {
         const comment = generateComment(parts.textarea.value);
         parts.textarea.value = '';

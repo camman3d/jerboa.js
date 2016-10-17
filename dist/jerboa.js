@@ -80,8 +80,6 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	console.log('experticity.com', _blueimpMd2.default, (0, _blueimpMd2.default)('experticity.com'));
-
 	/*
 	    Annotating Functionality Methods
 	    --------------------------------
@@ -434,6 +432,36 @@
 
 	        editBtn.addEventListener('click', function (e) {
 	            e.preventDefault();
+	            var editCommentTextField = addTextField(null, null, 'comment-textfield');
+	            editCommentTextField.textarea.value = payload.text;
+
+	            editCommentTextField.cancel.addEventListener('click', function () {
+	                console.log('edit comment text field cancel clicked');
+	                container.replaceChild(text, editCommentTextField.container);
+	                // const reply = generateReply(editReplyTextField.textarea.value);
+	                // editReplyTextField.textarea.value = '';
+	                // emit('cancelReply', reply);
+	            });
+
+	            editCommentTextField.save.addEventListener('click', function () {
+	                console.log('edit comment text field save clicked');
+	                // if content didn't change, just put back old comment (don't change)
+	                console.log(text.textContent, '|||', editCommentTextField.textarea.value);
+	                if (payload.text === editReplyTextField.textarea.value) {
+	                    container.replaceChild(text, editCommentTextField.container);
+	                } else {}
+	                //change
+
+	                // const reply = generateReply(editReplyTextField.textarea.value);
+	                // editReplyTextField.textarea.value = '';
+	                // payload.replies.push(reply);
+	                // emit('saveReply', payload);
+
+	                // repliesContainer.removeChild(editReplyTextField.container);
+	                // addReply(repliesContainer, reply);
+	            });
+
+	            container.replaceChild(editCommentTextField.container, text);
 	            (0, _events.emit)('editComment');
 	        });
 	    }
@@ -538,11 +566,15 @@
 	    if (containerClass) {
 	        container.classList.add(containerClass);
 	    };
-	    boxContainer.appendChild(container);
+	    if (boxContainer) {
+	        boxContainer.appendChild(container);
+	    };
 
-	    var fieldLabel = document.createElement('label');
-	    fieldLabel.textContent = label;
-	    container.appendChild(fieldLabel);
+	    if (label) {
+	        var fieldLabel = document.createElement('label');
+	        fieldLabel.textContent = label;
+	        container.appendChild(fieldLabel);
+	    };
 
 	    var textarea = document.createElement('textarea');
 	    container.appendChild(textarea);
@@ -650,7 +682,7 @@
 	        addText(boxParts.container, comment);
 	    });
 
-	    var parts = addTextField(boxParts.container, 'Comment:');
+	    var parts = addTextField(boxParts.container, 'Comment:', 'comment-textfield');
 	    parts.cancel.addEventListener('click', function () {
 	        var comment = generateComment(parts.textarea.value);
 	        parts.textarea.value = '';
