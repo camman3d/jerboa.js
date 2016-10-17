@@ -48,5 +48,8 @@
     "postcss-cli": "^2.5.2",
     "sinon": "^1.17.4",
     "webpack": "^1.13.1"
+  },
+  "dependencies": {
+    "blueimp-md5": "^2.3.1"
   }
 }

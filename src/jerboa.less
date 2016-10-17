@@ -1,4 +1,13 @@
 @feedback-color-primary: #0ead9a;
+@owner-pm-color: green;
+@owner-client-color: red;
+@owner-id-color: orange;
+@owner-ixd-color: blue;
+@owner-video-color: purple;
+@status-open-color: green;
+@status-closed-color: red;
+@status-no-action-color: yellow;
+
 
 .feedback-spot {
   width: 50px;
@@ -21,6 +30,48 @@
     border-top: 30px solid @feedback-color-primary;
   }
 
+  &.owner-pm {
+    border-color: @owner-pm-color;
+    &:before {
+      border-top-color: @owner-pm-color;
+    }
+  }
+  &.owner-client {
+    border-color: @owner-client-color;
+    &:before {
+      border-top-color: @owner-client-color;
+    }
+  }
+  &.owner-id {
+    border-color: @owner-id-color;
+    &:before {
+      border-top-color: @owner-id-color;
+    }
+  }
+  &.owner-ixd {
+    border-color: @owner-ixd-color;
+    &:before {
+      border-top-color: @owner-ixd-color;
+    }
+  }
+  &.owner-video {
+    border-color: @owner-video-color;
+    &:before {
+      border-top-color: @owner-video-color;
+    }
+  }
+
+  &.status-open {
+    background: @status-open-color;
+  }
+  &.status-closed {
+    background: @status-closed-color;
+  }
+  &.status-no-action {
+    background: @status-no-action-color;
+  }
+
+
   // Feedback box styling
 
   .feedback-box {
@@ -29,7 +80,7 @@
     border: 1px solid #aaa;
     position: relative;
     top: 100%;
-    width: 300px;
+    width: 320px;
     margin-left: -133px;
     margin-top: 40px;
     border-radius: 3px;
@@ -78,6 +129,24 @@
     padding: 10px;
   }
 
+  .feedback-reply {
+    overflow-wrap: break-word;
+  }
+
+  .replies-container {
+    margin-left: 15px;
+    padding-left: 5px;
+    border-left: 3px solid #ccc;
+  }
+
+  .reply-container {
+    margin-top: 10px;
+  }
+
+  .reply-textfield {
+    margin-top: 10px;
+  }
+
   label {
     display: block;
     margin-bottom: 8px;
@@ -119,6 +188,12 @@
   button.save-button {
     color: white;
     background: @feedback-color-primary;
+  }
+
+  .edit-button, .delete-button {
+    float: right;
+    margin-left: 5px;
+    text-decoration: none;
   }
 
   .feedback-text:not(:last-child) {
