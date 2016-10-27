@@ -8,7 +8,6 @@ import md5 from 'blueimp-md5';
     Annotating Functionality Methods
     --------------------------------
  */
-window.state = state;
 function generatePayload(event) {
     const container = resolveContainer(event.target, state.currentStrategy);
     if (!container) {
