@@ -152,7 +152,7 @@ describe('The html manipulation library', () => {
         });
     });
 
-    describe('The createInfoBox method', () => {
+    xdescribe('The createInfoBox method', () => {
 
         let spot, save, cancel, textarea;
         before(() => {
