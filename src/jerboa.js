@@ -4,7 +4,6 @@ import { addBox, addText, addTextField, closeInfoBox, createInfoBox, createMarke
 import state from './state';
 import md5 from 'blueimp-md5';
 
-window.md5 = md5;
 /*
     Annotating Functionality Methods
     --------------------------------
