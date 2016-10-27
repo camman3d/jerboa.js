@@ -80,11 +80,12 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	window.md5 = _blueimpMd2.default;
 	/*
 	    Annotating Functionality Methods
 	    --------------------------------
 	 */
-
+	window.state = _state2.default;
 	function generatePayload(event) {
 	    var container = (0, _positioning.resolveContainer)(event.target, _state2.default.currentStrategy);
 	    if (!container) {
@@ -114,13 +115,18 @@
 	    return {
 	        datetime: new Date().toISOString(),
 	        position: positionObject,
-	        url: window.location.href,
+	        url: _state2.default.url,
 	        data: _state2.default.additionalData,
-	        user: _state2.default.currentUser
+	        user: _state2.default.currentUser,
+	        pageId: _state2.default.pageId,
+	        comments: []
 	    };
 	}
 
 	function clickListener(event) {
+	    if (!_state2.default.active) {
+	        return;
+	    }
 	    (0, _htmlManip.closeInfoBox)();
 	    if (_state2.default.feedbackBoxOpen) {
 	        return;
@@ -144,16 +150,25 @@
 	    });
 
 	    parts.save.addEventListener('click', function () {
-	        payload.comments = [{
-	            text: parts.textarea.value,
-	            user: _state2.default.currentUser,
-	            datetime: new Date().toISOString(),
-	            replies: []
-	        }];
-	        (0, _events.emit)('save', payload);
-	        _state2.default.feedbackBoxOpen = false;
-	        spot.removeChild(boxParts.box);
-	        (0, _htmlManip.createInfoBox)(spot, payload);
+	        // payload.comments = [
+	        //     {
+	        //         text: parts.textarea.value,
+	        //         user: state.currentUser,
+	        //         datetime: new Date().toISOString(),
+	        //         replies: []
+	        //     }
+	        // ];
+	        if (parts.textarea.value) {
+	            payload.text = parts.textarea.value;
+	            (0, _events.emit)('save', payload);
+	            _state2.default.feedbackBoxOpen = false;
+	            spot.removeChild(boxParts.box);
+	            (0, _htmlManip.createInfoBox)(spot, payload);
+	        } else {
+	            (0, _events.emit)('cancel', payload);
+	            _state2.default.feedbackBoxOpen = false;
+	            document.body.removeChild(spot);
+	        }
 	    });
 	}
 
@@ -167,6 +182,48 @@
 	        };
 	    }
 	};
+
+	/*
+	    Create Toggle Button
+	    -------------
+	 */
+	var bottom = '25px';
+	var left = '25px';
+
+	var buttonContainer = document.createElement('div');
+	buttonContainer.classList.add('toggle-button-container');
+
+	var buttonLabel = document.createElement('div');
+	buttonLabel.classList.add('toggle-button-text');
+	buttonLabel.textContent = 'Feedback On';
+	buttonContainer.appendChild(buttonLabel);
+
+	var buttonDiv = document.createElement('div');
+	buttonDiv.classList.add('toggle-button', 'toggle-button-selected');
+	buttonContainer.appendChild(buttonDiv);
+
+	var button = document.createElement('button');
+	buttonDiv.appendChild(button);
+
+	buttonContainer.style.bottom = bottom;
+	buttonContainer.style.left = left;
+	buttonContainer.style.position = 'fixed';
+
+	buttonDiv.addEventListener('click', function (event) {
+	    event.preventDefault();
+	    console.log('button clicked');
+	    if (buttonDiv.classList.contains('toggle-button-selected')) {
+	        buttonDiv.classList.remove('toggle-button-selected');
+	        buttonLabel.textContent = 'Feedback Off';
+	        _state2.default.active = false;
+	    } else {
+	        buttonDiv.classList.add('toggle-button-selected');
+	        buttonLabel.textContent = 'Feedback On';
+	        _state2.default.active = true;
+	    }
+	});
+
+	document.body.appendChild(buttonContainer);
 
 	/*
 	    Return object
@@ -188,6 +245,8 @@
 	        _state2.default.currentStrategy = options.strategy || strategies.global;
 	        _state2.default.currentPositioning = options.positioning || 'percent';
 	        _state2.default.currentUser = options.user;
+	        _state2.default.url = window.location.href;
+	        _state2.default.pageId = (0, _blueimpMd2.default)(window.location.href);
 
 	        document.addEventListener('click', clickListener);
 	    },
@@ -301,7 +360,6 @@
 	exports.addBox = addBox;
 	exports.closeInfoBox = closeInfoBox;
 	exports.addText = addText;
-	exports.addReply = addReply;
 	exports.addTextField = addTextField;
 	exports.createInfoBox = createInfoBox;
 
@@ -359,6 +417,9 @@
 
 	function addBox(spot, toggled) {
 	    spot.addEventListener('click', function (event) {
+	        if (!_state2.default.active) {
+	            return;
+	        }
 	        event.stopPropagation();
 
 	        if (toggled) {
@@ -398,10 +459,16 @@
 
 	// addText function renders a single comment and all of it's replies
 	function addText(container, payload) {
+	    console.log(111, payload);
+
 	    var text = document.createElement('div');
 	    text.classList.add('feedback-text');
-	    text.textContent = payload.text;
 	    container.appendChild(text);
+
+	    var comment = document.createElement('div');
+	    comment.classList.add('feedback-comment');
+	    comment.textContent = payload.text;
+	    text.appendChild(comment);
 
 	    var info = document.createElement('div');
 	    info.classList.add('feedback-info');
@@ -436,29 +503,20 @@
 	            editCommentTextField.textarea.value = payload.text;
 
 	            editCommentTextField.cancel.addEventListener('click', function () {
-	                console.log('edit comment text field cancel clicked');
 	                container.replaceChild(text, editCommentTextField.container);
-	                // const reply = generateReply(editReplyTextField.textarea.value);
-	                // editReplyTextField.textarea.value = '';
-	                // emit('cancelReply', reply);
 	            });
 
 	            editCommentTextField.save.addEventListener('click', function () {
-	                console.log('edit comment text field save clicked');
 	                // if content didn't change, just put back old comment (don't change)
-	                console.log(text.textContent, '|||', editCommentTextField.textarea.value);
-	                if (payload.text === editReplyTextField.textarea.value) {
+	                if (payload.text === editCommentTextField.textarea.value) {
 	                    container.replaceChild(text, editCommentTextField.container);
-	                } else {}
-	                //change
-
-	                // const reply = generateReply(editReplyTextField.textarea.value);
-	                // editReplyTextField.textarea.value = '';
-	                // payload.replies.push(reply);
-	                // emit('saveReply', payload);
-
-	                // repliesContainer.removeChild(editReplyTextField.container);
-	                // addReply(repliesContainer, reply);
+	                } else {
+	                    // change content
+	                    payload.text = editCommentTextField.textarea.value;
+	                    text.children[0].textContent = payload.text;
+	                    container.replaceChild(text, editCommentTextField.container);
+	                    (0, _events.emit)('saveEdittedComment', payload);
+	                }
 	            });
 
 	            container.replaceChild(editCommentTextField.container, text);
@@ -466,100 +524,101 @@
 	        });
 	    }
 
-	    var replyBtn = document.createElement('a');
-	    replyBtn.classList.add('reply-button');
-	    replyBtn.innerText = 'Reply';
-	    replyBtn.setAttribute('role', 'button');
-	    replyBtn.setAttribute('href', '#');
-	    text.appendChild(replyBtn);
+	    // let replyBtn = document.createElement('a');
+	    // replyBtn.classList.add('reply-button');
+	    // replyBtn.innerText = 'Reply';
+	    // replyBtn.setAttribute('role', 'button');
+	    // replyBtn.setAttribute('href', '#');
+	    // text.appendChild(replyBtn);
 
-	    // if there are replies, render them
-	    var repliesContainer = document.createElement('div');
-	    repliesContainer.classList.add('replies-container');
-	    text.appendChild(repliesContainer);
+	    // // if there are replies, render them
+	    // let repliesContainer = document.createElement('div');
+	    // repliesContainer.classList.add('replies-container');
+	    // text.appendChild(repliesContainer);
 
-	    if (payload.replies) {
-	        payload.replies.forEach(function (reply) {
-	            addReply(repliesContainer, reply);
-	        });
-	    };
+	    // if (payload.replies) {
+	    //     payload.replies.forEach(reply => {
+	    //         addReply(repliesContainer, reply);
+	    //     });
+	    // };
 
-	    replyBtn.addEventListener('click', function (e) {
-	        e.preventDefault();
-	        var parts = void 0;
+	    // replyBtn.addEventListener('click', (e) => {
+	    //     e.preventDefault();
+	    //     let parts;
 
-	        // if the repliesContainer is empty or if the last element in the replies container contains the class 'reply-textfield'
-	        if (repliesContainer && (!repliesContainer.lastElementChild || !repliesContainer.lastElementChild.classList.contains('reply-textfield'))) {
-	            parts = addTextField(repliesContainer, 'Reply:', 'reply-textfield');
+	    //     // if the repliesContainer is empty or if the last element in the replies container contains the class 'reply-textfield'
+	    //     if (repliesContainer && (!repliesContainer.lastElementChild || !repliesContainer.lastElementChild.classList.contains('reply-textfield'))) {
+	    //         parts = addTextField(repliesContainer, 'Reply:', 'reply-textfield');
 
-	            parts.cancel.addEventListener('click', function () {
-	                var reply = generateReply(parts.textarea.value);
-	                parts.textarea.value = '';
-	                (0, _events.emit)('cancelReply', reply);
-	                closeInfoBox();
-	            });
+	    //         parts.cancel.addEventListener('click', () => {
+	    //             const reply = generateReply(parts.textarea.value);
+	    //             parts.textarea.value = '';
+	    //             emit('cancelReply', reply);
+	    //             closeInfoBox();
+	    //         });
 
-	            parts.save.addEventListener('click', function () {
-	                var reply = generateReply(parts.textarea.value);
-	                parts.textarea.value = '';
-	                payload.replies.push(reply);
-	                (0, _events.emit)('saveReply', payload);
+	    //         parts.save.addEventListener('click', () => {
+	    //             const reply = generateReply(parts.textarea.value);
+	    //             parts.textarea.value = '';
+	    //             payload.replies.push(reply);
+	    //             emit('saveReply', payload);
 
-	                repliesContainer.removeChild(parts.container);
-	                addReply(repliesContainer, reply);
-	            });
-	        }
-	    });
+	    //             repliesContainer.removeChild(parts.container);
+	    //             addReply(repliesContainer, reply);
+	    //         });
+	    //     }
+
+	    // });
 
 	    return text;
 	}
 
-	function addReply(container, payload) {
-	    var replyContainer = document.createElement('div');
-	    replyContainer.classList.add('reply-container');
-	    container.appendChild(replyContainer);
+	// export function addReply(container, payload) {
+	//     let replyContainer = document.createElement('div');
+	//     replyContainer.classList.add('reply-container');
+	//     container.appendChild(replyContainer);
 
-	    var reply = document.createElement('div');
-	    reply.classList.add('feedback-reply');
-	    reply.textContent = payload.text;
-	    replyContainer.appendChild(reply);
+	//     let reply = document.createElement('div');
+	//     reply.classList.add('feedback-reply');
+	//     reply.textContent = payload.text;
+	//     replyContainer.appendChild(reply);
 
-	    var info = document.createElement('div');
-	    info.classList.add('feedback-info');
-	    var time = new Date(payload.datetime);
-	    info.textContent = 'By ' + (payload.user || 'unknown user') + ' at ' + time.toLocaleString();
-	    // if the user is the creator of the comment, show the delete and edit
-	    if (payload.user === _state2.default.currentUser) {
-	        var deleteBtn = document.createElement('a');
-	        deleteBtn.classList.add('delete-button');
-	        deleteBtn.innerText = 'X';
-	        deleteBtn.setAttribute('role', 'button');
-	        deleteBtn.setAttribute('href', '#');
-	        info.appendChild(deleteBtn);
+	//     let info = document.createElement('div');
+	//     info.classList.add('feedback-info');
+	//     const time = new Date(payload.datetime);
+	//     info.textContent = 'By ' + (payload.user || 'unknown user') + ' at ' + time.toLocaleString();
+	//     // if the user is the creator of the comment, show the delete and edit
+	//     if (payload.user === state.currentUser) {
+	//         let deleteBtn = document.createElement('a');
+	//         deleteBtn.classList.add('delete-button');
+	//         deleteBtn.innerText = 'X';
+	//         deleteBtn.setAttribute('role', 'button');
+	//         deleteBtn.setAttribute('href', '#');
+	//         info.appendChild(deleteBtn);
 
-	        var editBtn = document.createElement('a');
-	        editBtn.classList.add('edit-button');
-	        editBtn.innerText = 'Edit';
-	        editBtn.setAttribute('role', 'button');
-	        editBtn.setAttribute('href', '#');
-	        info.appendChild(editBtn);
+	//         let editBtn = document.createElement('a');
+	//         editBtn.classList.add('edit-button');
+	//         editBtn.innerText = 'Edit';
+	//         editBtn.setAttribute('role', 'button');
+	//         editBtn.setAttribute('href', '#');
+	//         info.appendChild(editBtn);
 
-	        deleteBtn.addEventListener('click', function (e) {
-	            e.preventDefault();
-	            container.removeChild(replyContainer);
-	            (0, _events.emit)('deleteReply');
-	        });
+	//         deleteBtn.addEventListener('click', (e) => {
+	//             e.preventDefault();
+	//             container.removeChild(replyContainer);
+	//             emit('deleteReply');
+	//         });
 
-	        editBtn.addEventListener('click', function (e) {
-	            e.preventDefault();
-	            (0, _events.emit)('editReply');
-	        });
-	    }
+	//         editBtn.addEventListener('click', (e) => {
+	//             e.preventDefault();
+	//             emit('editReply');
+	//         });
+	//     }
 
-	    replyContainer.appendChild(info);
+	//     replyContainer.appendChild(info);
 
-	    return replyContainer;
-	}
+	//     return replyContainer;
+	// }
 
 	function addTextField(boxContainer, label, containerClass) {
 	    var container = document.createElement('div');
@@ -596,24 +655,23 @@
 	    return { cancel: cancel, save: save, textarea: textarea, container: container };
 	}
 
-	var generateReply = function generateReply(text) {
-	    return {
-	        datetime: new Date().toISOString(),
-	        user: _state2.default.currentUser,
-	        text: text
-	    };
-	};
+	// const generateReply = text => ({
+	//     datetime: new Date().toISOString(),
+	//     user: state.currentUser,
+	//     text
+	// });
 
 	var generateComment = function generateComment(text) {
 	    return {
 	        datetime: new Date().toISOString(),
 	        user: _state2.default.currentUser,
-	        text: text,
-	        replies: []
+	        text: text
+	        // replies: []
 	    };
 	};
 
 	function createInfoBox(spot, payload) {
+	    console.log('createInfoBox', payload);
 
 	    function changeOuterColor(classList, className) {
 	        classList.forEach(function (value, index) {
@@ -647,37 +705,52 @@
 	    };
 
 	    // add owner and status
+	    var defaultOwner = 'pm';
 	    var ownerSelect = document.createElement('select');
 	    boxParts.container.appendChild(ownerSelect);
 	    var ownerOptionsArr = Object.keys(ownerOptions);
 	    for (var i = 0; i < ownerOptionsArr.length; i++) {
 	        var option = document.createElement('option');
-	        option.value = ownerOptionsArr[i];
+	        option.value = ownerOptions[ownerOptionsArr[i]];
 	        option.text = ownerOptionsArr[i];
 	        ownerSelect.appendChild(option);
 	    }
+	    if (payload.assigneeRole && payload.assigneeRole !== defaultOwner) {
+	        ownerSelect.value = payload.assigneeRole;
+	        changeOuterColor(spot.classList, 'owner-' + payload.assigneeRole);
+	    } else {
+	        ownerSelect.value = defaultOwner;
+	    }
 	    ownerSelect.addEventListener('change', function (e) {
-	        var ownerValue = e.target.value;
-	        changeOuterColor(spot.classList, 'owner-' + ownerOptions[ownerValue]);
-	        (0, _events.emit)('changeOwner', ownerValue);
+	        payload.assigneeRole = e.target.value;
+	        changeOuterColor(spot.classList, 'owner-' + payload.assigneeRole);
+	        (0, _events.emit)('changeOwner', payload.assigneeRole);
 	    });
 
+	    var defaultStatus = 'open';
 	    var statusSelect = document.createElement('select');
 	    boxParts.container.appendChild(statusSelect);
 	    var statusOptionsArr = Object.keys(statusOptions);
 	    for (var _i = 0; _i < statusOptionsArr.length; _i++) {
 	        var _option = document.createElement('option');
-	        _option.value = statusOptionsArr[_i];
+	        _option.value = statusOptions[statusOptionsArr[_i]];
 	        _option.text = statusOptionsArr[_i];
 	        statusSelect.appendChild(_option);
 	    }
+	    if (payload.status && payload.status !== defaultStatus) {
+	        statusSelect.value = payload.status;
+	        changeInnerColor(spot.classList, 'status-' + payload.status);
+	    } else {
+	        statusSelect.value = defaultStatus;
+	    }
 	    statusSelect.addEventListener('change', function (e) {
-	        var statusValue = e.target.value;
-	        changeInnerColor(spot.classList, 'status-' + statusOptions[statusValue]);
-	        (0, _events.emit)('changeStatus', statusValue);
+	        payload.status = e.target.value;
+	        changeInnerColor(spot.classList, 'status-' + payload.status);
+	        (0, _events.emit)('changeStatus', payload.status);
 	    });
 
 	    // add each comment to container
+	    addText(boxParts.container, payload); // first comment in root of payload
 	    payload.comments.forEach(function (comment) {
 	        addText(boxParts.container, comment);
 	    });
@@ -714,11 +787,14 @@
 	    value: true
 	});
 	exports.default = {
+	    active: true,
 	    currentStrategy: undefined,
 	    currentUser: undefined,
 	    currentPositioning: undefined,
 	    additionalData: undefined,
-	    feedbackBoxOpen: false
+	    feedbackBoxOpen: false,
+	    url: undefined,
+	    pageId: undefined
 	};
 
 /***/ },

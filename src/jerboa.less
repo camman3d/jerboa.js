@@ -4,16 +4,19 @@
 @owner-id-color: orange;
 @owner-ixd-color: blue;
 @owner-video-color: purple;
+@owner-default-color: @owner-pm-color;
+
 @status-open-color: green;
 @status-closed-color: red;
 @status-no-action-color: yellow;
+@status-default-color: @status-open-color;
 
 
 .feedback-spot {
   width: 50px;
   height: 50px;
-  border: 13px solid @feedback-color-primary;
-  background: white;
+  border: 13px solid @owner-default-color;
+  background: @status-default-color;
   box-sizing: border-box;
   border-radius: 25px;
   position: absolute;
@@ -27,7 +30,7 @@
     position: absolute;
     top: 100%;
     left: -10px;
-    border-top: 30px solid @feedback-color-primary;
+    border-top: 30px solid @owner-default-color;
   }
 
   &.owner-pm {
@@ -80,7 +83,7 @@
     border: 1px solid #aaa;
     position: relative;
     top: 100%;
-    width: 320px;
+    width: 300px;
     margin-left: -133px;
     margin-top: 40px;
     border-radius: 3px;
@@ -197,6 +200,7 @@
   }
 
   .feedback-text:not(:last-child) {
+    margin-top: 15px;
     margin-bottom: 15px;
     border-bottom: 1px solid #ccc;
     padding-bottom: 15px;
@@ -208,4 +212,57 @@
     font-style: italic;
   }
 
+}
+
+
+.toggle-button-container {
+  border: 1px #ccc solid;
+  border-radius: 2px;
+  background: white;
+  padding: 5px;
+  text-align: center;
+}
+.toggle-button {
+  background-color: white;
+  margin: 5px 0;
+  border-radius: 20px;
+  border: 2px solid #D0D0D0;
+  height: 24px;
+  cursor: pointer;
+  width: 50px;
+  position: relative;
+  display: inline-block;
+  user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  -moz-user-select: none;
+}
+.toggle-button button {
+  cursor: pointer;
+  outline: 0;
+  display: block;
+  position: absolute;
+  left: 0;
+  top: 0;
+  border-radius: 100%;
+  width: 30px;
+  height: 30px;
+  background-color: white;
+  float: left;
+  margin: -3px 0 0 -3px;
+  border: 2px solid #D0D0D0;
+  transition: left 0.3s;
+}
+.toggle-button-selected {
+  background-color: #83B152;
+  border: 2px solid #7DA652;
+}
+.toggle-button-selected button {
+  left: 26px;
+  top: 0;
+  margin: 0;
+  border: none;
+  width: 24px;
+  height: 24px;
+  box-shadow: 0 0 4px rgba(0,0,0,0.1);
 }
