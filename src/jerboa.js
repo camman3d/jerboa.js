@@ -133,7 +133,6 @@ buttonContainer.style.position = 'fixed';
 
 buttonDiv.addEventListener('click', event => {
     event.preventDefault();
-    console.log('button clicked');
     if (buttonDiv.classList.contains('toggle-button-selected')) {
         buttonDiv.classList.remove('toggle-button-selected');
         buttonLabel.textContent = 'Feedback Off';

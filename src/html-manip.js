@@ -88,8 +88,6 @@ export function closeInfoBox() {
 
 // addText function renders a single comment and all of it's replies
 export function addText(container, payload) {
-    console.log(111, payload);
-
     let text = document.createElement('div');
     text.classList.add('feedback-text');
     container.appendChild(text);
@@ -300,8 +298,6 @@ const generateComment = text => ({
 
 
 export function createInfoBox(spot, payload) {
-    console.log('createInfoBox', payload);
-
     function changeOuterColor(classList, className) {
         classList.forEach((value, index) => {
             if (value.includes('owner-')) {
