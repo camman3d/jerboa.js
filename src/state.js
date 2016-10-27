@@ -1,7 +1,10 @@
 export default {
+    active: true,
     currentStrategy: undefined,
     currentUser: undefined,
     currentPositioning: undefined,
     additionalData: undefined,
-    feedbackBoxOpen: false
+    feedbackBoxOpen: false,
+    url: undefined,
+    pageId: undefined
 }

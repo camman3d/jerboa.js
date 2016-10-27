@@ -4,11 +4,12 @@ import { addBox, addText, addTextField, closeInfoBox, createInfoBox, createMarke
 import state from './state';
 import md5 from 'blueimp-md5';
 
+window.md5 = md5;
 /*
     Annotating Functionality Methods
     --------------------------------
  */
-
+window.state = state;
 function generatePayload(event) {
     const container = resolveContainer(event.target, state.currentStrategy);
     if (!container) {
@@ -38,13 +39,18 @@ function generatePayload(event) {
     return {
         datetime: new Date().toISOString(),
         position: positionObject,
-        url: window.location.href,
+        url: state.url,
         data: state.additionalData,
-        user: state.currentUser
+        user: state.currentUser,
+        pageId: state.pageId,
+        comments: []
     };
 }
 
 function clickListener(event) {
+    if (!state.active) {
+        return;
+    }
     closeInfoBox();
     if (state.feedbackBoxOpen) {
         return;
@@ -68,18 +74,25 @@ function clickListener(event) {
     });
 
     parts.save.addEventListener('click', () => {
-        payload.comments = [
-            {
-                text: parts.textarea.value,
-                user: state.currentUser,
-                datetime: new Date().toISOString(),
-                replies: []
-            }
-        ];
-        emit('save', payload);
-        state.feedbackBoxOpen = false;
-        spot.removeChild(boxParts.box);
-        createInfoBox(spot, payload);
+        // payload.comments = [
+        //     {
+        //         text: parts.textarea.value,
+        //         user: state.currentUser,
+        //         datetime: new Date().toISOString(),
+        //         replies: []
+        //     }
+        // ];
+        if (parts.textarea.value) {
+            payload.text = parts.textarea.value;
+            emit('save', payload);
+            state.feedbackBoxOpen = false;
+            spot.removeChild(boxParts.box);
+            createInfoBox(spot, payload);
+        } else {
+            emit('cancel', payload);
+            state.feedbackBoxOpen = false;
+            document.body.removeChild(spot);
+        }
     });
 }
 
@@ -91,6 +104,48 @@ const strategies = {
         return e.classList.contains(className);
     }
 };
+
+/*
+    Create Toggle Button
+    -------------
+ */
+let bottom = '25px';
+let left = '25px';
+
+let buttonContainer = document.createElement('div');
+buttonContainer.classList.add('toggle-button-container');
+
+let buttonLabel = document.createElement('div');
+buttonLabel.classList.add('toggle-button-text');
+buttonLabel.textContent = 'Feedback On';
+buttonContainer.appendChild(buttonLabel);
+
+let buttonDiv = document.createElement('div');
+buttonDiv.classList.add('toggle-button', 'toggle-button-selected');
+buttonContainer.appendChild(buttonDiv);
+
+let button = document.createElement('button');
+buttonDiv.appendChild(button);
+
+buttonContainer.style.bottom = bottom;
+buttonContainer.style.left = left;
+buttonContainer.style.position = 'fixed';
+
+buttonDiv.addEventListener('click', event => {
+    event.preventDefault();
+    console.log('button clicked');
+    if (buttonDiv.classList.contains('toggle-button-selected')) {
+        buttonDiv.classList.remove('toggle-button-selected');
+        buttonLabel.textContent = 'Feedback Off';
+        state.active = false;
+    } else {
+        buttonDiv.classList.add('toggle-button-selected');
+        buttonLabel.textContent = 'Feedback On';
+        state.active = true;
+    }
+});
+
+document.body.appendChild(buttonContainer);
 
 
     /*
@@ -113,6 +168,8 @@ export default {
         state.currentStrategy = options.strategy || strategies.global;
         state.currentPositioning = options.positioning || 'percent';
         state.currentUser = options.user;
+        state.url = window.location.href;
+        state.pageId = md5(window.location.href);
 
         document.addEventListener('click', clickListener);
     },

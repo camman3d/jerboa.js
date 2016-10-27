@@ -50,6 +50,7 @@
     "webpack": "^1.13.1"
   },
   "dependencies": {
+    "axios": "^0.15.1",
     "blueimp-md5": "^2.3.1"
   }
 }
