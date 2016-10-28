@@ -2,7 +2,7 @@
   "name": "jerboa",
   "version": "1.0.0",
   "description": "Annotate and provide feedback on any web page.",
-  "main": "src/jerboa.js",
+  "main": "dist/jerboa.min.js",
   "scripts": {
     "//": "mocha test --compilers js:babel-core/register --recursive",
     "cover": "nyc -r lcov -i babel-core/register mocha test --compilers js:babel-core/register --recursive",
