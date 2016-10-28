@@ -80,12 +80,10 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	window.md5 = _blueimpMd2.default;
 	/*
 	    Annotating Functionality Methods
 	    --------------------------------
 	 */
-	window.state = _state2.default;
 	function generatePayload(event) {
 	    var container = (0, _positioning.resolveContainer)(event.target, _state2.default.currentStrategy);
 	    if (!container) {
@@ -211,7 +209,6 @@
 
 	buttonDiv.addEventListener('click', function (event) {
 	    event.preventDefault();
-	    console.log('button clicked');
 	    if (buttonDiv.classList.contains('toggle-button-selected')) {
 	        buttonDiv.classList.remove('toggle-button-selected');
 	        buttonLabel.textContent = 'Feedback Off';
@@ -459,8 +456,6 @@
 
 	// addText function renders a single comment and all of it's replies
 	function addText(container, payload) {
-	    console.log(111, payload);
-
 	    var text = document.createElement('div');
 	    text.classList.add('feedback-text');
 	    container.appendChild(text);
@@ -671,8 +666,6 @@
 	};
 
 	function createInfoBox(spot, payload) {
-	    console.log('createInfoBox', payload);
-
 	    function changeOuterColor(classList, className) {
 	        classList.forEach(function (value, index) {
 	            if (value.includes('owner-')) {
