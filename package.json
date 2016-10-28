@@ -1,6 +1,6 @@
 {
   "name": "jerboa",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Annotate and provide feedback on any web page.",
   "main": "dist/jerboa.min.js",
   "scripts": {
