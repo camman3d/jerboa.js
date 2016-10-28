@@ -3,3 +3,5 @@ node_modules
 *.iml
 coverage
 .nyc_output
+*.html
+npm-debug.log
