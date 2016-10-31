@@ -27,6 +27,9 @@ export function getGlobalOffset(element) {
 }
 
 export function resolveContainer(elem, strategy) {
+    console.log('elem', elem);
+    console.log('strategy', strategy);
+    console.log('strategy(elem)', strategy(elem));
     if (strategy(elem)) {
         return elem;
     } else if (elem.tagName === 'HTML') {
