@@ -99,6 +99,7 @@ const strategies = {
         return e.tagName === 'BODY';
     },
     byClass: className => e => {
+        console.log('e', e);
         return e.classList.contains(className);
     }
 };
@@ -155,7 +156,7 @@ function createToggleButton() {
 
 export default {
     init(options) {
-        createToggleButton();
+        console.log(options);
         options = options || {};
         if (options.data) {
             state.additionalData = options.data;
@@ -173,6 +174,7 @@ export default {
         state.pageId = md5(window.location.href);
 
         document.addEventListener('click', clickListener);
+        createToggleButton();
     },
 
     close() {

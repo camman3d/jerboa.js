@@ -176,6 +176,7 @@
 	    },
 	    byClass: function byClass(className) {
 	        return function (e) {
+	            console.log('e', e);
 	            return e.classList.contains(className);
 	        };
 	    }
@@ -232,7 +233,7 @@
 
 	exports.default = {
 	    init: function init(options) {
-	        createToggleButton();
+	        console.log(options);
 	        options = options || {};
 	        if (options.data) {
 	            _state2.default.additionalData = options.data;
@@ -250,6 +251,7 @@
 	        _state2.default.pageId = (0, _blueimpMd2.default)(window.location.href);
 
 	        document.addEventListener('click', clickListener);
+	        createToggleButton();
 	    },
 	    close: function close() {
 	        document.removeEventListener('click', clickListener);
