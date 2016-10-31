@@ -300,7 +300,12 @@
 	}
 
 	function getGlobalOffset(element) {
-	    return [element.offsetLeft, element.offsetTop];
+	    var position = element.getBoundingClientRect();
+	    var left = position.left;
+	    var top = position.top;
+	    console.log(1, left, 2, top, 3, element.offsetLeft, 4, element.offsetTop);
+	    return [left, top];
+	    // return [element.offsetLeft, element.offsetTop];
 	}
 
 	function resolveContainer(elem, strategy) {

@@ -23,7 +23,12 @@ export function getRelativeOffset(target, container) {
 }
 
 export function getGlobalOffset(element) {
-    return [element.offsetLeft, element.offsetTop];
+    const position = element.getBoundingClientRect();
+    const left = position.left;
+    const top = position.top;
+    console.log(1, left, 2, top, 3, element.offsetLeft, 4, element.offsetTop);
+    return [left, top];
+    // return [element.offsetLeft, element.offsetTop];
 }
 
 export function resolveContainer(elem, strategy) {
