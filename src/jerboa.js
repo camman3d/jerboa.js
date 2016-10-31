@@ -107,42 +107,45 @@ const strategies = {
     Create Toggle Button
     -------------
  */
-let bottom = '25px';
-let left = '25px';
 
-let buttonContainer = document.createElement('div');
-buttonContainer.classList.add('toggle-button-container');
+function createToggleButton() {
+    let bottom = '25px';
+    let left = '25px';
 
-let buttonLabel = document.createElement('div');
-buttonLabel.classList.add('toggle-button-text');
-buttonLabel.textContent = 'Feedback On';
-buttonContainer.appendChild(buttonLabel);
+    let buttonContainer = document.createElement('div');
+    buttonContainer.classList.add('toggle-button-container');
 
-let buttonDiv = document.createElement('div');
-buttonDiv.classList.add('toggle-button', 'toggle-button-selected');
-buttonContainer.appendChild(buttonDiv);
+    let buttonLabel = document.createElement('div');
+    buttonLabel.classList.add('toggle-button-text');
+    buttonLabel.textContent = 'Feedback On';
+    buttonContainer.appendChild(buttonLabel);
 
-let button = document.createElement('button');
-buttonDiv.appendChild(button);
+    let buttonDiv = document.createElement('div');
+    buttonDiv.classList.add('toggle-button', 'toggle-button-selected');
+    buttonContainer.appendChild(buttonDiv);
 
-buttonContainer.style.bottom = bottom;
-buttonContainer.style.left = left;
-buttonContainer.style.position = 'fixed';
+    let button = document.createElement('button');
+    buttonDiv.appendChild(button);
 
-buttonDiv.addEventListener('click', event => {
-    event.preventDefault();
-    if (buttonDiv.classList.contains('toggle-button-selected')) {
-        buttonDiv.classList.remove('toggle-button-selected');
-        buttonLabel.textContent = 'Feedback Off';
-        state.active = false;
-    } else {
-        buttonDiv.classList.add('toggle-button-selected');
-        buttonLabel.textContent = 'Feedback On';
-        state.active = true;
-    }
-});
+    buttonContainer.style.bottom = bottom;
+    buttonContainer.style.left = left;
+    buttonContainer.style.position = 'fixed';
 
-document.body.appendChild(buttonContainer);
+    buttonDiv.addEventListener('click', event => {
+        event.preventDefault();
+        if (buttonDiv.classList.contains('toggle-button-selected')) {
+            buttonDiv.classList.remove('toggle-button-selected');
+            buttonLabel.textContent = 'Feedback Off';
+            state.active = false;
+        } else {
+            buttonDiv.classList.add('toggle-button-selected');
+            buttonLabel.textContent = 'Feedback On';
+            state.active = true;
+        }
+    });
+
+    document.body.appendChild(buttonContainer);
+}
 
 
     /*
@@ -152,6 +155,7 @@ document.body.appendChild(buttonContainer);
 
 export default {
     init(options) {
+        createToggleButton();
         options = options || {};
         if (options.data) {
             state.additionalData = options.data;
