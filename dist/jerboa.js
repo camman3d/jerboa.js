@@ -92,6 +92,7 @@
 	    var selector = (0, _positioning.getSelector)(event.target);
 	    var containerSelector = (0, _positioning.getSelector)(container);
 	    var offset = (0, _positioning.getRelativeOffset)(event.target, container);
+	    console.log('OFFSET', offset);
 	    offset[0] += event.offsetX;
 	    offset[1] += event.offsetY;
 	    var rect = container.getBoundingClientRect();
@@ -296,6 +297,7 @@
 	function getRelativeOffset(target, container) {
 	    var offset = getGlobalOffset(target);
 	    var cOffset = getGlobalOffset(container);
+	    console.log('offset: ', offset, 'cOffset: ', cOffset);
 	    return [offset[0] - cOffset[0], offset[1] - cOffset[1]];
 	}
 

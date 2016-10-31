@@ -19,6 +19,7 @@ export function getSelector(e, child) {
 export function getRelativeOffset(target, container) {
     var offset = getGlobalOffset(target);
     var cOffset = getGlobalOffset(container);
+    console.log('offset: ', offset, 'cOffset: ', cOffset)
     return [offset[0] - cOffset[0], offset[1] - cOffset[1]];
 }
 

@@ -16,6 +16,7 @@ function generatePayload(event) {
     const selector = getSelector(event.target);
     const containerSelector = getSelector(container);
     let offset = getRelativeOffset(event.target, container);
+    console.log('OFFSET', offset);
     offset[0] += event.offsetX;
     offset[1] += event.offsetY;
     const rect = container.getBoundingClientRect();
