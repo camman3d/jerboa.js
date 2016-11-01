@@ -10,6 +10,9 @@
   margin-top: -70px;
   cursor: pointer;
 }
+.feedback-spot.off {
+  display: none;
+}
 .feedback-spot:before {
   content: '';
   border: 22px solid transparent;

@@ -135,14 +135,22 @@ function createToggleButton() {
 
     buttonDiv.addEventListener('click', event => {
         event.preventDefault();
+        let feedbackSpots = document.getElementsByClassName('feedback-spot');
+        console.log(feedbackSpots);
         if (buttonDiv.classList.contains('toggle-button-selected')) {
             buttonDiv.classList.remove('toggle-button-selected');
             buttonLabel.textContent = 'Feedback Off';
             state.active = false;
+            Array.prototype.forEach.call(feedbackSpots, (feedbackSpotElement) => {
+                feedbackSpotElement.classList.add('off');
+            });
         } else {
             buttonDiv.classList.add('toggle-button-selected');
             buttonLabel.textContent = 'Feedback On';
             state.active = true;
+            Array.prototype.forEach.call(feedbackSpots, (feedbackSpotElement) => {
+                feedbackSpotElement.classList.remove('off');
+            });
         }
     });
 

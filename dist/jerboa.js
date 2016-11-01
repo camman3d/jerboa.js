@@ -213,14 +213,22 @@
 
 	    buttonDiv.addEventListener('click', function (event) {
 	        event.preventDefault();
+	        var feedbackSpots = document.getElementsByClassName('feedback-spot');
+	        console.log(feedbackSpots);
 	        if (buttonDiv.classList.contains('toggle-button-selected')) {
 	            buttonDiv.classList.remove('toggle-button-selected');
 	            buttonLabel.textContent = 'Feedback Off';
 	            _state2.default.active = false;
+	            Array.prototype.forEach.call(feedbackSpots, function (feedbackSpotElement) {
+	                feedbackSpotElement.classList.add('off');
+	            });
 	        } else {
 	            buttonDiv.classList.add('toggle-button-selected');
 	            buttonLabel.textContent = 'Feedback On';
 	            _state2.default.active = true;
+	            Array.prototype.forEach.call(feedbackSpots, function (feedbackSpotElement) {
+	                feedbackSpotElement.classList.remove('off');
+	            });
 	        }
 	    });
 
