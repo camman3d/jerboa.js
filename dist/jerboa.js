@@ -311,8 +311,8 @@
 
 	function getGlobalOffset(element) {
 	    var position = element.getBoundingClientRect();
-	    var left = position.left;
-	    var top = position.top;
+	    var left = position.left + document.body.scrollLeft;
+	    var top = position.top + document.body.scrollTop;
 	    console.log(1, left, 2, top, 3, element.offsetLeft, 4, element.offsetTop);
 	    return [left, top];
 	    // return [element.offsetLeft, element.offsetTop];
