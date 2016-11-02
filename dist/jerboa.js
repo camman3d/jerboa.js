@@ -93,8 +93,8 @@
 	    var containerSelector = (0, _positioning.getSelector)(container);
 	    var offset = (0, _positioning.getRelativeOffset)(event.target, container);
 	    console.log('OFFSET', offset);
-	    offset[0] += event.offsetX;
-	    offset[1] += event.offsetY;
+	    offset['x'] += event.offsetX;
+	    offset['y'] += event.offsetY;
 	    var rect = container.getBoundingClientRect();
 
 	    var positionObject = {
@@ -256,6 +256,7 @@
 	        _state2.default.currentStrategy = options.strategy || strategies.global;
 	        _state2.default.currentPositioning = options.positioning || 'percent';
 	        _state2.default.currentUser = options.user;
+	        _state2.default.currentUserId = options.userId;
 	        _state2.default.url = window.location.href;
 	        _state2.default.pageId = (0, _blueimpMd2.default)(window.location.href);
 
@@ -306,7 +307,11 @@
 	    var offset = getGlobalOffset(target);
 	    var cOffset = getGlobalOffset(container);
 	    console.log('offset: ', offset, 'cOffset: ', cOffset);
-	    return [offset[0] - cOffset[0], offset[1] - cOffset[1]];
+	    return {
+	        x: offset[0] - cOffset[0],
+	        y: offset[1] - cOffset[1]
+	    };
+	    // return [offset[0] - cOffset[0], offset[1] - cOffset[1]];
 	}
 
 	function getGlobalOffset(element) {
@@ -315,7 +320,6 @@
 	    var top = position.top + document.body.scrollTop;
 	    console.log(1, left, 2, top, 3, element.offsetLeft, 4, element.offsetTop);
 	    return [left, top];
-	    // return [element.offsetLeft, element.offsetTop];
 	}
 
 	function resolveContainer(elem, strategy) {
@@ -420,11 +424,11 @@
 	    spot.classList.add('feedback-spot');
 
 	    if (pos.positioning === 'pixel') {
-	        left = offset[0] + pos.offset[0];
-	        top = offset[1] + pos.offset[1];
+	        left = offset[0] + pos.offset['x'];
+	        top = offset[1] + pos.offset['y'];
 	    } else if (pos.positioning === 'percent') {
-	        var percentX = pos.offset[0] / pos.containerSize.width;
-	        var percentY = pos.offset[1] / pos.containerSize.height;
+	        var percentX = pos.offset['x'] / pos.containerSize.width;
+	        var percentY = pos.offset['y'] / pos.containerSize.height;
 	        var rect = container.getBoundingClientRect();
 	        left = offset[0] + rect.width * percentX;
 	        top = offset[1] + rect.height * percentY;
@@ -807,6 +811,7 @@
 	    active: true,
 	    currentStrategy: undefined,
 	    currentUser: undefined,
+	    currentUserId: undefined,
 	    currentPositioning: undefined,
 	    additionalData: undefined,
 	    feedbackBoxOpen: false,

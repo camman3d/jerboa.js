@@ -20,7 +20,11 @@ export function getRelativeOffset(target, container) {
     var offset = getGlobalOffset(target);
     var cOffset = getGlobalOffset(container);
     console.log('offset: ', offset, 'cOffset: ', cOffset)
-    return [offset[0] - cOffset[0], offset[1] - cOffset[1]];
+    return {
+        x: offset[0] - cOffset[0],
+        y:offset[1] - cOffset[1]
+    }
+    // return [offset[0] - cOffset[0], offset[1] - cOffset[1]];
 }
 
 export function getGlobalOffset(element) {
@@ -29,7 +33,6 @@ export function getGlobalOffset(element) {
     const top = position.top + document.body.scrollTop;
     console.log(1, left, 2, top, 3, element.offsetLeft, 4, element.offsetTop);
     return [left, top];
-    // return [element.offsetLeft, element.offsetTop];
 }
 
 export function resolveContainer(elem, strategy) {

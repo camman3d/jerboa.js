@@ -17,8 +17,8 @@ function generatePayload(event) {
     const containerSelector = getSelector(container);
     let offset = getRelativeOffset(event.target, container);
     console.log('OFFSET', offset);
-    offset[0] += event.offsetX;
-    offset[1] += event.offsetY;
+    offset['x'] += event.offsetX;
+    offset['y'] += event.offsetY;
     const rect = container.getBoundingClientRect();
 
     const positionObject = {
@@ -179,6 +179,7 @@ export default {
         state.currentStrategy = options.strategy || strategies.global;
         state.currentPositioning = options.positioning || 'percent';
         state.currentUser = options.user;
+        state.currentUserId = options.userId;
         state.url = window.location.href;
         state.pageId = md5(window.location.href);
 

@@ -28,11 +28,11 @@ export function createMarker(payload) {
     spot.classList.add('feedback-spot');
 
     if (pos.positioning === 'pixel') {
-        left = offset[0] + pos.offset[0];
-        top = offset[1] + pos.offset[1];
+        left = offset[0] + pos.offset['x'];
+        top = offset[1] + pos.offset['y'];
     } else if (pos.positioning === 'percent') {
-        const percentX = pos.offset[0] / pos.containerSize.width;
-        const percentY = pos.offset[1] / pos.containerSize.height;
+        const percentX = pos.offset['x'] / pos.containerSize.width;
+        const percentY = pos.offset['y'] / pos.containerSize.height;
         const rect = container.getBoundingClientRect();
         left = offset[0] + rect.width * percentX;
         top = offset[1] + rect.height * percentY;
