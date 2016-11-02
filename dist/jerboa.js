@@ -254,7 +254,7 @@
 	            });
 	        }
 	        _state2.default.currentStrategy = options.strategy || strategies.global;
-	        _state2.default.currentPositioning = options.positioning || 'percent';
+	        _state2.default.currentPositioning = options.positioning || 'PERCENT';
 	        _state2.default.currentUser = options.user;
 	        _state2.default.currentUserId = options.userId;
 	        _state2.default.url = window.location.href;
@@ -423,10 +423,10 @@
 	        top = void 0;
 	    spot.classList.add('feedback-spot');
 
-	    if (pos.positioning === 'pixel') {
+	    if (pos.positioning === 'PIXEL') {
 	        left = offset[0] + pos.offset['x'];
 	        top = offset[1] + pos.offset['y'];
-	    } else if (pos.positioning === 'percent') {
+	    } else if (pos.positioning === 'PERCENT') {
 	        var percentX = pos.offset['x'] / pos.containerSize.width;
 	        var percentY = pos.offset['y'] / pos.containerSize.height;
 	        var rect = container.getBoundingClientRect();
