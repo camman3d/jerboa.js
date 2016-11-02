@@ -27,10 +27,10 @@ export function createMarker(payload) {
     let left, top;
     spot.classList.add('feedback-spot');
 
-    if (pos.positioning === 'pixel') {
+    if (pos.positioning === 'PIXEL') {
         left = offset[0] + pos.offset['x'];
         top = offset[1] + pos.offset['y'];
-    } else if (pos.positioning === 'percent') {
+    } else if (pos.positioning === 'PERCENT') {
         const percentX = pos.offset['x'] / pos.containerSize.width;
         const percentY = pos.offset['y'] / pos.containerSize.height;
         const rect = container.getBoundingClientRect();

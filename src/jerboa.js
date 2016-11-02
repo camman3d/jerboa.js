@@ -177,7 +177,7 @@ export default {
             });
         }
         state.currentStrategy = options.strategy || strategies.global;
-        state.currentPositioning = options.positioning || 'percent';
+        state.currentPositioning = options.positioning || 'PERCENT';
         state.currentUser = options.user;
         state.currentUserId = options.userId;
         state.url = window.location.href;
