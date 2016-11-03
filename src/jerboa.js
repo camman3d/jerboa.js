@@ -173,6 +173,7 @@ export default {
         if (options.points) {
             options.points.forEach(point => {
                 let spot = createMarker(point); //loads existing points
+                console.log('init spot: ', spot, 'init point: ', point);
                 createInfoBox(spot, point);
             });
         }

@@ -250,6 +250,7 @@
 	        if (options.points) {
 	            options.points.forEach(function (point) {
 	                var spot = (0, _htmlManip.createMarker)(point); //loads existing points
+	                console.log('init spot: ', spot, 'init point: ', point);
 	                (0, _htmlManip.createInfoBox)(spot, point);
 	            });
 	        }
@@ -484,6 +485,7 @@
 
 	// addText function renders a single comment and all of it's replies
 	function addText(container, payload) {
+	    console.log('addText payload', payload);
 	    var text = document.createElement('div');
 	    text.classList.add('feedback-text');
 	    container.appendChild(text);
@@ -694,6 +696,7 @@
 	};
 
 	function createInfoBox(spot, payload) {
+	    console.log('createInfoBox payload', payload);
 	    function changeOuterColor(classList, className) {
 	        classList.forEach(function (value, index) {
 	            if (value.includes('owner-')) {
