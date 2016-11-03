@@ -100,7 +100,7 @@ export function addText(container, payload) {
 
     let info = document.createElement('div');
     info.classList.add('feedback-info');
-    const time = new Date(payload.datetime);
+    const time = new Date(payload.time);
     info.textContent = 'By ' + (payload.user || 'unknown user') + ' at ' + time.toLocaleString();
     text.appendChild(info);
 
@@ -213,7 +213,7 @@ export function addText(container, payload) {
 
 //     let info = document.createElement('div');
 //     info.classList.add('feedback-info');
-//     const time = new Date(payload.datetime);
+//     const time = new Date(payload.time);
 //     info.textContent = 'By ' + (payload.user || 'unknown user') + ' at ' + time.toLocaleString();
 //     // if the user is the creator of the comment, show the delete and edit
 //     if (payload.user === state.currentUser) {
@@ -284,13 +284,13 @@ export function addTextField(boxContainer, label, containerClass) {
 }
 
 // const generateReply = text => ({
-//     datetime: new Date().toISOString(),
+//     time: new Date().toISOString(),
 //     user: state.currentUser,
 //     text
 // });
 
 const generateComment = text => ({
-    datetime: new Date().toISOString(),
+    time: new Date().toISOString(),
     user: state.currentUser,
     text
     // replies: []

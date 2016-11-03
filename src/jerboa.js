@@ -36,7 +36,7 @@ function generatePayload(event) {
         offset
     };
     return {
-        datetime: new Date().toISOString(),
+        time: new Date().toISOString(),
         position: positionObject,
         url: state.url,
         data: state.additionalData,
@@ -77,7 +77,7 @@ function clickListener(event) {
         //     {
         //         text: parts.textarea.value,
         //         user: state.currentUser,
-        //         datetime: new Date().toISOString(),
+        //         time: new Date().toISOString(),
         //         replies: []
         //     }
         // ];
