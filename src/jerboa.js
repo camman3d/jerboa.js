@@ -167,6 +167,12 @@ export default {
     init(options) {
         console.log(options);
         options = options || {};
+        state.currentStrategy = options.strategy || strategies.global;
+        state.currentPositioning = options.positioning || 'PERCENT';
+        state.currentUser = options.user;
+        state.currentUserId = options.userId;
+        state.url = window.location.href;
+        state.pageId = md5(window.location.href);
         if (options.data) {
             state.additionalData = options.data;
         }
@@ -177,12 +183,6 @@ export default {
                 createInfoBox(spot, point);
             });
         }
-        state.currentStrategy = options.strategy || strategies.global;
-        state.currentPositioning = options.positioning || 'PERCENT';
-        state.currentUser = options.user;
-        state.currentUserId = options.userId;
-        state.url = window.location.href;
-        state.pageId = md5(window.location.href);
 
         document.addEventListener('click', clickListener);
         createToggleButton();

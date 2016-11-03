@@ -244,6 +244,12 @@
 	    init: function init(options) {
 	        console.log(options);
 	        options = options || {};
+	        _state2.default.currentStrategy = options.strategy || strategies.global;
+	        _state2.default.currentPositioning = options.positioning || 'PERCENT';
+	        _state2.default.currentUser = options.user;
+	        _state2.default.currentUserId = options.userId;
+	        _state2.default.url = window.location.href;
+	        _state2.default.pageId = (0, _blueimpMd2.default)(window.location.href);
 	        if (options.data) {
 	            _state2.default.additionalData = options.data;
 	        }
@@ -254,12 +260,6 @@
 	                (0, _htmlManip.createInfoBox)(spot, point);
 	            });
 	        }
-	        _state2.default.currentStrategy = options.strategy || strategies.global;
-	        _state2.default.currentPositioning = options.positioning || 'PERCENT';
-	        _state2.default.currentUser = options.user;
-	        _state2.default.currentUserId = options.userId;
-	        _state2.default.url = window.location.href;
-	        _state2.default.pageId = (0, _blueimpMd2.default)(window.location.href);
 
 	        document.addEventListener('click', clickListener);
 	        createToggleButton();
