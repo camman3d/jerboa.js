@@ -112,7 +112,7 @@
 	        offset: offset
 	    };
 	    return {
-	        datetime: new Date().toISOString(),
+	        time: new Date().toISOString(),
 	        position: positionObject,
 	        url: _state2.default.url,
 	        data: _state2.default.additionalData,
@@ -153,7 +153,7 @@
 	        //     {
 	        //         text: parts.textarea.value,
 	        //         user: state.currentUser,
-	        //         datetime: new Date().toISOString(),
+	        //         time: new Date().toISOString(),
 	        //         replies: []
 	        //     }
 	        // ];
@@ -497,11 +497,12 @@
 
 	    var info = document.createElement('div');
 	    info.classList.add('feedback-info');
-	    var time = new Date(payload.datetime);
-	    info.textContent = 'By ' + (payload.user || 'unknown user') + ' at ' + time.toLocaleString();
+	    var time = new Date(payload.time);
+	    info.textContent = 'By ' + (payload.user || _state2.default.currentUser || 'unknown user') + ' at ' + time.toLocaleString();
 	    text.appendChild(info);
 
-	    if (payload.userId === _state2.default.currentUserId) {
+	    console.log('EDIT BUTTON??, payload.userId: ', payload.userId, 'state.currentUserId:', _state2.default.currentUserId);
+	    if (payload.userId === parseInt(_state2.default.currentUserId)) {
 	        var deleteBtn = document.createElement('a');
 	        deleteBtn.classList.add('delete-button');
 	        deleteBtn.innerText = 'X';
@@ -610,7 +611,7 @@
 
 	//     let info = document.createElement('div');
 	//     info.classList.add('feedback-info');
-	//     const time = new Date(payload.datetime);
+	//     const time = new Date(payload.time);
 	//     info.textContent = 'By ' + (payload.user || 'unknown user') + ' at ' + time.toLocaleString();
 	//     // if the user is the creator of the comment, show the delete and edit
 	//     if (payload.user === state.currentUser) {
@@ -681,14 +682,14 @@
 	}
 
 	// const generateReply = text => ({
-	//     datetime: new Date().toISOString(),
+	//     time: new Date().toISOString(),
 	//     user: state.currentUser,
 	//     text
 	// });
 
 	var generateComment = function generateComment(text) {
 	    return {
-	        datetime: new Date().toISOString(),
+	        time: new Date().toISOString(),
 	        user: _state2.default.currentUser,
 	        text: text
 	        // replies: []

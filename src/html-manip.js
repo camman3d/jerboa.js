@@ -101,10 +101,11 @@ export function addText(container, payload) {
     let info = document.createElement('div');
     info.classList.add('feedback-info');
     const time = new Date(payload.time);
-    info.textContent = 'By ' + (payload.user || 'unknown user') + ' at ' + time.toLocaleString();
+    info.textContent = 'By ' + (payload.user || state.currentUser || 'unknown user') + ' at ' + time.toLocaleString();
     text.appendChild(info);
 
-    if (payload.userId === state.currentUserId) {
+    console.log('EDIT BUTTON??, payload.userId: ', payload.userId, 'state.currentUserId:', state.currentUserId)
+    if (payload.userId === parseInt(state.currentUserId)) {
         let deleteBtn = document.createElement('a');
         deleteBtn.classList.add('delete-button');
         deleteBtn.innerText = 'X';
