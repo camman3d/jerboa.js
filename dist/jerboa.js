@@ -499,7 +499,7 @@
 	    info.textContent = 'By ' + (payload.user || 'unknown user') + ' at ' + time.toLocaleString();
 	    text.appendChild(info);
 
-	    if (payload.user === _state2.default.currentUser) {
+	    if (payload.userId === _state2.default.currentUserId) {
 	        var deleteBtn = document.createElement('a');
 	        deleteBtn.classList.add('delete-button');
 	        deleteBtn.innerText = 'X';

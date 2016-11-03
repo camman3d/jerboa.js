@@ -103,7 +103,7 @@ export function addText(container, payload) {
     info.textContent = 'By ' + (payload.user || 'unknown user') + ' at ' + time.toLocaleString();
     text.appendChild(info);
 
-    if (payload.user === state.currentUser) {
+    if (payload.userId === state.currentUserId) {
         let deleteBtn = document.createElement('a');
         deleteBtn.classList.add('delete-button');
         deleteBtn.innerText = 'X';
