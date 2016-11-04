@@ -246,8 +246,8 @@
 	        options = options || {};
 	        _state2.default.currentStrategy = options.strategy || strategies.global;
 	        _state2.default.currentPositioning = options.positioning || 'PERCENT';
-	        _state2.default.currentUser = options.user;
-	        _state2.default.currentUserId = options.userId;
+	        _state2.default.currentUser = options.currentUser;
+	        _state2.default.currentUserId = options.currentUserId;
 	        _state2.default.url = window.location.href;
 	        _state2.default.pageId = (0, _blueimpMd2.default)(window.location.href);
 	        console.log('initialized state', _state2.default);

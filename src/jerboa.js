@@ -169,8 +169,8 @@ export default {
         options = options || {};
         state.currentStrategy = options.strategy || strategies.global;
         state.currentPositioning = options.positioning || 'PERCENT';
-        state.currentUser = options.user;
-        state.currentUserId = options.userId;
+        state.currentUser = options.currentUser;
+        state.currentUserId = options.currentUserId;
         state.url = window.location.href;
         state.pageId = md5(window.location.href);
         console.log('initialized state', state);
