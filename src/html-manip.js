@@ -113,7 +113,10 @@ export function addText(container, payload) {
         deleteBtn.innerText = 'X';
         deleteBtn.setAttribute('role', 'button');
         deleteBtn.setAttribute('href', '#');
-        info.appendChild(deleteBtn);
+        // don't render delete button for original annotation comment
+        if (payload.hasOwnProperty('comments')) {
+            info.appendChild(deleteBtn);
+        };
 
         let editBtn = document.createElement('a');
         editBtn.classList.add('edit-button');
@@ -295,6 +298,7 @@ export function addTextField(boxContainer, label, containerClass) {
 const generateComment = text => ({
     time: new Date().toISOString(),
     user: state.currentUser,
+    userId: state.currentUserId,
     text
     // replies: []
 });

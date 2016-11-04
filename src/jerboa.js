@@ -41,6 +41,7 @@ function generatePayload(event) {
         url: state.url,
         data: state.additionalData,
         user: state.currentUser,
+        userId: state.currentUserId,
         pageId: state.pageId,
         comments: []
     };

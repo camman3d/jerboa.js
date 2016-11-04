@@ -117,6 +117,7 @@
 	        url: _state2.default.url,
 	        data: _state2.default.additionalData,
 	        user: _state2.default.currentUser,
+	        userId: _state2.default.currentUserId,
 	        pageId: _state2.default.pageId,
 	        comments: []
 	    };
@@ -513,7 +514,10 @@
 	        deleteBtn.innerText = 'X';
 	        deleteBtn.setAttribute('role', 'button');
 	        deleteBtn.setAttribute('href', '#');
-	        info.appendChild(deleteBtn);
+	        // don't render delete button for original annotation comment
+	        if (payload.hasOwnProperty('comments')) {
+	            info.appendChild(deleteBtn);
+	        };
 
 	        var editBtn = document.createElement('a');
 	        editBtn.classList.add('edit-button');
@@ -696,6 +700,7 @@
 	    return {
 	        time: new Date().toISOString(),
 	        user: _state2.default.currentUser,
+	        userId: _state2.default.currentUserId,
 	        text: text
 	        // replies: []
 	    };
