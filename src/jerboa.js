@@ -165,7 +165,7 @@ function createToggleButton() {
 
 export default {
     init(options) {
-        console.log(options);
+        console.log('init options', options);
         options = options || {};
         state.currentStrategy = options.strategy || strategies.global;
         state.currentPositioning = options.positioning || 'PERCENT';
@@ -173,11 +173,13 @@ export default {
         state.currentUserId = options.userId;
         state.url = window.location.href;
         state.pageId = md5(window.location.href);
+        console.log('initialized state', state);
         if (options.data) {
             state.additionalData = options.data;
         }
         if (options.points) {
             options.points.forEach(point => {
+                console.log('points state', state);
                 let spot = createMarker(point); //loads existing points
                 console.log('init spot: ', spot, 'init point: ', point);
                 createInfoBox(spot, point);

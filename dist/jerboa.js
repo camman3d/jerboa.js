@@ -242,7 +242,7 @@
 
 	exports.default = {
 	    init: function init(options) {
-	        console.log(options);
+	        console.log('init options', options);
 	        options = options || {};
 	        _state2.default.currentStrategy = options.strategy || strategies.global;
 	        _state2.default.currentPositioning = options.positioning || 'PERCENT';
@@ -250,11 +250,13 @@
 	        _state2.default.currentUserId = options.userId;
 	        _state2.default.url = window.location.href;
 	        _state2.default.pageId = (0, _blueimpMd2.default)(window.location.href);
+	        console.log('initialized state', _state2.default);
 	        if (options.data) {
 	            _state2.default.additionalData = options.data;
 	        }
 	        if (options.points) {
 	            options.points.forEach(function (point) {
+	                console.log('points state', _state2.default);
 	                var spot = (0, _htmlManip.createMarker)(point); //loads existing points
 	                console.log('init spot: ', spot, 'init point: ', point);
 	                (0, _htmlManip.createInfoBox)(spot, point);
@@ -399,6 +401,7 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	console.log('STATE AT TOP OF HTML MANIP', _state2.default);
 	/*
 	 HTML Manipulation Methods
 	 -------------------------
@@ -416,6 +419,7 @@
 	}
 
 	function createMarker(payload) {
+	    console.log('create marker state', _state2.default);
 	    var pos = payload.position;
 	    var container = document.querySelector(pos.container);
 	    var offset = (0, _positioning.getGlobalOffset)(container);
@@ -486,6 +490,7 @@
 	// addText function renders a single comment and all of it's replies
 	function addText(container, payload) {
 	    console.log('addText payload', payload);
+	    console.log('addText state', _state2.default);
 	    var text = document.createElement('div');
 	    text.classList.add('feedback-text');
 	    container.appendChild(text);
@@ -698,6 +703,7 @@
 
 	function createInfoBox(spot, payload) {
 	    console.log('createInfoBox payload', payload);
+	    console.log('createInfoBox state', _state2.default);
 	    function changeOuterColor(classList, className) {
 	        classList.forEach(function (value, index) {
 	            if (value.includes('owner-')) {
