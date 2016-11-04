@@ -114,7 +114,7 @@ export function addText(container, payload) {
         deleteBtn.setAttribute('role', 'button');
         deleteBtn.setAttribute('href', '#');
         // don't render delete button for original annotation comment
-        if (payload.hasOwnProperty('comments')) {
+        if (!payload.hasOwnProperty('comments')) {
             info.appendChild(deleteBtn);
         };
 
