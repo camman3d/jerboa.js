@@ -92,7 +92,6 @@
 	    var selector = (0, _positioning.getSelector)(event.target);
 	    var containerSelector = (0, _positioning.getSelector)(container);
 	    var offset = (0, _positioning.getRelativeOffset)(event.target, container);
-	    console.log('OFFSET', offset);
 	    offset['x'] += event.offsetX;
 	    offset['y'] += event.offsetY;
 	    var rect = container.getBoundingClientRect();
@@ -178,7 +177,6 @@
 	    },
 	    byClass: function byClass(className) {
 	        return function (e) {
-	            console.log('e', e);
 	            return e.classList.contains(className);
 	        };
 	    }
@@ -215,7 +213,6 @@
 	    buttonDiv.addEventListener('click', function (event) {
 	        event.preventDefault();
 	        var feedbackSpots = document.getElementsByClassName('feedback-spot');
-	        console.log(feedbackSpots);
 	        if (buttonDiv.classList.contains('toggle-button-selected')) {
 	            buttonDiv.classList.remove('toggle-button-selected');
 	            buttonLabel.textContent = 'Feedback Off';
@@ -243,7 +240,6 @@
 
 	exports.default = {
 	    init: function init(options) {
-	        console.log('init options', options);
 	        options = options || {};
 	        _state2.default.currentStrategy = options.strategy || strategies.global;
 	        _state2.default.currentPositioning = options.positioning || 'PERCENT';
@@ -251,15 +247,12 @@
 	        _state2.default.currentUserId = options.currentUserId;
 	        _state2.default.url = window.location.href;
 	        _state2.default.pageId = (0, _blueimpMd2.default)(window.location.href);
-	        console.log('initialized state', _state2.default);
 	        if (options.data) {
 	            _state2.default.additionalData = options.data;
 	        }
 	        if (options.points) {
 	            options.points.forEach(function (point) {
-	                console.log('points state', _state2.default);
 	                var spot = (0, _htmlManip.createMarker)(point); //loads existing points
-	                console.log('init spot: ', spot, 'init point: ', point);
 	                (0, _htmlManip.createInfoBox)(spot, point);
 	            });
 	        }
@@ -402,7 +395,6 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	console.log('STATE AT TOP OF HTML MANIP', _state2.default);
 	/*
 	 HTML Manipulation Methods
 	 -------------------------
@@ -420,7 +412,6 @@
 	}
 
 	function createMarker(payload) {
-	    console.log('create marker state', _state2.default);
 	    var pos = payload.position;
 	    var container = document.querySelector(pos.container);
 	    var offset = (0, _positioning.getGlobalOffset)(container);
@@ -490,8 +481,6 @@
 
 	// addText function renders a single comment and all of it's replies
 	function addText(container, payload) {
-	    console.log('addText payload', payload);
-	    console.log('addText state', _state2.default);
 	    var text = document.createElement('div');
 	    text.classList.add('feedback-text');
 	    container.appendChild(text);
@@ -507,7 +496,6 @@
 	    info.textContent = 'By ' + (payload.user || _state2.default.currentUser || 'unknown user') + ' at ' + time.toLocaleString();
 	    text.appendChild(info);
 
-	    console.log('EDIT BUTTON??, payload.userId: ', payload.userId, 'state.currentUserId:', _state2.default.currentUserId);
 	    if (payload.userId === parseInt(_state2.default.currentUserId)) {
 	        var deleteBtn = document.createElement('a');
 	        deleteBtn.classList.add('delete-button');
@@ -515,7 +503,7 @@
 	        deleteBtn.setAttribute('role', 'button');
 	        deleteBtn.setAttribute('href', '#');
 	        // don't render delete button for original annotation comment
-	        if (payload.hasOwnProperty('comments')) {
+	        if (!payload.hasOwnProperty('comments')) {
 	            info.appendChild(deleteBtn);
 	        };
 
@@ -707,8 +695,6 @@
 	};
 
 	function createInfoBox(spot, payload) {
-	    console.log('createInfoBox payload', payload);
-	    console.log('createInfoBox state', _state2.default);
 	    function changeOuterColor(classList, className) {
 	        classList.forEach(function (value, index) {
 	            if (value.includes('owner-')) {
@@ -760,7 +746,7 @@
 	    ownerSelect.addEventListener('change', function (e) {
 	        payload.assigneeRole = e.target.value;
 	        changeOuterColor(spot.classList, 'owner-' + payload.assigneeRole);
-	        (0, _events.emit)('changeOwner', payload.assigneeRole);
+	        (0, _events.emit)('changeOwner', payload);
 	    });
 
 	    var defaultStatus = 'open';
@@ -782,7 +768,7 @@
 	    statusSelect.addEventListener('change', function (e) {
 	        payload.status = e.target.value;
 	        changeInnerColor(spot.classList, 'status-' + payload.status);
-	        (0, _events.emit)('changeStatus', payload.status);
+	        (0, _events.emit)('changeStatus', payload);
 	    });
 
 	    // add each comment to container
