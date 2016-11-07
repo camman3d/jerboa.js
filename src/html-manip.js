@@ -352,7 +352,7 @@ export function createInfoBox(spot, payload) {
     ownerSelect.addEventListener('change', (e) => {
         payload.assigneeRole = e.target.value;
         changeOuterColor(spot.classList, `owner-${payload.assigneeRole}`)
-        emit('changeOwner', payload.assigneeRole);
+        emit('changeOwner', payload);
     });
 
     const defaultStatus = 'open';
@@ -374,7 +374,7 @@ export function createInfoBox(spot, payload) {
     statusSelect.addEventListener('change', (e) => {
         payload.status = e.target.value;
         changeInnerColor(spot.classList, `status-${payload.status}`)
-        emit('changeStatus', payload.status);
+        emit('changeStatus', payload);
     });
 
     // add each comment to container
