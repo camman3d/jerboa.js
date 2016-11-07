@@ -16,7 +16,6 @@ function generatePayload(event) {
     const selector = getSelector(event.target);
     const containerSelector = getSelector(container);
     let offset = getRelativeOffset(event.target, container);
-    console.log('OFFSET', offset);
     offset['x'] += event.offsetX;
     offset['y'] += event.offsetY;
     const rect = container.getBoundingClientRect();
@@ -101,7 +100,6 @@ const strategies = {
         return e.tagName === 'BODY';
     },
     byClass: className => e => {
-        console.log('e', e);
         return e.classList.contains(className);
     }
 };
@@ -137,7 +135,6 @@ function createToggleButton() {
     buttonDiv.addEventListener('click', event => {
         event.preventDefault();
         let feedbackSpots = document.getElementsByClassName('feedback-spot');
-        console.log(feedbackSpots);
         if (buttonDiv.classList.contains('toggle-button-selected')) {
             buttonDiv.classList.remove('toggle-button-selected');
             buttonLabel.textContent = 'Feedback Off';
@@ -166,7 +163,6 @@ function createToggleButton() {
 
 export default {
     init(options) {
-        console.log('init options', options);
         options = options || {};
         state.currentStrategy = options.strategy || strategies.global;
         state.currentPositioning = options.positioning || 'PERCENT';
@@ -174,15 +170,12 @@ export default {
         state.currentUserId = options.currentUserId;
         state.url = window.location.href;
         state.pageId = md5(window.location.href);
-        console.log('initialized state', state);
         if (options.data) {
             state.additionalData = options.data;
         }
         if (options.points) {
             options.points.forEach(point => {
-                console.log('points state', state);
                 let spot = createMarker(point); //loads existing points
-                console.log('init spot: ', spot, 'init point: ', point);
                 createInfoBox(spot, point);
             });
         }

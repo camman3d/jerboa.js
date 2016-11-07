@@ -1,7 +1,6 @@
 import { getGlobalOffset } from './positioning';
 import { emit } from './events';
 import state from './state';
-console.log('STATE AT TOP OF HTML MANIP', state);
 /*
  HTML Manipulation Methods
  -------------------------
@@ -20,7 +19,6 @@ export function __setOpenSpot(spot) {
 }
 
 export function createMarker(payload) {
-    console.log('create marker state', state);
     const pos = payload.position;
     const container = document.querySelector(pos.container);
     const offset = getGlobalOffset(container);
@@ -89,8 +87,6 @@ export function closeInfoBox() {
 
 // addText function renders a single comment and all of it's replies
 export function addText(container, payload) {
-    console.log('addText payload', payload);
-    console.log('addText state', state);
     let text = document.createElement('div');
     text.classList.add('feedback-text');
     container.appendChild(text);
@@ -106,7 +102,6 @@ export function addText(container, payload) {
     info.textContent = 'By ' + (payload.user || state.currentUser || 'unknown user') + ' at ' + time.toLocaleString();
     text.appendChild(info);
 
-    console.log('EDIT BUTTON??, payload.userId: ', payload.userId, 'state.currentUserId:', state.currentUserId)
     if (payload.userId === parseInt(state.currentUserId)) {
         let deleteBtn = document.createElement('a');
         deleteBtn.classList.add('delete-button');
@@ -306,8 +301,6 @@ const generateComment = text => ({
 
 
 export function createInfoBox(spot, payload) {
-    console.log('createInfoBox payload', payload);
-    console.log('createInfoBox state', state);
     function changeOuterColor(classList, className) {
         classList.forEach((value, index) => {
             if (value.includes('owner-')) {
