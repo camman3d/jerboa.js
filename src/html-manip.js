@@ -102,7 +102,7 @@ export function addText(container, payload) {
     info.textContent = 'By ' + (payload.user || state.currentUser || 'unknown user') + ' at ' + time.toLocaleString();
     text.appendChild(info);
 
-    if (payload.userId === parseInt(state.currentUserId)) {
+    if (parseInt(payload.userId) === parseInt(state.currentUserId)) {
         let deleteBtn = document.createElement('a');
         deleteBtn.classList.add('delete-button');
         deleteBtn.innerText = 'X';
@@ -123,7 +123,7 @@ export function addText(container, payload) {
         deleteBtn.addEventListener('click', (e) => {
             e.preventDefault();
             container.removeChild(text);
-            emit('deleteComment');
+            emit('deleteComment', payload);
         });
 
         editBtn.addEventListener('click', (e) => {

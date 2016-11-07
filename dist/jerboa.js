@@ -496,7 +496,7 @@
 	    info.textContent = 'By ' + (payload.user || _state2.default.currentUser || 'unknown user') + ' at ' + time.toLocaleString();
 	    text.appendChild(info);
 
-	    if (payload.userId === parseInt(_state2.default.currentUserId)) {
+	    if (parseInt(payload.userId) === parseInt(_state2.default.currentUserId)) {
 	        var deleteBtn = document.createElement('a');
 	        deleteBtn.classList.add('delete-button');
 	        deleteBtn.innerText = 'X';
@@ -517,7 +517,7 @@
 	        deleteBtn.addEventListener('click', function (e) {
 	            e.preventDefault();
 	            container.removeChild(text);
-	            (0, _events.emit)('deleteComment');
+	            (0, _events.emit)('deleteComment', payload);
 	        });
 
 	        editBtn.addEventListener('click', function (e) {
