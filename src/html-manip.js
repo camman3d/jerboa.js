@@ -396,14 +396,28 @@ export function createInfoBox(spot, payload) {
     });
 
     parts.save.addEventListener('click', () => {
-        const comment = generateComment(parts.textarea.value);
-        parts.textarea.value = '';
-        payload.comments.push(comment);
-        emit('saveComment', payload);
 
-        boxParts.container.removeChild(parts.container);
-        addText(boxParts.container, comment, 'comment-reply');
-        boxParts.container.appendChild(parts.container);
+
+        if (parts.textarea.value) {
+            const comment = generateComment(parts.textarea.value);
+            parts.textarea.value = '';
+            payload.comments.push(comment);
+            emit('saveComment', payload);
+
+            boxParts.container.removeChild(parts.container);
+            addText(boxParts.container, comment, 'comment-reply');
+            boxParts.container.appendChild(parts.container);
+        } else {
+            const comment = generateComment(parts.textarea.value);
+            parts.textarea.value = '';
+            emit('cancelComment', comment);
+            closeInfoBox();
+        }
+
+
+
+
+
     });
 
     return Object.assign({}, parts, boxParts);

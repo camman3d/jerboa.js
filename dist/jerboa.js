@@ -789,14 +789,22 @@
 	    });
 
 	    parts.save.addEventListener('click', function () {
-	        var comment = generateComment(parts.textarea.value);
-	        parts.textarea.value = '';
-	        payload.comments.push(comment);
-	        (0, _events.emit)('saveComment', payload);
 
-	        boxParts.container.removeChild(parts.container);
-	        addText(boxParts.container, comment, 'comment-reply');
-	        boxParts.container.appendChild(parts.container);
+	        if (parts.textarea.value) {
+	            var comment = generateComment(parts.textarea.value);
+	            parts.textarea.value = '';
+	            payload.comments.push(comment);
+	            (0, _events.emit)('saveComment', payload);
+
+	            boxParts.container.removeChild(parts.container);
+	            addText(boxParts.container, comment, 'comment-reply');
+	            boxParts.container.appendChild(parts.container);
+	        } else {
+	            var _comment = generateComment(parts.textarea.value);
+	            parts.textarea.value = '';
+	            (0, _events.emit)('cancelComment', _comment);
+	            closeInfoBox();
+	        }
 	    });
 
 	    return Object.assign({}, parts, boxParts);
