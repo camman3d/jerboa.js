@@ -479,10 +479,13 @@
 	    }
 	}
 
-	// addText function renders a single comment and all of it's replies
-	function addText(container, payload) {
+	// addText function renders a an annotation or comment
+	function addText(container, payload, className) {
 	    var text = document.createElement('div');
 	    text.classList.add('feedback-text');
+	    if (className) {
+	        text.classList.add(className);
+	    }
 	    container.appendChild(text);
 
 	    var comment = document.createElement('div');
@@ -774,7 +777,7 @@
 	    // add each comment to container
 	    addText(boxParts.container, payload); // first comment in root of payload
 	    payload.comments.forEach(function (comment) {
-	        addText(boxParts.container, comment);
+	        addText(boxParts.container, comment, 'comment-reply');
 	    });
 
 	    var parts = addTextField(boxParts.container, 'Comment:', 'comment-textfield');
@@ -792,7 +795,7 @@
 	        (0, _events.emit)('saveComment', payload);
 
 	        boxParts.container.removeChild(parts.container);
-	        addText(boxParts.container, comment);
+	        addText(boxParts.container, comment, 'comment-reply');
 	        boxParts.container.appendChild(parts.container);
 	    });
 

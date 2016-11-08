@@ -168,6 +168,9 @@
   border-bottom: 1px solid #ccc;
   padding-bottom: 15px;
 }
+.feedback-spot .comment-reply {
+  margin-left: 15px;
+}
 .feedback-spot .feedback-info {
   color: #aaa;
   font-size: 12px;
