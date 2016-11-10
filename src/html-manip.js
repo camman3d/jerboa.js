@@ -405,8 +405,6 @@ export function createInfoBox(spot, payload) {
     });
 
     parts.save.addEventListener('click', () => {
-
-
         if (parts.textarea.value) {
             const comment = generateComment(parts.textarea.value);
             parts.textarea.value = '';
@@ -422,11 +420,6 @@ export function createInfoBox(spot, payload) {
             emit('cancelComment', comment);
             closeInfoBox();
         }
-
-
-
-
-
     });
 
     return Object.assign({}, parts, boxParts);

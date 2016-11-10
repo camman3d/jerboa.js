@@ -802,7 +802,6 @@
 	    });
 
 	    parts.save.addEventListener('click', function () {
-
 	        if (parts.textarea.value) {
 	            var comment = generateComment(parts.textarea.value);
 	            parts.textarea.value = '';
