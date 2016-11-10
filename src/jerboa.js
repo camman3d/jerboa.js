@@ -35,7 +35,7 @@ function generatePayload(event) {
         offset
     };
     return {
-        time: new Date().toISOString(),
+        time: new Date(Date.now() - (new Date().getTimezoneOffset() * 60000)).toISOString(),
         position: positionObject,
         url: state.url,
         data: state.additionalData,

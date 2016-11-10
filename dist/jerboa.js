@@ -111,7 +111,7 @@
 	        offset: offset
 	    };
 	    return {
-	        time: new Date().toISOString(),
+	        time: new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString(),
 	        position: positionObject,
 	        url: _state2.default.url,
 	        data: _state2.default.additionalData,
@@ -495,8 +495,9 @@
 
 	    var info = document.createElement('div');
 	    info.classList.add('feedback-info');
-	    var time = new Date(payload.time);
-	    info.textContent = 'By ' + (payload.user || _state2.default.currentUser || 'unknown user') + ' at ' + time.toUTCString();
+	    var rawTime = !!payload.time.match(/.*[Z]$/) ? payload.time : payload.time + 'Z';
+	    var time = new Date(Date.parse(rawTime));
+	    info.textContent = 'By ' + (payload.user || _state2.default.currentUser || 'unknown user') + ' at ' + time.toLocaleString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC', hour12: true, hour: 'numeric', minute: 'numeric' });
 	    text.appendChild(info);
 
 	    if (parseInt(payload.userId) === parseInt(_state2.default.currentUserId)) {
@@ -689,7 +690,7 @@
 
 	var generateComment = function generateComment(text) {
 	    return {
-	        time: new Date().toISOString(),
+	        time: new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString(),
 	        user: _state2.default.currentUser,
 	        userId: _state2.default.currentUserId,
 	        text: text

@@ -102,8 +102,9 @@ export function addText(container, payload, className) {
 
     let info = document.createElement('div');
     info.classList.add('feedback-info');
-    const time = new Date(payload.time);
-    info.textContent = 'By ' + (payload.user || state.currentUser || 'unknown user') + ' at ' + time.toUTCString();
+    const rawTime = !!payload.time.match(/.*[Z]$/) ? payload.time : payload.time + 'Z';
+    const time = new Date(Date.parse(rawTime));
+    info.textContent = 'By ' + (payload.user || state.currentUser || 'unknown user') + ' at ' + time.toLocaleString('en-US', {weekday: 'short', month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC', hour12: true, hour: 'numeric', minute: 'numeric'});
     text.appendChild(info);
 
     if (parseInt(payload.userId) === parseInt(state.currentUserId)) {
@@ -295,7 +296,7 @@ export function addTextField(boxContainer, label, containerClass) {
 // });
 
 const generateComment = text => ({
-    time: new Date().toISOString(),
+    time: new Date(Date.now() - (new Date().getTimezoneOffset() * 60000)).toISOString(),
     user: state.currentUser,
     userId: state.currentUserId,
     text
