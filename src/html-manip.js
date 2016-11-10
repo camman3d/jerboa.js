@@ -103,7 +103,7 @@ export function addText(container, payload, className) {
     let info = document.createElement('div');
     info.classList.add('feedback-info');
     const time = new Date(payload.time);
-    info.textContent = 'By ' + (payload.user || state.currentUser || 'unknown user') + ' at ' + time.toLocaleString();
+    info.textContent = 'By ' + (payload.user || state.currentUser || 'unknown user') + ' at ' + time.toUTCString();
     text.appendChild(info);
 
     if (parseInt(payload.userId) === parseInt(state.currentUserId)) {

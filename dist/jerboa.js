@@ -496,7 +496,7 @@
 	    var info = document.createElement('div');
 	    info.classList.add('feedback-info');
 	    var time = new Date(payload.time);
-	    info.textContent = 'By ' + (payload.user || _state2.default.currentUser || 'unknown user') + ' at ' + time.toLocaleString();
+	    info.textContent = 'By ' + (payload.user || _state2.default.currentUser || 'unknown user') + ' at ' + time.toUTCString();
 	    text.appendChild(info);
 
 	    if (parseInt(payload.userId) === parseInt(_state2.default.currentUserId)) {
