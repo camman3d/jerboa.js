@@ -305,22 +305,27 @@ const generateComment = text => ({
 
 
 export function createInfoBox(spot, payload) {
-    function changeOuterColor(classList, className) {
-        classList.forEach((value, index) => {
-            if (value.includes('owner-')) {
-                classList.remove(value);
-            }
-        });
-        classList.add(className);
+    function changeColor(classList, currentClassName, newClassName) {
+        if (classList.contains(currentClassName)) {classList.remove(currentClassName)};
+        if (!classList.contains(newClassName)) {classList.add(newClassName)};
     }
-    function changeInnerColor(classList, className) {
-        classList.forEach((value, index) => {
-            if (value.includes('status-')) {
-                classList.remove(value);
-            }
-        });
-        classList.add(className);
-    }
+
+    // function changeOuterColor(classList, className) {
+    //     classList.forEach((value, index) => {
+    //         if (value.includes('owner-')) {
+    //             classList.remove(value);
+    //         }
+    //     });
+    //     classList.add(className);
+    // }
+    // function changeInnerColor(classList, className) {
+    //     classList.forEach((value, index) => {
+    //         if (value.includes('status-')) {
+    //             classList.remove(value);
+    //         }
+    //     });
+    //     classList.add(className);
+    // }
 
     const boxParts = addBox(spot, true);
     const ownerOptions = {
@@ -347,15 +352,17 @@ export function createInfoBox(spot, payload) {
         option.text = ownerOptionsArr[i];
         ownerSelect.appendChild(option);
     }
+    let currentAssigneeRole = payload.assigneeRole;
     if (payload.assigneeRole && (payload.assigneeRole !== defaultOwner)) {
         ownerSelect.value = payload.assigneeRole;
-        changeOuterColor(spot.classList, `owner-${payload.assigneeRole}`)
+        changeColor(spot.classList, null, `owner-${payload.assigneeRole}`)
     } else {
         ownerSelect.value = defaultOwner;
     }
     ownerSelect.addEventListener('change', (e) => {
         payload.assigneeRole = e.target.value;
-        changeOuterColor(spot.classList, `owner-${payload.assigneeRole}`)
+        changeColor(spot.classList, `owner-${currentAssigneeRole}`, `owner-${payload.assigneeRole}`)
+        currentAssigneeRole = payload.assigneeRole;
         emit('changeOwner', payload);
     });
 
@@ -369,15 +376,17 @@ export function createInfoBox(spot, payload) {
         option.text = statusOptionsArr[i];
         statusSelect.appendChild(option);
     }
+    let currentStatus = payload.status;
     if (payload.status && (payload.status !== defaultStatus)) {
         statusSelect.value = payload.status;
-        changeInnerColor(spot.classList, `status-${payload.status}`)
+        changeColor(spot.classList, null, `status-${payload.status}`)
     } else {
         statusSelect.value = defaultStatus;
     }
     statusSelect.addEventListener('change', (e) => {
         payload.status = e.target.value;
-        changeInnerColor(spot.classList, `status-${payload.status}`)
+        changeColor(spot.classList, `owner-${currentStatus}`, `owner-${payload.status}`)
+        currentStatus = payload.status;
         emit('changeStatus', payload);
     });
 
