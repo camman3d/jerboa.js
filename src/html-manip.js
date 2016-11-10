@@ -385,7 +385,7 @@ export function createInfoBox(spot, payload) {
     }
     statusSelect.addEventListener('change', (e) => {
         payload.status = e.target.value;
-        changeColor(spot.classList, `owner-${currentStatus}`, `owner-${payload.status}`)
+        changeColor(spot.classList, `status-${currentStatus}`, `status-${payload.status}`)
         currentStatus = payload.status;
         emit('changeStatus', payload);
     });

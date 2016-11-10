@@ -782,7 +782,7 @@
 	    }
 	    statusSelect.addEventListener('change', function (e) {
 	        payload.status = e.target.value;
-	        changeColor(spot.classList, 'owner-' + currentStatus, 'owner-' + payload.status);
+	        changeColor(spot.classList, 'status-' + currentStatus, 'status-' + payload.status);
 	        currentStatus = payload.status;
 	        (0, _events.emit)('changeStatus', payload);
 	    });
