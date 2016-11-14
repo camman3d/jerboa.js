@@ -265,6 +265,7 @@
 	        _state2.default.currentPositioning = options.positioning || 'PERCENT';
 	        _state2.default.currentUser = options.currentUser;
 	        _state2.default.currentUserId = options.currentUserId;
+	        _state2.default.isAdmin = options.isAdmin || false;
 	        _state2.default.url = window.location.href;
 	        _state2.default.pageId = (0, _blueimpMd2.default)(window.location.href);
 	        if (options.data) {
@@ -806,6 +807,9 @@
 	    // add owner and status
 	    var defaultOwner = 'pm';
 	    var ownerSelect = document.createElement('select');
+	    if (!_state2.default.isAdmin) {
+	        ownerSelect.disabled = true;
+	    }
 	    boxParts.container.appendChild(ownerSelect);
 	    var ownerOptionsArr = Object.keys(ownerOptions);
 	    for (var i = 0; i < ownerOptionsArr.length; i++) {
@@ -830,6 +834,9 @@
 
 	    var defaultStatus = 'open';
 	    var statusSelect = document.createElement('select');
+	    if (!_state2.default.isAdmin) {
+	        statusSelect.disabled = true;
+	    }
 	    boxParts.container.appendChild(statusSelect);
 	    var statusOptionsArr = Object.keys(statusOptions);
 	    for (var _i = 0; _i < statusOptionsArr.length; _i++) {
@@ -905,7 +912,8 @@
 	    additionalData: undefined,
 	    feedbackBoxOpen: false,
 	    url: undefined,
-	    pageId: undefined
+	    pageId: undefined,
+	    isAdmin: false
 	};
 
 /***/ },

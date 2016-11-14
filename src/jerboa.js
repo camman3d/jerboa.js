@@ -186,6 +186,7 @@ export default {
         state.currentPositioning = options.positioning || 'PERCENT';
         state.currentUser = options.currentUser;
         state.currentUserId = options.currentUserId;
+        state.isAdmin = options.isAdmin || false;
         state.url = window.location.href;
         state.pageId = md5(window.location.href);
         if (options.data) {

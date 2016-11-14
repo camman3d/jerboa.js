@@ -7,5 +7,6 @@ export default {
     additionalData: undefined,
     feedbackBoxOpen: false,
     url: undefined,
-    pageId: undefined
+    pageId: undefined,
+    isAdmin: false
 }

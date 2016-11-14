@@ -381,6 +381,9 @@ export function createInfoBox(spot, payload) {
     // add owner and status
     const defaultOwner = 'pm';
     let ownerSelect = document.createElement('select');
+    if (!state.isAdmin) {
+        ownerSelect.disabled = true;
+    }
     boxParts.container.appendChild(ownerSelect);
     let ownerOptionsArr = Object.keys(ownerOptions);
     for (let i = 0; i < ownerOptionsArr.length; i++) {
@@ -405,6 +408,9 @@ export function createInfoBox(spot, payload) {
 
     const defaultStatus = 'open';
     let statusSelect = document.createElement('select');
+    if (!state.isAdmin) {
+        statusSelect.disabled = true;
+    }
     boxParts.container.appendChild(statusSelect);
     let statusOptionsArr = Object.keys(statusOptions);
     for (let i = 0; i < statusOptionsArr.length; i++) {
