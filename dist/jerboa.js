@@ -196,11 +196,11 @@
 
 	    var buttonLabel = document.createElement('div');
 	    buttonLabel.classList.add('toggle-button-text');
-	    buttonLabel.textContent = 'Feedback On';
+	    buttonLabel.textContent = 'Feedback Off';
 	    buttonContainer.appendChild(buttonLabel);
 
 	    var buttonDiv = document.createElement('div');
-	    buttonDiv.classList.add('toggle-button', 'toggle-button-selected');
+	    buttonDiv.classList.add('toggle-button');
 	    buttonContainer.appendChild(buttonDiv);
 
 	    var button = document.createElement('button');
@@ -252,7 +252,7 @@
 	        }
 	        if (options.points) {
 	            options.points.forEach(function (point) {
-	                var spot = (0, _htmlManip.createMarker)(point); //loads existing points
+	                var spot = (0, _htmlManip.createMarker)(point, true); //loads existing points
 	                (0, _htmlManip.createInfoBox)(spot, point);
 	            });
 	        }
@@ -411,7 +411,8 @@
 	    openSpot = spot;
 	}
 
-	function createMarker(payload) {
+	// second parameter is true if the point is being initially loaded
+	function createMarker(payload, init) {
 	    var pos = payload.position;
 	    var container = document.querySelector(pos.container);
 	    var offset = (0, _positioning.getGlobalOffset)(container);
@@ -419,6 +420,9 @@
 	    var left = void 0,
 	        top = void 0;
 	    spot.classList.add('feedback-spot');
+	    if (init) {
+	        spot.classList.add('off');
+	    }
 
 	    if (pos.positioning === 'PIXEL') {
 	        left = offset[0] + pos.offset['x'];
@@ -833,7 +837,7 @@
 	    value: true
 	});
 	exports.default = {
-	    active: true,
+	    active: false,
 	    currentStrategy: undefined,
 	    currentUser: undefined,
 	    currentUserId: undefined,

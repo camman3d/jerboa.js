@@ -118,11 +118,11 @@ function createToggleButton() {
 
     let buttonLabel = document.createElement('div');
     buttonLabel.classList.add('toggle-button-text');
-    buttonLabel.textContent = 'Feedback On';
+    buttonLabel.textContent = 'Feedback Off';
     buttonContainer.appendChild(buttonLabel);
 
     let buttonDiv = document.createElement('div');
-    buttonDiv.classList.add('toggle-button', 'toggle-button-selected');
+    buttonDiv.classList.add('toggle-button');
     buttonContainer.appendChild(buttonDiv);
 
     let button = document.createElement('button');
@@ -175,7 +175,7 @@ export default {
         }
         if (options.points) {
             options.points.forEach(point => {
-                let spot = createMarker(point); //loads existing points
+                let spot = createMarker(point, true); //loads existing points
                 createInfoBox(spot, point);
             });
         }

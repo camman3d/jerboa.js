@@ -1,5 +1,5 @@
 export default {
-    active: true,
+    active: false,
     currentStrategy: undefined,
     currentUser: undefined,
     currentUserId: undefined,

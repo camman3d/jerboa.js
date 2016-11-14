@@ -18,13 +18,17 @@ export function __setOpenSpot(spot) {
     openSpot = spot;
 }
 
-export function createMarker(payload) {
+// second parameter is true if the point is being initially loaded
+export function createMarker(payload, init) {
     const pos = payload.position;
     const container = document.querySelector(pos.container);
     const offset = getGlobalOffset(container);
     let spot = document.createElement('div');
     let left, top;
     spot.classList.add('feedback-spot');
+    if (init) {
+        spot.classList.add('off');
+    }
 
     if (pos.positioning === 'PIXEL') {
         left = offset[0] + pos.offset['x'];
