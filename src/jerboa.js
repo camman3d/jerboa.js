@@ -1,6 +1,6 @@
 import { getGlobalOffset, getRelativeOffset, getSelector, resolveContainer } from './positioning';
 import { addEventListener, emit } from './events';
-import { addBox, addText, addTextField, closeInfoBox, createInfoBox, createMarker } from './html-manip';
+import { addBox, addText, addTextField, closeInfoBox, createInfoBox, createMarker, resetPositioning, annotationPositions } from './html-manip';
 import state from './state';
 import md5 from 'blueimp-md5';
 
@@ -156,10 +156,28 @@ function createToggleButton() {
 }
 
 
-    /*
-        Return object
-        -------------
-     */
+(function() {
+    var throttle = function(type, name, obj) {
+        obj = obj || window;
+        var running = false;
+        var func = function() {
+            if (running) { return; }
+            running = true;
+             requestAnimationFrame(function() {
+                obj.dispatchEvent(new CustomEvent(name));
+                running = false;
+            });
+        };
+        obj.addEventListener(type, func);
+    };
+
+    throttle("resize", "optimizedResize");
+})();
+
+/*
+    Return object
+    -------------
+ */
 
 export default {
     init(options) {
@@ -181,6 +199,12 @@ export default {
         }
 
         document.addEventListener('click', clickListener);
+        window.addEventListener("optimizedResize", function() {
+            console.log("Resource conscious resize callback!");
+            annotationPositions.forEach((annotationPosition) => {
+                resetPositioning.apply(null, annotationPosition);
+            });
+        });
         createToggleButton();
     },
 

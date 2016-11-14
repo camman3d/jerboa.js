@@ -233,6 +233,26 @@
 	    document.body.appendChild(buttonContainer);
 	}
 
+	(function () {
+	    var throttle = function throttle(type, name, obj) {
+	        obj = obj || window;
+	        var running = false;
+	        var func = function func() {
+	            if (running) {
+	                return;
+	            }
+	            running = true;
+	            requestAnimationFrame(function () {
+	                obj.dispatchEvent(new CustomEvent(name));
+	                running = false;
+	            });
+	        };
+	        obj.addEventListener(type, func);
+	    };
+
+	    throttle("resize", "optimizedResize");
+	})();
+
 	/*
 	    Return object
 	    -------------
@@ -258,6 +278,12 @@
 	        }
 
 	        document.addEventListener('click', clickListener);
+	        window.addEventListener("optimizedResize", function () {
+	            console.log("Resource conscious resize callback!");
+	            _htmlManip.annotationPositions.forEach(function (annotationPosition) {
+	                _htmlManip.resetPositioning.apply(null, annotationPosition);
+	            });
+	        });
 	        createToggleButton();
 	    },
 	    close: function close() {
@@ -376,9 +402,11 @@
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
+	exports.annotationPositions = undefined;
 	exports.__getOpenSpot = __getOpenSpot;
 	exports.__setOpenSpot = __setOpenSpot;
 	exports.createMarker = createMarker;
+	exports.resetPositioning = resetPositioning;
 	exports.addBox = addBox;
 	exports.closeInfoBox = closeInfoBox;
 	exports.addText = addText;
@@ -401,6 +429,7 @@
 	 */
 
 	var openSpot = void 0;
+	var annotationPositions = exports.annotationPositions = [];
 
 	// Methods for testing
 	function __getOpenSpot() {
@@ -415,7 +444,6 @@
 	function createMarker(payload, init) {
 	    var pos = payload.position;
 	    var container = document.querySelector(pos.container);
-	    var offset = (0, _positioning.getGlobalOffset)(container);
 	    var spot = document.createElement('div');
 	    var left = void 0,
 	        top = void 0;
@@ -423,6 +451,32 @@
 	    if (init) {
 	        spot.classList.add('off');
 	    }
+
+	    annotationPositions.push([spot, pos, container]);
+
+	    var calculatedPosition = calculatePosition(pos, container);
+	    // const offset = getGlobalOffset(container);
+	    // if (pos.positioning === 'PIXEL') {
+	    //     left = offset[0] + pos.offset['x'];
+	    //     top = offset[1] + pos.offset['y'];
+	    // } else if (pos.positioning === 'PERCENT') {
+	    //     const percentX = pos.offset['x'] / pos.containerSize.width;
+	    //     const percentY = pos.offset['y'] / pos.containerSize.height;
+	    //     const rect = container.getBoundingClientRect();
+	    //     left = offset[0] + rect.width * percentX;
+	    //     top = offset[1] + rect.height * percentY;
+	    // }
+	    spot.style.top = calculatedPosition.top + 'px';
+	    spot.style.left = calculatedPosition.left + 'px';
+
+	    document.body.appendChild(spot);
+	    return spot;
+	}
+
+	function calculatePosition(pos, container) {
+	    var offset = (0, _positioning.getGlobalOffset)(container);
+	    var top = void 0,
+	        left = void 0;
 
 	    if (pos.positioning === 'PIXEL') {
 	        left = offset[0] + pos.offset['x'];
@@ -434,11 +488,17 @@
 	        left = offset[0] + rect.width * percentX;
 	        top = offset[1] + rect.height * percentY;
 	    }
-	    spot.style.top = top + 'px';
-	    spot.style.left = left + 'px';
 
-	    document.body.appendChild(spot);
-	    return spot;
+	    return {
+	        top: top,
+	        left: left
+	    };
+	}
+
+	function resetPositioning(spot, pos, container) {
+	    var calculatedPosition = calculatePosition(pos, container);
+	    spot.style.top = calculatedPosition.top + 'px';
+	    spot.style.left = calculatedPosition.left + 'px';
 	}
 
 	function addBox(spot, toggled) {

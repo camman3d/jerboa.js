@@ -7,6 +7,7 @@ import state from './state';
  */
 
 let openSpot;
+export let annotationPositions = [];
 
 
 // Methods for testing
@@ -22,13 +23,38 @@ export function __setOpenSpot(spot) {
 export function createMarker(payload, init) {
     const pos = payload.position;
     const container = document.querySelector(pos.container);
-    const offset = getGlobalOffset(container);
     let spot = document.createElement('div');
     let left, top;
     spot.classList.add('feedback-spot');
     if (init) {
         spot.classList.add('off');
     }
+
+    annotationPositions.push([spot, pos, container]);
+
+    let calculatedPosition = calculatePosition(pos, container);
+    // const offset = getGlobalOffset(container);
+    // if (pos.positioning === 'PIXEL') {
+    //     left = offset[0] + pos.offset['x'];
+    //     top = offset[1] + pos.offset['y'];
+    // } else if (pos.positioning === 'PERCENT') {
+    //     const percentX = pos.offset['x'] / pos.containerSize.width;
+    //     const percentY = pos.offset['y'] / pos.containerSize.height;
+    //     const rect = container.getBoundingClientRect();
+    //     left = offset[0] + rect.width * percentX;
+    //     top = offset[1] + rect.height * percentY;
+    // }
+    spot.style.top = calculatedPosition.top + 'px';
+    spot.style.left = calculatedPosition.left + 'px';
+
+
+    document.body.appendChild(spot);
+    return spot;
+}
+
+function calculatePosition(pos, container) {
+    const offset = getGlobalOffset(container);
+    let top, left;
 
     if (pos.positioning === 'PIXEL') {
         left = offset[0] + pos.offset['x'];
@@ -40,11 +66,17 @@ export function createMarker(payload, init) {
         left = offset[0] + rect.width * percentX;
         top = offset[1] + rect.height * percentY;
     }
-    spot.style.top = top + 'px';
-    spot.style.left = left + 'px';
 
-    document.body.appendChild(spot);
-    return spot;
+    return {
+        top: top,
+        left: left
+    }
+}
+
+export function resetPositioning(spot, pos, container) {
+    let calculatedPosition = calculatePosition(pos, container);
+    spot.style.top = calculatedPosition.top + 'px';
+    spot.style.left = calculatedPosition.left + 'px';
 }
 
 export function addBox(spot, toggled) {
