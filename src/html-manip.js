@@ -140,7 +140,7 @@ export function addText(container, payload, className) {
     info.classList.add('feedback-info');
     const rawTime = !!payload.time.match(/.*[Z]$/) ? payload.time : payload.time + 'Z';
     const time = new Date(Date.parse(rawTime));
-    info.textContent = 'By ' + (payload.user || state.currentUser || 'unknown user') + ' at ' + time.toLocaleString('en-US', {weekday: 'short', month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC', hour12: true, hour: 'numeric', minute: 'numeric'});
+    info.textContent = 'By ' + (payload.user || state.currentUser || 'unknown user') + ' at ' + time.toUTCString().toLocaleString('en-US', {weekday: 'short', month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC', hour12: true, hour: 'numeric', minute: 'numeric'});
     text.appendChild(info);
 
     if (parseInt(payload.userId) === parseInt(state.currentUserId)) {
