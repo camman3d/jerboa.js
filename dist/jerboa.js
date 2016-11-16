@@ -74,7 +74,7 @@
 
 	var _state2 = _interopRequireDefault(_state);
 
-	var _blueimpMd = __webpack_require__(6);
+	var _blueimpMd = __webpack_require__(7);
 
 	var _blueimpMd2 = _interopRequireDefault(_blueimpMd);
 
@@ -422,6 +422,8 @@
 
 	var _state2 = _interopRequireDefault(_state);
 
+	var _utils = __webpack_require__(6);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	/*
@@ -561,8 +563,9 @@
 	    var info = document.createElement('div');
 	    info.classList.add('feedback-info');
 	    var rawTime = !!payload.time.match(/.*[Z]$/) ? payload.time : payload.time + 'Z';
-	    var time = new Date(Date.parse(rawTime));
-	    info.textContent = 'By ' + (payload.user || _state2.default.currentUser || 'unknown user') + ' at ' + time.toUTCString().toLocaleString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC', hour12: true, hour: 'numeric', minute: 'numeric' });
+	    var parsedTime = (0, _utils.isSafari)() ? Date.parse(rawTime) + new Date().getTimezoneOffset() * 60000 : Date.parse(rawTime);
+	    var time = new Date(parsedTime);
+	    info.textContent = 'By ' + (payload.user || _state2.default.currentUser || 'unknown user') + ' at ' + time.toLocaleString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC', hour12: true, hour: 'numeric', minute: 'numeric' });
 	    text.appendChild(info);
 
 	    if (parseInt(payload.userId) === parseInt(_state2.default.currentUserId)) {
@@ -918,6 +921,29 @@
 
 /***/ },
 /* 6 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.isSafari = isSafari;
+	/*
+	 Positioning Related Methods
+	 ---------------------------
+	 */
+
+	function isSafari() {
+	    var userAgent = navigator.userAgent.toLowerCase();
+	    if (userAgent.indexOf('safari') !== -1 && userAgent.indexOf('chrome') === -1) {
+	        return true;
+	    }
+	    return false;
+	}
+
+/***/ },
+/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/*
