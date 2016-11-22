@@ -260,6 +260,7 @@
 
 	exports.default = {
 	    init: function init(options) {
+	        console.log('options', options);
 	        options = options || {};
 	        _state2.default.currentStrategy = options.strategy || strategies.global;
 	        _state2.default.currentPositioning = options.positioning || 'PERCENT';
@@ -268,6 +269,7 @@
 	        _state2.default.isAdmin = options.isAdmin || false;
 	        _state2.default.url = window.location.href;
 	        _state2.default.pageId = (0, _blueimpMd2.default)(window.location.href);
+	        console.log('state', _state2.default);
 	        if (options.data) {
 	            _state2.default.additionalData = options.data;
 	        }

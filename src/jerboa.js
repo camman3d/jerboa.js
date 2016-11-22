@@ -181,6 +181,7 @@ function createToggleButton() {
 
 export default {
     init(options) {
+        console.log('options', options);
         options = options || {};
         state.currentStrategy = options.strategy || strategies.global;
         state.currentPositioning = options.positioning || 'PERCENT';
@@ -189,6 +190,7 @@ export default {
         state.isAdmin = options.isAdmin || false;
         state.url = window.location.href;
         state.pageId = md5(window.location.href);
+        console.log('state', state);
         if (options.data) {
             state.additionalData = options.data;
         }
