@@ -35,9 +35,9 @@ jerboa.init({
     points: [],             // Pre-populates the page with this array of annotation objects
     currentUser: 'John Perkins',   // Display name of current user,
     currentUserId: '259837',    // User's Id
-    isAdmin: 'false',  // true or false, dictates auth for changing status and owner of annotations
+    isAdmin: 'false',  // true or false, determines auth for changing status and owner of annotations
     positioning: 'percent', // Valid values are 'pixel' and 'percent'
-    strategy: jerboa.strategies.global
+    strategy: jerboa.strategies.global // Determines what element(s) is chosen to be the container
 });
 ```
 
@@ -89,10 +89,14 @@ jerboa.addEventListener('save', function (annotation) {
 Listenable events are:
 
 * `preAnnotate` - Fires when the user a spot to annotate
-* `save` - Fires when the user clicks the *Save* button
+* `save` - Fires when the user clicks the *Save* button, to save a new annotation
 * `cancel` - Fires when the user clicks the *Cancel* button
-* `cancelReply` - Fires when the user cancels a reply comment
-* `saveReply` - Fires when the user saves a reply comment
+* `saveComment` - Fires when the user saves a reply comment
+* `cancelComment` - Fires when the user cancels a reply comment
+* `saveEdittedComment` - Fires when the user saves an edit to a comment comment
+* `deleteComment` - Fires when the user deletes a reply comment
+* `changeOwner` - Fires when the user changes the owner of an annotation
+* `changeStatus` - Fires when the user changes the status of an annotation
 
 
 -----
