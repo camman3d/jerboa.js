@@ -8,7 +8,7 @@
 
 Annotate and provide feedback on any web page. [View it in action](https://camman3d.github.io/jerboa.js/). Jerboa.js is
 small (`jerboa.min.js` is ~6kb and `jerboa.min.css` is ~2kb) and has absolutely no dependencies so it's easy to use
-anywhere! 
+anywhere!
 
 ## Usage
 
@@ -33,9 +33,11 @@ Use it!
 jerboa.init({
     data: {},               // Custom data that is included in the annotation object,
     points: [],             // Pre-populates the page with this array of annotation objects
-    user: 'John Perkins',   // Display name of current user
-    positioning: 'percent', // Valid values are 'pixel' and 'percent' 
-    strategy: jerboa.strategies.global 
+    currentUser: 'John Perkins',   // Display name of current user,
+    currentUserId: '259837',    // User's Id
+    isAdmin: 'false',  // true or false, dictates auth for changing status and owner of annotations
+    positioning: 'percent', // Valid values are 'pixel' and 'percent'
+    strategy: jerboa.strategies.global
 });
 ```
 
@@ -55,7 +57,7 @@ the following signature:
 
 When the user clicks on the page, jerboa navigates up the DOM tree from the clicked element checking each element with
 the provided strategy. This function acts as filter; it returns true when the element qualifies as a container.  If no
-element qualifies as the container then no annotation is created. 
+element qualifies as the container then no annotation is created.
 
 Jerboa.js comes with the following strategies:
 
