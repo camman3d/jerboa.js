@@ -2,7 +2,6 @@ import { getGlobalOffset, getRelativeOffset, getSelector, resolveContainer } fro
 import { addEventListener, emit } from './events';
 import { addBox, addText, addTextField, closeInfoBox, createInfoBox, createMarker, resetPositioning, annotationPositions } from './html-manip';
 import state from './state';
-import md5 from 'blueimp-md5';
 
 /*
     Annotating Functionality Methods
