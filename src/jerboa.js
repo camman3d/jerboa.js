@@ -189,7 +189,14 @@ export default {
         state.currentUserId = options.currentUserId;
         state.isAdmin = options.isAdmin || false;
         state.url = window.location.href;
-        state.pageId = md5(window.location.href);
+        if (options.urlPrefix) {
+          var urlPrefix = options.urlPrefix;
+          var fullUrl = window.location.href;
+          var postFix = fullUrl.substring(urlPrefix.length, fullUrl.length);
+          state.pageId = md5(urlPrefix) + "#" + postFix;
+        } else {
+          state.pageId = md5(window.location.href);
+        }
         console.log('state', state);
         if (options.data) {
             state.additionalData = options.data;
