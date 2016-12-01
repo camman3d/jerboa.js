@@ -41,7 +41,6 @@ function generatePayload(event) {
         data: state.additionalData,
         user: state.currentUser,
         userId: state.currentUserId,
-        pageId: state.pageId,
         comments: []
     };
 }
@@ -189,7 +188,6 @@ export default {
         state.currentUserId = options.currentUserId;
         state.isAdmin = options.isAdmin || false;
         state.url = window.location.href;
-        state.pageId = md5(window.location.href);
         console.log('state', state);
         if (options.data) {
             state.additionalData = options.data;
