@@ -31,13 +31,14 @@ Use it!
 
 ```js
 jerboa.init({
-    data: {},               // Custom data that is included in the annotation object,
-    points: [],             // Pre-populates the page with this array of annotation objects
-    currentUser: 'John Perkins',   // Display name of current user,
-    currentUserId: '259837',    // User's Id
-    isAdmin: 'false',  // true or false, determines auth for changing status and owner of annotations
-    positioning: 'percent', // Valid values are 'pixel' and 'percent'
-    strategy: jerboa.strategies.global // Determines what element(s) is chosen to be the container
+    active:           false             //Start with feedback toggle engaged, or disengaged
+    data:             {},               // Custom data that is included in the annotation object
+    points:           [],               // Pre-populates the page with this array of annotation objects
+    currentUser:      'John Perkins',   // Display name of current user
+    currentUserId:    '259837',         // User's Id
+    isAdmin:          'false',          // true or false, determines auth for changing status and owner of annotations
+    positioning:      'PERCENT',        // Valid values are 'PIXEL' and 'PERCENT'
+    strategy:         jerboa.strategies.global // Determines what element(s) is chosen to be the container
 });
 ```
 
@@ -97,6 +98,7 @@ Listenable events are:
 * `deleteComment` - Fires when the user deletes a reply comment
 * `changeOwner` - Fires when the user changes the owner of an annotation
 * `changeStatus` - Fires when the user changes the status of an annotation
+* `active` - Fires when feedback toggle is changed. The value of the event indicates the state.
 
 
 -----
