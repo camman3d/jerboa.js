@@ -32,6 +32,7 @@
   },
   "homepage": "https://github.com/camman3d/jerboa.js",
   "devDependencies": {
+    "exp-publish-node": "^0.1.0",
     "autoprefixer": "^6.3.7",
     "babel-core": "^6.10.4",
     "babel-loader": "^6.2.4",
