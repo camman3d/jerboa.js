@@ -132,26 +132,29 @@ function createToggleButton() {
     buttonContainer.style.left = left;
     buttonContainer.style.position = 'fixed';
 
-    buttonDiv.addEventListener('click', event => {
-        event.preventDefault();
+    let matchState=function(){
         let feedbackSpots = document.getElementsByClassName('feedback-spot');
-        if (buttonDiv.classList.contains('toggle-button-selected')) {
-            buttonDiv.classList.remove('toggle-button-selected');
-            buttonLabel.textContent = 'Feedback Off';
-            state.active = false;
-            Array.prototype.forEach.call(feedbackSpots, (feedbackSpotElement) => {
-                feedbackSpotElement.classList.add('off');
-            });
-        } else {
+        if (state.active) {
             buttonDiv.classList.add('toggle-button-selected');
             buttonLabel.textContent = 'Feedback On';
-            state.active = true;
             Array.prototype.forEach.call(feedbackSpots, (feedbackSpotElement) => {
                 feedbackSpotElement.classList.remove('off');
             });
+        } else {
+            buttonDiv.classList.remove('toggle-button-selected');
+            buttonLabel.textContent = 'Feedback Off';
+            Array.prototype.forEach.call(feedbackSpots, (feedbackSpotElement) => {
+                feedbackSpotElement.classList.add('off');
+            });
         }
+    }
+    buttonDiv.addEventListener('click', event => {
+        event.preventDefault();
+        state.active = !state.active;
+        matchState()
+        emit('active', state.active);
     });
-
+    matchState()
     document.body.appendChild(buttonContainer);
 }
 
@@ -183,6 +186,7 @@ export default {
     init(options) {
         console.log('options', options);
         options = options || {};
+        state.active = options.active || false
         state.currentStrategy = options.strategy || strategies.global;
         state.currentPositioning = options.positioning || 'PERCENT';
         state.currentUser = options.currentUser;
