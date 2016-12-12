@@ -132,18 +132,24 @@ export function addText(container, payload, className) {
     container.appendChild(text);
 
 
-    let comment = document.createElement('div');
-    comment.classList.add('feedback-comment');
-    comment.textContent = payload.text;
-    text.appendChild(comment);
 
+    // adds user and date
     let info = document.createElement('div');
+    let span = document.createElement('span');
     info.classList.add('feedback-info');
     const rawTime = !!payload.time.match(/.*[Z]$/) ? payload.time : payload.time + 'Z';
     let parsedTime = isSafari() ? (Date.parse(rawTime) + new Date().getTimezoneOffset() * 60000) : Date.parse(rawTime);
     const time = new Date(parsedTime);
-    info.textContent = 'By ' + (payload.user || state.currentUser || 'unknown user') + ' at ' + time.toLocaleString('en-US', {weekday: 'short', month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC', hour12: true, hour: 'numeric', minute: 'numeric'});
+    info.textContent = (payload.user || state.currentUser || 'Unknown User');
+    span.textContent = time.toLocaleString('en-US', {weekday: 'short', month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC', hour12: true, hour: 'numeric', minute: 'numeric'});
+    info.appendChild(span);
     text.appendChild(info);
+
+    // adds comment
+    let comment = document.createElement('div');
+    comment.classList.add('feedback-comment');
+    comment.textContent = payload.text;
+    text.appendChild(comment);
 
     if (parseInt(payload.userId) === parseInt(state.currentUserId)) {
         let deleteBtn = document.createElement('a');
