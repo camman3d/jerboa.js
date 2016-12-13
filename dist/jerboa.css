@@ -142,6 +142,7 @@
   font-style: italic;
 }
 .feedback-spot .button-holder {
+  margin-bottom: 20px;
   text-align: right;
 }
 .feedback-spot button {
