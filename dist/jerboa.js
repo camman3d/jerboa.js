@@ -890,6 +890,26 @@
 	        (0, _events.emit)('cancelComment', comment);
 	        closeInfoBox();
 	    });
+	    //@TODO: create util function to handle onKeyUp and click
+	    parts.textarea.addEventListener('onKeyUp', function (e) {
+	        if (e.keyCode === 13) {
+	            if (parts.textarea.value) {
+	                var comment = generateComment(parts.textarea.value);
+	                parts.textarea.value = '';
+	                payload.comments.push(comment);
+	                (0, _events.emit)('saveComment', payload);
+
+	                boxParts.container.removeChild(parts.container);
+	                addText(boxParts.container, comment, 'comment-reply');
+	                boxParts.container.appendChild(parts.container);
+	            } else {
+	                var _comment = generateComment(parts.textarea.value);
+	                parts.textarea.value = '';
+	                (0, _events.emit)('cancelComment', _comment);
+	                closeInfoBox();
+	            }
+	        }
+	    });
 
 	    parts.save.addEventListener('click', function () {
 	        if (parts.textarea.value) {
@@ -902,9 +922,9 @@
 	            addText(boxParts.container, comment, 'comment-reply');
 	            boxParts.container.appendChild(parts.container);
 	        } else {
-	            var _comment = generateComment(parts.textarea.value);
+	            var _comment2 = generateComment(parts.textarea.value);
 	            parts.textarea.value = '';
-	            (0, _events.emit)('cancelComment', _comment);
+	            (0, _events.emit)('cancelComment', _comment2);
 	            closeInfoBox();
 	        }
 	    });
