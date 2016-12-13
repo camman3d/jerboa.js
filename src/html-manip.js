@@ -132,18 +132,24 @@ export function addText(container, payload, className) {
     container.appendChild(text);
 
 
-    let comment = document.createElement('div');
-    comment.classList.add('feedback-comment');
-    comment.textContent = payload.text;
-    text.appendChild(comment);
 
+    // adds user and date
     let info = document.createElement('div');
+    let span = document.createElement('span');
     info.classList.add('feedback-info');
     const rawTime = !!payload.time.match(/.*[Z]$/) ? payload.time : payload.time + 'Z';
     let parsedTime = isSafari() ? (Date.parse(rawTime) + new Date().getTimezoneOffset() * 60000) : Date.parse(rawTime);
     const time = new Date(parsedTime);
-    info.textContent = 'By ' + (payload.user || state.currentUser || 'unknown user') + ' at ' + time.toLocaleString('en-US', {weekday: 'short', month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC', hour12: true, hour: 'numeric', minute: 'numeric'});
+    info.textContent = (payload.user || state.currentUser || 'Unknown User');
+    span.textContent = time.toLocaleString('en-US', {weekday: 'short', month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC', hour12: true, hour: 'numeric', minute: 'numeric'});
+    info.appendChild(span);
     text.appendChild(info);
+
+    // adds comment
+    let comment = document.createElement('div');
+    comment.classList.add('feedback-comment');
+    comment.textContent = payload.text;
+    text.appendChild(comment);
 
     if (parseInt(payload.userId) === parseInt(state.currentUserId)) {
         if (state.allowDeleteComments) {
@@ -310,6 +316,7 @@ export function addTextField(boxContainer, label, containerClass) {
     };
 
     let textarea = document.createElement('textarea');
+    textarea.placeholder = 'Write a comment';
     container.appendChild(textarea);
 
     let buttonHolder = document.createElement('div');
@@ -384,10 +391,15 @@ export function createInfoBox(spot, payload) {
 
     // add owner and status
     const defaultOwner = 'pm';
+    let ownerLabel = document.createElement('label');
+    ownerLabel.innerHTML = 'Assigned To:';
+    let statusLabel = document.createElement('label');
+    statusLabel.innerHTML = 'Status:';
     let ownerSelect = document.createElement('select');
     if (!state.isAdmin) {
         ownerSelect.disabled = true;
     }
+    boxParts.container.appendChild(ownerLabel);
     boxParts.container.appendChild(ownerSelect);
     let ownerOptionsArr = Object.keys(ownerOptions);
     for (let i = 0; i < ownerOptionsArr.length; i++) {
@@ -415,6 +427,7 @@ export function createInfoBox(spot, payload) {
     if (!state.isAdmin) {
         statusSelect.disabled = true;
     }
+    boxParts.container.appendChild(statusLabel);
     boxParts.container.appendChild(statusSelect);
     let statusOptionsArr = Object.keys(statusOptions);
     for (let i = 0; i < statusOptionsArr.length; i++) {
@@ -443,7 +456,7 @@ export function createInfoBox(spot, payload) {
         addText(boxParts.container, comment, 'comment-reply');
     });
 
-    let parts = addTextField(boxParts.container, 'Comment:', 'comment-textfield');
+    let parts = addTextField(boxParts.container, null, 'comment-textfield');
     parts.cancel.addEventListener('click', () => {
         const comment = generateComment(parts.textarea.value);
         parts.textarea.value = '';
