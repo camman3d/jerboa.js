@@ -2,7 +2,6 @@ import { getGlobalOffset, getRelativeOffset, getSelector, resolveContainer } fro
 import { addEventListener, emit } from './events';
 import { addBox, addText, addTextField, closeInfoBox, createInfoBox, createMarker, resetPositioning, annotationPositions } from './html-manip';
 import state from './state';
-import md5 from 'blueimp-md5';
 
 /*
     Annotating Functionality Methods
@@ -41,7 +40,6 @@ function generatePayload(event) {
         data: state.additionalData,
         user: state.currentUser,
         userId: state.currentUserId,
-        pageId: state.pageId,
         comments: []
     };
 }
@@ -193,7 +191,6 @@ export default {
         state.currentUserId = options.currentUserId;
         state.isAdmin = options.isAdmin || false;
         state.url = window.location.href;
-        state.pageId = md5(window.location.href);
         state.allowDeleteComments = options.allowDeleteComments || false;
         console.log('state', state);
         if (options.data) {
