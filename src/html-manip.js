@@ -193,7 +193,7 @@ export function addText(container, payload, className) {
                 } else {
                     // change content
                     payload.text = editCommentTextField.textarea.value;
-                    text.children[0].textContent = payload.text;
+                    text.children[1].textContent = payload.text;
                     container.replaceChild(text, editCommentTextField.container);
                     emit('saveEdittedComment', payload);
                 }
