@@ -50,14 +50,17 @@
 </div>
 
 
-<script src="./dist/jerboa.min.js"></script>
+<script src="./dist/jerboa.js"></script>
 <script>
     jerboa.init({
         strategy: jerboa.strategies.byClass('thingy'),
-        positioning: 'percent',
+        positioning: 'PERCENT',
+        currentUser:'Jon Doe',
+        currentUserId: 21345,
+        isAdmin:true,
         points: [
             {
-                "datetime": "2016-07-14T22:55:50.792Z",
+                "time": "2016-07-14T22:55:50.792Z",
                 "position": {
                     "positioning": "percent",
                     "target": "body > div:nth-child(3) > img:nth-child(2)",
@@ -69,21 +72,21 @@
                 "url": "http://localhost:63342/feedback-snippet/src/index.html?foo=bar#asdf",
                 "text": "Cool icon!",
                 "user": "Josh",
-                "replies": [
+                "comments": [
                     {
                         "text": "Thanks!",
                         "user": "Joe",
-                        "datetime": "2016-07-14T23:55:50.792Z"
+                        "time": "2016-07-14T23:55:50.792Z"
                     },
                     {
                         "text": "You're Welcome!",
                         "user": "Josh",
-                        "datetime": "2016-07-15T23:55:50.792Z"
+                        "time": "2016-07-15T23:55:50.792Z"
                     }
                 ]
             },
             {
-                "datetime": "2016-07-15T16:23:01.195Z",
+                "time": "2016-07-15T16:23:01.195Z",
                 "position": {
                     "positioning": "percent",
                     "target": "body > div:nth-child(4)",
@@ -93,12 +96,12 @@
                     "windowSize": {"width": 1925, "height": 1301}
                 },
                 "url": "http://localhost:63342/feedback-snippet/src/index.html",
-                "replies": [],
+                "comments": [],
                 "text": "I've been here. Who else has?",
                 "user": "Jim"
             },
             {
-                "datetime": "2016-07-15T16:25:31.689Z",
+                "time": "2016-07-15T16:25:31.689Z",
                 "position": {
                     "positioning": "percent",
                     "target": "body > div:nth-child(4)",
@@ -108,11 +111,11 @@
                     "windowSize": {"width": 1925, "height": 1301}
                 },
                 "url": "http://localhost:63342/feedback-snippet/src/index.html",
-                "replies": [],
+                "comments": [],
                 "text": "This is an intersection"
             },
             {
-                "datetime": "2016-07-15T16:28:24.169Z",
+                "time": "2016-07-15T16:28:24.169Z",
                 "position": {
                     "positioning": "percent",
                     "target": "body > div:nth-child(5)",
@@ -122,7 +125,7 @@
                     "windowSize": {"width": 1925, "height": 1301}
                 },
                 "url": "http://localhost:63342/feedback-snippet/src/index.html",
-                "replies": [],
+                "comments": [],
                 "text": "Totally my cat too!"
             }
         ]
