@@ -463,6 +463,26 @@ export function createInfoBox(spot, payload) {
         emit('cancelComment', comment);
         closeInfoBox();
     });
+    //@TODO: create util function to handle onKeyUp and click
+    parts.textarea.addEventListener('onKeyUp', (e) => {
+      if (e.keyCode === 13) {
+        if (parts.textarea.value) {
+            const comment = generateComment(parts.textarea.value);
+            parts.textarea.value = '';
+            payload.comments.push(comment);
+            emit('saveComment', payload);
+
+            boxParts.container.removeChild(parts.container);
+            addText(boxParts.container, comment, 'comment-reply');
+            boxParts.container.appendChild(parts.container);
+        } else {
+            const comment = generateComment(parts.textarea.value);
+            parts.textarea.value = '';
+            emit('cancelComment', comment);
+            closeInfoBox();
+        }
+      }
+    });
 
     parts.save.addEventListener('click', () => {
         if (parts.textarea.value) {
