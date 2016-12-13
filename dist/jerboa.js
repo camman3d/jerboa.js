@@ -745,6 +745,7 @@
 	    };
 
 	    var textarea = document.createElement('textarea');
+	    textarea.placeholder = 'Write a comment';
 	    container.appendChild(textarea);
 
 	    var buttonHolder = document.createElement('div');
@@ -888,7 +889,7 @@
 	        addText(boxParts.container, comment, 'comment-reply');
 	    });
 
-	    var parts = addTextField(boxParts.container, 'Comment:', 'comment-textfield');
+	    var parts = addTextField(boxParts.container, null, 'comment-textfield');
 	    parts.cancel.addEventListener('click', function () {
 	        var comment = generateComment(parts.textarea.value);
 	        parts.textarea.value = '';
