@@ -891,8 +891,9 @@
 	        closeInfoBox();
 	    });
 	    //@TODO: create util function to handle onKeyUp and click
-	    parts.textarea.addEventListener('onKeyUp', function (e) {
-	        if (e.keyCode === 13) {
+	    parts.textarea.addEventListener('keyup', function (e) {
+	        e.preventDefault();
+	        if (e.keyCode == 13) {
 	            if (parts.textarea.value) {
 	                var comment = generateComment(parts.textarea.value);
 	                parts.textarea.value = '';
