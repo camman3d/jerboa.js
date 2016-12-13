@@ -464,8 +464,9 @@ export function createInfoBox(spot, payload) {
         closeInfoBox();
     });
     //@TODO: create util function to handle onKeyUp and click
-    parts.textarea.addEventListener('onKeyUp', (e) => {
-      if (e.keyCode === 13) {
+    parts.textarea.addEventListener('keyup', (e) => {
+      e.preventDefault();
+      if (e.keyCode == 13) {
         if (parts.textarea.value) {
             const comment = generateComment(parts.textarea.value);
             parts.textarea.value = '';
