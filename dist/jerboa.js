@@ -818,10 +818,15 @@
 
 	    // add owner and status
 	    var defaultOwner = 'pm';
+	    var ownerLabel = document.createElement('label');
+	    ownerLabel.innerHTML = 'Assigned To:';
+	    var statusLabel = document.createElement('label');
+	    statusLabel.innerHTML = 'Status:';
 	    var ownerSelect = document.createElement('select');
 	    if (!_state2.default.isAdmin) {
 	        ownerSelect.disabled = true;
 	    }
+	    boxParts.container.appendChild(ownerLabel);
 	    boxParts.container.appendChild(ownerSelect);
 	    var ownerOptionsArr = Object.keys(ownerOptions);
 	    for (var i = 0; i < ownerOptionsArr.length; i++) {
@@ -849,6 +854,7 @@
 	    if (!_state2.default.isAdmin) {
 	        statusSelect.disabled = true;
 	    }
+	    boxParts.container.appendChild(statusLabel);
 	    boxParts.container.appendChild(statusSelect);
 	    var statusOptionsArr = Object.keys(statusOptions);
 	    for (var _i = 0; _i < statusOptionsArr.length; _i++) {
