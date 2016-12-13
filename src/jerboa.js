@@ -191,7 +191,6 @@ export default {
         state.currentUserId = options.currentUserId;
         state.isAdmin = options.isAdmin || false;
         state.url = window.location.href;
-        state.pageId = md5(window.location.href);
         state.allowDeleteComments = options.allowDeleteComments || false;
         console.log('state', state);
         if (options.data) {
