@@ -273,6 +273,7 @@
 	        _state2.default.isAdmin = options.isAdmin || false;
 	        _state2.default.url = window.location.href;
 	        _state2.default.pageId = (0, _blueimpMd2.default)(window.location.href);
+	        _state2.default.allowDeleteComments = options.allowDeleteComments || false;
 	        console.log('state', _state2.default);
 	        if (options.data) {
 	            _state2.default.additionalData = options.data;
@@ -575,15 +576,23 @@
 	    text.appendChild(info);
 
 	    if (parseInt(payload.userId) === parseInt(_state2.default.currentUserId)) {
-	        var deleteBtn = document.createElement('a');
-	        deleteBtn.classList.add('delete-button');
-	        deleteBtn.innerText = 'X';
-	        deleteBtn.setAttribute('role', 'button');
-	        deleteBtn.setAttribute('href', '#');
-	        // don't render delete button for original annotation comment
-	        if (!payload.hasOwnProperty('comments')) {
-	            info.appendChild(deleteBtn);
-	        };
+	        if (_state2.default.allowDeleteComments) {
+	            var deleteBtn = document.createElement('a');
+	            deleteBtn.classList.add('delete-button');
+	            deleteBtn.innerText = 'X';
+	            deleteBtn.setAttribute('role', 'button');
+	            deleteBtn.setAttribute('href', '#');
+	            // don't render delete button for original annotation comment
+	            if (!payload.hasOwnProperty('comments')) {
+	                info.appendChild(deleteBtn);
+	            };
+
+	            deleteBtn.addEventListener('click', function (e) {
+	                e.preventDefault();
+	                container.removeChild(text);
+	                (0, _events.emit)('deleteComment', payload);
+	            });
+	        }
 
 	        var editBtn = document.createElement('a');
 	        editBtn.classList.add('edit-button');
@@ -591,12 +600,6 @@
 	        editBtn.setAttribute('role', 'button');
 	        editBtn.setAttribute('href', '#');
 	        info.appendChild(editBtn);
-
-	        deleteBtn.addEventListener('click', function (e) {
-	            e.preventDefault();
-	            container.removeChild(text);
-	            (0, _events.emit)('deleteComment', payload);
-	        });
 
 	        editBtn.addEventListener('click', function (e) {
 	            e.preventDefault();

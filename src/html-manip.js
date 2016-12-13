@@ -146,15 +146,23 @@ export function addText(container, payload, className) {
     text.appendChild(info);
 
     if (parseInt(payload.userId) === parseInt(state.currentUserId)) {
-        let deleteBtn = document.createElement('a');
-        deleteBtn.classList.add('delete-button');
-        deleteBtn.innerText = 'X';
-        deleteBtn.setAttribute('role', 'button');
-        deleteBtn.setAttribute('href', '#');
-        // don't render delete button for original annotation comment
-        if (!payload.hasOwnProperty('comments')) {
-            info.appendChild(deleteBtn);
-        };
+        if (state.allowDeleteComments) {
+            let deleteBtn = document.createElement('a');
+            deleteBtn.classList.add('delete-button');
+            deleteBtn.innerText = 'X';
+            deleteBtn.setAttribute('role', 'button');
+            deleteBtn.setAttribute('href', '#');
+            // don't render delete button for original annotation comment
+            if (!payload.hasOwnProperty('comments')) {
+                info.appendChild(deleteBtn);
+            };
+
+            deleteBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                container.removeChild(text);
+                emit('deleteComment', payload);
+            });
+        }
 
         let editBtn = document.createElement('a');
         editBtn.classList.add('edit-button');
@@ -162,12 +170,6 @@ export function addText(container, payload, className) {
         editBtn.setAttribute('role', 'button');
         editBtn.setAttribute('href', '#');
         info.appendChild(editBtn);
-
-        deleteBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            container.removeChild(text);
-            emit('deleteComment', payload);
-        });
 
         editBtn.addEventListener('click', (e) => {
             e.preventDefault();
