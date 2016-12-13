@@ -132,29 +132,43 @@ export function addText(container, payload, className) {
     container.appendChild(text);
 
 
+
+    // adds user and date
+    let info = document.createElement('div');
+    let span = document.createElement('span');
+    info.classList.add('feedback-info');
+    const rawTime = !!payload.time.match(/.*[Z]$/) ? payload.time : payload.time + 'Z';
+    let parsedTime = isSafari() ? (Date.parse(rawTime) + new Date().getTimezoneOffset() * 60000) : Date.parse(rawTime);
+    const time = new Date(parsedTime);
+    info.textContent = (payload.user || state.currentUser || 'Unknown User');
+    span.textContent = time.toLocaleString('en-US', {weekday: 'short', month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC', hour12: true, hour: 'numeric', minute: 'numeric'});
+    info.appendChild(span);
+    text.appendChild(info);
+
+    // adds comment
     let comment = document.createElement('div');
     comment.classList.add('feedback-comment');
     comment.textContent = payload.text;
     text.appendChild(comment);
 
-    let info = document.createElement('div');
-    info.classList.add('feedback-info');
-    const rawTime = !!payload.time.match(/.*[Z]$/) ? payload.time : payload.time + 'Z';
-    let parsedTime = isSafari() ? (Date.parse(rawTime) + new Date().getTimezoneOffset() * 60000) : Date.parse(rawTime);
-    const time = new Date(parsedTime);
-    info.textContent = 'By ' + (payload.user || state.currentUser || 'unknown user') + ' at ' + time.toLocaleString('en-US', {weekday: 'short', month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC', hour12: true, hour: 'numeric', minute: 'numeric'});
-    text.appendChild(info);
-
     if (parseInt(payload.userId) === parseInt(state.currentUserId)) {
-        let deleteBtn = document.createElement('a');
-        deleteBtn.classList.add('delete-button');
-        deleteBtn.innerText = 'X';
-        deleteBtn.setAttribute('role', 'button');
-        deleteBtn.setAttribute('href', '#');
-        // don't render delete button for original annotation comment
-        if (!payload.hasOwnProperty('comments')) {
-            info.appendChild(deleteBtn);
-        };
+        if (state.allowDeleteComments) {
+            let deleteBtn = document.createElement('a');
+            deleteBtn.classList.add('delete-button');
+            deleteBtn.innerText = 'X';
+            deleteBtn.setAttribute('role', 'button');
+            deleteBtn.setAttribute('href', '#');
+            // don't render delete button for original annotation comment
+            if (!payload.hasOwnProperty('comments')) {
+                info.appendChild(deleteBtn);
+            };
+
+            deleteBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                container.removeChild(text);
+                emit('deleteComment', payload);
+            });
+        }
 
         let editBtn = document.createElement('a');
         editBtn.classList.add('edit-button');
@@ -162,12 +176,6 @@ export function addText(container, payload, className) {
         editBtn.setAttribute('role', 'button');
         editBtn.setAttribute('href', '#');
         info.appendChild(editBtn);
-
-        deleteBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            container.removeChild(text);
-            emit('deleteComment', payload);
-        });
 
         editBtn.addEventListener('click', (e) => {
             e.preventDefault();
@@ -308,6 +316,7 @@ export function addTextField(boxContainer, label, containerClass) {
     };
 
     let textarea = document.createElement('textarea');
+    textarea.placeholder = 'Write a comment';
     container.appendChild(textarea);
 
     let buttonHolder = document.createElement('div');
@@ -447,7 +456,7 @@ export function createInfoBox(spot, payload) {
         addText(boxParts.container, comment, 'comment-reply');
     });
 
-    let parts = addTextField(boxParts.container, 'Comment:', 'comment-textfield');
+    let parts = addTextField(boxParts.container, null, 'comment-textfield');
     parts.cancel.addEventListener('click', () => {
         const comment = generateComment(parts.textarea.value);
         parts.textarea.value = '';

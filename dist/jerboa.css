@@ -123,6 +123,10 @@
   display: block;
   margin-bottom: 8px;
 }
+.feedback-spot select[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
 .feedback-spot textarea {
   display: block;
   min-height: 75px;
@@ -162,6 +166,9 @@
   margin-left: 5px;
   text-decoration: none;
 }
+.feedback-spot .feedback-text {
+  position: relative;
+}
 .feedback-spot .feedback-text:not(:last-child) {
   margin-top: 15px;
   margin-bottom: 15px;
@@ -172,9 +179,27 @@
   margin-left: 15px;
 }
 .feedback-spot .feedback-info {
+  margin-bottom: 8px;
+  color: #6B655F;
+  font-size: 15px;
+  font-weight: 400;
+}
+.feedback-spot .feedback-info span {
+  padding: 0 8px;
   color: #aaa;
-  font-size: 12px;
-  font-style: italic;
+  font-size: 10px;
+  font-weight: 100;
+  display: inline-block;
+}
+.feedback-spot .feedback-info a.edit-button {
+  position: absolute;
+  bottom: 5px;
+  right: 0px;
+}
+.feedback-spot .feedback-comment {
+  padding-bottom: 20px;
+  font-size: 15px;
+  color: #7A756F;
 }
 .toggle-button-container {
   border: 1px #ccc solid;
