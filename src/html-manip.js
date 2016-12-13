@@ -316,6 +316,7 @@ export function addTextField(boxContainer, label, containerClass) {
     };
 
     let textarea = document.createElement('textarea');
+    textarea.placeholder = 'Write a comment';
     container.appendChild(textarea);
 
     let buttonHolder = document.createElement('div');
@@ -455,7 +456,7 @@ export function createInfoBox(spot, payload) {
         addText(boxParts.container, comment, 'comment-reply');
     });
 
-    let parts = addTextField(boxParts.container, 'Comment:', 'comment-textfield');
+    let parts = addTextField(boxParts.container, null, 'comment-textfield');
     parts.cancel.addEventListener('click', () => {
         const comment = generateComment(parts.textarea.value);
         parts.textarea.value = '';
