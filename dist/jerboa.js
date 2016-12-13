@@ -562,18 +562,23 @@
 	    }
 	    container.appendChild(text);
 
-	    var comment = document.createElement('div');
-	    comment.classList.add('feedback-comment');
-	    comment.textContent = payload.text;
-	    text.appendChild(comment);
-
+	    // adds user and date
 	    var info = document.createElement('div');
+	    var span = document.createElement('span');
 	    info.classList.add('feedback-info');
 	    var rawTime = !!payload.time.match(/.*[Z]$/) ? payload.time : payload.time + 'Z';
 	    var parsedTime = (0, _utils.isSafari)() ? Date.parse(rawTime) + new Date().getTimezoneOffset() * 60000 : Date.parse(rawTime);
 	    var time = new Date(parsedTime);
-	    info.textContent = 'By ' + (payload.user || _state2.default.currentUser || 'unknown user') + ' at ' + time.toLocaleString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC', hour12: true, hour: 'numeric', minute: 'numeric' });
+	    info.textContent = payload.user || _state2.default.currentUser || 'Unknown User';
+	    span.textContent = time.toLocaleString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC', hour12: true, hour: 'numeric', minute: 'numeric' });
+	    info.appendChild(span);
 	    text.appendChild(info);
+
+	    // adds comment
+	    var comment = document.createElement('div');
+	    comment.classList.add('feedback-comment');
+	    comment.textContent = payload.text;
+	    text.appendChild(comment);
 
 	    if (parseInt(payload.userId) === parseInt(_state2.default.currentUserId)) {
 	        if (_state2.default.allowDeleteComments) {

@@ -203,6 +203,10 @@
     text-decoration: none;
   }
 
+  .feedback-text {
+    position: relative;
+  }
+
   .feedback-text:not(:last-child) {
     margin-top: 15px;
     margin-bottom: 15px;
@@ -215,9 +219,26 @@
   }
 
   .feedback-info {
-    color: #aaa;
-    font-size: 12px;
-    font-style: italic;
+    margin-bottom: 8px;
+    color: #6B655F;
+    font-size: 15px;
+    font-weight: 400;
+    span {
+      color: #aaa;
+      font-size: 10px;
+      font-weight: 100;
+      display: inline-block;
+    }
+    a.edit-button {
+      position: absolute;
+      bottom: 5px;
+      right: 0px;
+    }
+  }
+  .feedback-comment {
+    padding-bottom: 20px;
+    font-size: 15px;
+    color: #7A756F;
   }
 
 }
@@ -273,8 +294,4 @@
   width: 24px;
   height: 24px;
   box-shadow: 0 0 4px rgba(0,0,0,0.1);
-}
-select[disabled] {
-  opacity: 0.5;
-  cursor: not-allowed;
 }
