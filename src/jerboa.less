@@ -1,4 +1,4 @@
-@feedback-color-primary: #0ead9a;
+@feedback-color-primary: #EF4036;
 @owner-pm-color: green;
 @owner-client-color: red;
 @owner-id-color: orange;
@@ -78,15 +78,52 @@
     background: @status-no-action-color;
   }
 
+  // different positions:
+  .feedback-box-bottom-left {
+    top: -142px;
+    left: 190px;
 
+    //splitting these rules between here and feedback-box:before didn't work, have to be repetitive
+    &:before {
+      content: '';
+      display: block;
+      position: absolute;
+      top: 105px;
+      left: -6px;
+      border: 10px solid transparent;
+      border-right: 10px solid #aaa;
+      margin-left: -15px;
+    }
+
+  }
+
+  // different positions:
+  .feedback-box-bottom-right {
+    top: -142px;
+    left: -200px;
+
+    //splitting these rules between here and feedback-box:before didn't work, have to be repetitive
+    &:before {
+      content: '';
+      display: block;
+      position: absolute;
+      top: 105px;
+      left: 334px;
+      border: 10px solid transparent;
+      border-left: 10px solid #aaa;
+      margin-left: -15px;
+    }
+
+  }
   // Feedback box styling
+
+
 
   .feedback-box {
     box-sizing: border-box;
     background: white;
     border: 1px solid #aaa;
     position: relative;
-    top: 100%;
     width: 320px;
     margin-left: -143px;
     margin-top: 40px;
@@ -94,28 +131,6 @@
     box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.2);
     z-index: 100;
     cursor: default;
-
-    &:before {
-      content: '';
-      display: block;
-      position: absolute;
-      top: -20px;
-      left: 50%;
-      border: 10px solid transparent;
-      border-bottom: 10px solid #aaa;
-      margin-left: -15px;
-    }
-
-    &:after {
-      content: '';
-      display: block;
-      position: absolute;
-      top: -19px;
-      left: 50%;
-      border: 10px solid transparent;
-      border-bottom: 10px solid white;
-      margin-left: -15px;
-    }
 
     &.toggled {
       display: none;
@@ -125,15 +140,11 @@
     display: block;
   }
 
-
-
-
-
-
   .feedback-container {
     max-height: 370px;
     overflow-y: auto;
     padding: 10px;
+    background: #f7f7f8;
   }
 
   .feedback-reply {
@@ -159,20 +170,27 @@
     margin-bottom: 8px;
   }
 
+  select[disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
   textarea {
     display: block;
-    min-height: 75px;
-    border: 1px solid #ccc;
+    min-height: 40px;
+    border: none;
     border-radius: 3px;
     padding: 10px;
-    font-size: 14px;
+    font-size: 15px;
+    color: #7a756f;
     width: 100%;
     box-sizing: border-box;
     margin-bottom: 10px;
-    box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.1);
+    font-style: italic;
   }
 
   .button-holder {
+    margin-bottom: 20px;
     text-align: right;
   }
 
@@ -203,6 +221,10 @@
     text-decoration: none;
   }
 
+  .feedback-text {
+    position: relative;
+  }
+
   .feedback-text:not(:last-child) {
     margin-top: 15px;
     margin-bottom: 15px;
@@ -212,12 +234,34 @@
 
   .comment-reply {
     margin-left: 15px;
+    span {
+      padding: 0;
+      display: block;
+    }
   }
 
   .feedback-info {
-    color: #aaa;
-    font-size: 12px;
-    font-style: italic;
+    margin-bottom: 8px;
+    color: #6B655F;
+    font-size: 15px;
+    font-weight: 400;
+    span {
+      padding: 0 8px;
+      color: #aaa;
+      font-size: 10px;
+      font-weight: 100;
+      display: inline-block;
+    }
+    a.edit-button {
+      position: absolute;
+      bottom: 5px;
+      right: 0px;
+    }
+  }
+  .feedback-comment {
+    padding-bottom: 20px;
+    font-size: 15px;
+    color: #7A756F;
   }
 
 }
@@ -273,8 +317,4 @@
   width: 24px;
   height: 24px;
   box-shadow: 0 0 4px rgba(0,0,0,0.1);
-}
-select[disabled] {
-  opacity: 0.5;
-  cursor: not-allowed;
 }
