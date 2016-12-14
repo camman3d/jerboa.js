@@ -112,7 +112,18 @@ export function addBox(spot, toggled) {
     container.classList.add('feedback-container');
     box.appendChild(container);
 
+    addBoxClass(box,spot);
+
     return {box, container};
+}
+function addBoxClass(box,spot){
+    let b = box.getBoundingClientRect();
+    let s1 = "-bottom"
+    let s2 = "-right"
+    if( b.left < 220 )
+        s2="-left"
+    console.log(s1,s2)
+    box.classList.add('feedback-box' + s1 + s2);
 }
 
 export function closeInfoBox() {

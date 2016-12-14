@@ -78,15 +78,52 @@
     background: @status-no-action-color;
   }
 
+  // different positions:
+  .feedback-box-bottom-left {
+    top: -142px;
+    left: 190px;
 
+    //splitting these rules between here and feedback-box:before didn't work, have to be repetitive
+    &:before {
+      content: '';
+      display: block;
+      position: absolute;
+      top: 105px;
+      left: -6px;
+      border: 10px solid transparent;
+      border-right: 10px solid #aaa;
+      margin-left: -15px;
+    }
+
+  }
+
+  // different positions:
+  .feedback-box-bottom-right {
+    top: -142px;
+    left: -200px;
+
+    //splitting these rules between here and feedback-box:before didn't work, have to be repetitive
+    &:before {
+      content: '';
+      display: block;
+      position: absolute;
+      top: 105px;
+      left: 334px;
+      border: 10px solid transparent;
+      border-left: 10px solid #aaa;
+      margin-left: -15px;
+    }
+
+  }
   // Feedback box styling
+
+
 
   .feedback-box {
     box-sizing: border-box;
     background: white;
     border: 1px solid #aaa;
     position: relative;
-    top: 100%;
     width: 320px;
     margin-left: -143px;
     margin-top: 40px;
@@ -95,28 +132,6 @@
     z-index: 100;
     cursor: default;
 
-    &:before {
-      content: '';
-      display: block;
-      position: absolute;
-      top: -20px;
-      left: 50%;
-      border: 10px solid transparent;
-      border-bottom: 10px solid #aaa;
-      margin-left: -15px;
-    }
-
-    &:after {
-      content: '';
-      display: block;
-      position: absolute;
-      top: -19px;
-      left: 50%;
-      border: 10px solid transparent;
-      border-bottom: 10px solid white;
-      margin-left: -15px;
-    }
-
     &.toggled {
       display: none;
     }
@@ -124,11 +139,6 @@
   &.active .feedback-box.toggled {
     display: block;
   }
-
-
-
-
-
 
   .feedback-container {
     max-height: 370px;
